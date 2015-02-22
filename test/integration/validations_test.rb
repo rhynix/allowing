@@ -9,7 +9,7 @@ end
 module IntegrationTests
   class ValidationsTest < Minitest::Test
     def setup
-      @subject    = Person.new('Gregory House')
+      @subject   = Person.new('Gregory House')
       @validator = PersonValidator.new(@subject)
     end
 
