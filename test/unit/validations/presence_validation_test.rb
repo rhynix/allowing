@@ -10,7 +10,7 @@ module Allowing
         @rule       = true
         @attribute  = :attribute
         @type       = :presence
-        @validation = PresenceValidation.new(@rule, attribute: @attribute)
+        @validation = PresenceValidation.new(@rule, @attribute)
       end
 
       def test_valid_is_true_if_attribute_has_a_value

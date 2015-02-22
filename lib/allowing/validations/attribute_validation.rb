@@ -6,7 +6,7 @@ module Allowing
       using Extensions::String
       attr_reader :rule, :attribute
 
-      def initialize(rule, attribute:)
+      def initialize(rule, attribute)
         @rule      = rule
         @attribute = attribute
       end

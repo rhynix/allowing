@@ -22,7 +22,7 @@ module Allowing
         @attribute = :attribute
         @subject   = OpenStruct.new(attribute: :value)
 
-        @validation = AttributeValidation.new(@rule, attribute: @attribute)
+        @validation = AttributeValidation.new(@rule, @attribute)
       end
 
       def test_valid_raises_not_implemented_error

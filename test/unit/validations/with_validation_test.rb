@@ -18,7 +18,7 @@ module Allowing
         @rule         = AddErrorValidator
         @attribute    = :attribute
         @type         = :with
-        @validation   = WithValidation.new(@rule, attribute: @attribute)
+        @validation   = WithValidation.new(@rule, @attribute)
         @subject      = OpenStruct.new(attribute: :value)
       end
 

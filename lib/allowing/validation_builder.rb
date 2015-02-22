@@ -16,7 +16,7 @@ module Allowing
     end
 
     def build
-      validation_class.new(@rule, attribute: @attribute)
+      validation_class.new(@rule, @attribute)
     end
 
     private

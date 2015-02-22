@@ -10,7 +10,7 @@ module Allowing
         @rule       = /Greg/
         @attribute  = :attribute
         @type       = :format
-        @validation = FormatValidation.new(@rule, attribute: @attribute)
+        @validation = FormatValidation.new(@rule, @attribute)
       end
 
       def test_valid_is_true_if_subject_confirms_to_format
