@@ -22,7 +22,7 @@ module Allowing
     end
 
     def test_has_an_empty_scope_by_default
-      assert_equal [], @error.scope
+      assert @error.scope.empty?
     end
 
     def test_unshift_scope_scopes_the_error
