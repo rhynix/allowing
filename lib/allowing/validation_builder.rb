@@ -9,7 +9,7 @@ module Allowing
 
     VALIDATION_CLASS_FORMAT = '%{type}Validation'
 
-    def initialize(type:, rule:, attribute:)
+    def initialize(type, rule, attribute)
       @type      = type
       @rule      = rule
       @attribute = attribute

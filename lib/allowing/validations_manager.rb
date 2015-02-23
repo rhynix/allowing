@@ -44,7 +44,7 @@ module Allowing
     end
 
     def build_validation(type, rule, attribute)
-      ValidationBuilder.new(type: type, rule: rule, attribute: attribute).build
+      ValidationBuilder.new(type, rule, attribute).build
     end
 
     def guard_complete_validation(validations, &block)
