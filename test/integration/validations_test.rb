@@ -29,11 +29,12 @@ module IntegrationTests
       refute @validator.valid?
     end
 
-    def test_errors_returns_the_correct_errors_for_an_invalid_subject
+    def test_errors_returns_the_correct_error_name_and_scope_for_an_invalid_subject
       @subject.name = nil
 
       @validator.valid?
       assert_equal :presence, @validator.errors.first.name
+      assert_equal [:name], @validator.errors.first.scope
     end
   end
 end
