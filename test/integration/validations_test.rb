@@ -13,7 +13,7 @@ module IntegrationTests
       @validator = PersonValidator.new(@subject)
     end
 
-    def test_valid_returns_false_for_a_valid_subject
+    def test_valid_returns_true_for_a_valid_subject
       assert @validator.valid?
     end
 
