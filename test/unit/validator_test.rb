@@ -26,7 +26,7 @@ module Allowing
     def test_validate_calls_validate_on_manager_validation
       @mock_validation.expect :validate, true, [@subject, []]
 
-      @validator.validate(@subject, [])
+      @validator.validate([])
       @mock_validation.verify
     end
 

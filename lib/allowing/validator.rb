@@ -34,11 +34,11 @@ module Allowing
 
     def valid?
       errors.clear
-      validate(subject, errors)
+      validate(errors)
       errors.empty?
     end
 
-    def validate(subject, errors)
+    def validate(errors)
       manager_validation.validate(subject, errors)
     end
 
