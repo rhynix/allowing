@@ -1,15 +1,15 @@
 require 'test_helper'
 
-Person = Struct.new(:name)
+Person = Struct.new(:first_name, :last_name)
 
 class PersonValidator < Allowing::Validator
-  validates :name, presence: true
+  validates :first_name, :last_name, presence: true
 end
 
 module IntegrationTests
   class ValidationsTest < Minitest::Test
     def setup
-      @subject   = Person.new('Gregory House')
+      @subject   = Person.new('Gregory', 'House')
       @validator = PersonValidator.new(@subject)
     end
 
@@ -24,17 +24,17 @@ module IntegrationTests
     end
 
     def test_valid_returns_false_for_an_invalid_subject
-      @subject.name = nil
+      @subject.first_name = nil
 
       refute @validator.valid?
     end
 
     def test_errors_returns_the_correct_error_name_and_scope_for_an_invalid_subject
-      @subject.name = nil
+      @subject.first_name = nil
 
       @validator.valid?
       assert_equal :presence, @validator.errors.first.name
-      assert_equal [:name], @validator.errors.first.scope
+      assert_equal [:first_name], @validator.errors.first.scope
     end
   end
 end

@@ -46,6 +46,24 @@ module Allowing
       assert_equal 1, @manager.validations.first.manager.validations.count
     end
 
+    def test_naming_multiple_attributes_creates_validations_for_each_attribute
+      @manager.validates :a, :b, presence: true, format: /[A-Z]/
+
+      assert_equal 4, @manager.validations.count
+    end
+
+    def test_naming_multiple_attributes_creates_nested_validations_for_each_attribute
+      @manager.validates :a, :b do
+        validates :attribute, presence: true
+      end
+
+      assert_equal 2, @manager.validations.count
+
+      @manager.validations.each do |validation|
+        assert_equal 1, validation.manager.validations.count
+      end
+    end
+
     def test_raises_invalid_validation_error_if_no_validation_given
       assert_raises(IncompleteValidationError) do
         @manager.validates(:name)

@@ -14,28 +14,32 @@ module Allowing
       @validations ||= []
     end
 
-    def validates(attribute = nil, rules = nil, &block)
+    def validates(*attributes, **rules, &block)
       guard_complete_validation(rules, &block)
 
-      if block_given? && attribute
-        add_nested_validations(attribute, &block)
+      if block_given? && attributes.any?
+        add_nested_validations(attributes, &block)
       elsif block_given?
         add_block_validation(&block)
       else
-        add_attribute_validations(attribute, rules)
+        add_attribute_validations(attributes, rules)
       end
     end
 
     private
 
-    def add_nested_validations(attribute, &block)
-      manager = ValidationsManager.new(&block)
-      validations << Validations::ManagerValidation.new(manager, attribute)
+    def add_nested_validations(attributes, &block)
+      attributes.each do |attribute|
+        manager = ValidationsManager.new(&block)
+        validations << Validations::ManagerValidation.new(manager, attribute)
+      end
     end
 
-    def add_attribute_validations(attribute, validations_hash)
-      validations_hash.each do |type, rule|
-        validations << build_validation(type, rule, attribute)
+    def add_attribute_validations(attributes, rules)
+      attributes.each do |attribute|
+        rules.each do |type, rule|
+          validations << build_validation(type, rule, attribute)
+        end
       end
     end
 
@@ -48,7 +52,7 @@ module Allowing
     end
 
     def guard_complete_validation(validations, &block)
-      unless validations || block_given?
+      unless validations.any? || block_given?
         raise IncompleteValidationError, 'Either block or rules should be provided'
       end
     end

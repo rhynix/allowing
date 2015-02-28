@@ -4,8 +4,8 @@ module Allowing
   class Validator
     attr_reader :subject
 
-    def self.validates(attribute = nil, rules = nil, &block)
-      manager.validates(attribute, rules, &block)
+    def self.validates(*attributes, **options, &block)
+      manager.validates(*attributes, **options, &block)
     end
 
     def self.manager
