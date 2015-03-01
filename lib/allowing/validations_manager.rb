@@ -1,17 +1,20 @@
 require 'allowing/validations/block_validation'
 require 'allowing/validation_builder'
+require 'allowing/validations_group'
 require 'allowing/error'
 
 module Allowing
   IncompleteValidationError = Class.new(StandardError)
 
   class ValidationsManager
-    def initialize(&block)
-      instance_eval(&block) if block_given?
+    attr_reader :group
+
+    def initialize(group = nil)
+      @group = group
     end
 
-    def validations
-      @validations ||= []
+    def define_validations(&block)
+      instance_eval(&block)
     end
 
     def validates(*attributes, **rules, &block)
@@ -30,21 +33,20 @@ module Allowing
 
     def add_nested_validations(attributes, &block)
       attributes.each do |attribute|
-        manager = ValidationsManager.new(&block)
-        validations << Validations::ManagerValidation.new(manager, attribute)
+        group.validations << ValidationsGroup.new(attribute, &block)
       end
     end
 
     def add_attribute_validations(attributes, rules)
       attributes.each do |attribute|
         rules.each do |type, rule|
-          validations << build_validation(type, rule, attribute)
+          group.validations << build_validation(type, rule, attribute)
         end
       end
     end
 
     def add_block_validation(&block)
-      validations << Validations::BlockValidation.new(&block)
+      group.validations << Validations::BlockValidation.new(&block)
     end
 
     def build_validation(type, rule, attribute)

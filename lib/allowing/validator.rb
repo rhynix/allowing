@@ -5,23 +5,15 @@ module Allowing
     attr_reader :subject
 
     def self.validates(*attributes, **options, &block)
-      manager.validates(*attributes, **options, &block)
+      group.manager.validates(*attributes, **options, &block)
     end
 
-    def self.manager
-      @manager ||= ValidationsManager.new
+    def self.group
+      @group ||= ValidationsGroup.new
     end
 
-    def self.manager=(manager)
-      @manager = manager
-    end
-
-    def self.manager_validation
-      @manager_validation ||= Validations::ManagerValidation.new(manager, nil)
-    end
-
-    def self.manager_validation=(manager_validation)
-      @manager_validation = manager_validation
+    def self.group=(group)
+      @group = group
     end
 
     def initialize(subject)
@@ -39,13 +31,13 @@ module Allowing
     end
 
     def validate(errors)
-      manager_validation.validate(subject, errors)
+      group.validate(subject, errors)
     end
 
     private
 
-    def manager_validation
-      self.class.manager_validation
+    def group
+      self.class.group
     end
   end
 end
