@@ -1,6 +1,8 @@
 require 'allowing/validations/block_validation'
 require 'allowing/validation_builder'
 require 'allowing/validations_group'
+require 'allowing/wrappers'
+require 'allowing/wrapping_builder'
 require 'allowing/error'
 
 module Allowing
@@ -9,7 +11,7 @@ module Allowing
   class ValidationsManager
     attr_reader :group
 
-    def initialize(group = nil)
+    def initialize(group)
       @group = group
     end
 
@@ -20,42 +22,60 @@ module Allowing
     def validates(*attributes, **rules, &block)
       guard_complete_validation(rules, &block)
 
-      if block_given? && attributes.any?
-        add_nested_validations(attributes, &block)
-      elsif block_given?
-        add_block_validation(&block)
-      else
-        add_attribute_validations(attributes, rules)
-      end
+      wrappers            = extract_wrappers!(rules)
+      validations         = create_validations(attributes, rules, &block)
+      wrapped_validations = wrap_validations(validations, wrappers)
+
+      group.validations.push(*wrapped_validations)
     end
 
     private
 
-    def add_nested_validations(attributes, &block)
-      attributes.each do |attribute|
-        group.validations << ValidationsGroup.new(attribute, &block)
+    def create_validations(attributes, rules, &block)
+      if block_given? && attributes.any?
+        nested_validations(attributes, &block)
+      elsif block_given?
+        [block_validation(&block)]
+      else
+        attribute_validations(attributes, rules)
       end
     end
 
-    def add_attribute_validations(attributes, rules)
-      attributes.each do |attribute|
-        rules.each do |type, rule|
-          group.validations << build_validation(type, rule, attribute)
+    def nested_validations(attributes, &block)
+      attributes.map { |attr| ValidationsGroup.new(attr, &block) }
+    end
+
+    def attribute_validations(attributes, rules)
+      attributes.map do |attribute|
+        rules.map do |type, rule|
+          ValidationBuilder.new(type, rule, attribute).build
         end
-      end
+      end.flatten
     end
 
-    def add_block_validation(&block)
-      group.validations << Validations::BlockValidation.new(&block)
-    end
-
-    def build_validation(type, rule, attribute)
-      ValidationBuilder.new(type, rule, attribute).build
+    def block_validation(&block)
+      Validations::BlockValidation.new(&block)
     end
 
     def guard_complete_validation(validations, &block)
       unless validations.any? || block_given?
-        raise IncompleteValidationError, 'Either block or rules should be provided'
+        fail IncompleteValidationError,
+          'Either block or rules should be provided'
+      end
+    end
+
+    def extract_wrappers!(rules)
+      wrappers = {}
+      Wrappers::Wrapper.wrappers.each do |type, wrapper|
+        wrappers[type] = rules.delete(type)
+      end
+
+      wrappers.reject { |type, rule| rule.nil? }
+    end
+
+    def wrap_validations(validations, wrappers)
+      validations.map do |validation|
+        WrappingBuilder.new(validation, wrappers).build
       end
     end
   end

@@ -79,6 +79,16 @@ module Allowing
      end
     end
 
+    def test_validations_are_wrapped_correctly
+      @manager.validates(:name, presence: true, if: :if_condition)
+      wrapper = @group.validations.first
+
+      assert_equal 1, @group.validations.count
+      assert wrapper.is_a?(Wrappers::IfWrapper)
+      assert_equal :if_condition, wrapper.rule
+      assert wrapper.validation.is_a?(Validations::PresenceValidation)
+    end
+
     def test_validates_takes_no_arguments_with_block
       @manager.validates do
         'block'
