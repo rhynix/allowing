@@ -15,7 +15,7 @@ module Allowing
     private
 
     def build_next
-      (type, rule) = @wrappers.shift
+      (type, rule) = @wrappers.pop
       next_wrapper = WrapperBuilder.new(type, rule, outer_wrapper).build
       self.outer_wrapper = next_wrapper
     end
