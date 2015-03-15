@@ -79,13 +79,25 @@ module Allowing
      end
     end
 
-    def test_validations_are_wrapped_correctly
+    def test_option_adds_a_wrapper
       @manager.validates(:name, presence: true, if: :if_condition)
       wrapper = @group.validations.first
 
       assert_equal 1, @group.validations.count
       assert wrapper.is_a?(Wrappers::IfWrapper)
+    end
+
+    def test_wrapper_is_initialized_with_rule
+      @manager.validates(:name, presence: true, if: :if_condition)
+      wrapper = @group.validations.first
+
       assert_equal :if_condition, wrapper.rule
+    end
+
+    def test_wrapper_is_initialized_with_validation
+      @manager.validates(:name, presence: true, if: :if_condition)
+      wrapper = @group.validations.first
+
       assert wrapper.validation.is_a?(Validations::PresenceValidation)
     end
 

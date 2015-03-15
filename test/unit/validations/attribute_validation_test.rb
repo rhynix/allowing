@@ -49,16 +49,14 @@ module Allowing
         refute errors.empty?
       end
 
-      def test_validate_adds_the_correct_error_for_an_invalid_subject
+      def test_validate_adds_correct_error_for_an_invalid_subject
         errors = []
 
         @validation.stub :valid?, false do
-          @validation.stub :type, :validation_type do
-            @validation.validate(@subject, errors)
-          end
+          @validation.validate(@subject, errors)
         end
 
-        assert_equal :validation_type, errors.first.name
+        assert_equal :attribute, errors.first.name
         assert_equal @validation, errors.first.validation
         assert_equal [@attribute], errors.first.scope
       end

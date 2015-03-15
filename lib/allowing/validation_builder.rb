@@ -24,7 +24,7 @@ module Allowing
     def validation_class
       Validations.const_get(constant_name)
     rescue NameError
-      raise UnknownValidationError,
+      fail UnknownValidationError,
         "Don't know how to create validation '#{@type}'"
     end
 

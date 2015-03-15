@@ -23,7 +23,7 @@ module Allowing
     def wrapper_class
       Wrappers.const_get(constant_name)
     rescue NameError
-      raise UnknownWrapperError,
+      fail UnknownWrapperError,
         "Don't know how to create wrapper '#{@type}'"
     end
 
