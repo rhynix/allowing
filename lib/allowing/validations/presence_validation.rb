@@ -1,3 +1,5 @@
+require 'allowing/validations/attribute_validation'
+
 module Allowing
   module Validations
     class PresenceValidation < AttributeValidation
