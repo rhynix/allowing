@@ -22,9 +22,9 @@ module Allowing
     end
 
     def validate(subject, errors)
-      with_scope(attribute, subject, errors) do |subject, errors|
+      with_scope(attribute, subject, errors) do |attr_subject, scoped_errors|
         validations.each do |validation|
-          validation.validate(subject, errors)
+          validation.validate(attr_subject, scoped_errors)
         end
       end
     end

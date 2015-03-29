@@ -21,8 +21,8 @@ module Allowing
 
       private
 
-      def valid?(value)
-        raise NotImplementedError, 'Should be implemented by subclass'
+      def valid?(_value)
+        fail NotImplementedError, 'Should be implemented by subclass'
       end
 
       def value(subject)
@@ -30,7 +30,7 @@ module Allowing
       end
 
       def class_name
-        class_name = self.class.to_s.split('::').last
+        self.class.to_s.split('::').last
       end
     end
   end
