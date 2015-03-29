@@ -14,7 +14,7 @@ module Allowing
         @validation       = LengthValidation.new(@rule, @attribute)
         @errors           = []
 
-        @object     = OpenStruct.new
+        @object           = OpenStruct.new
       end
 
       def test_validate_adds_no_errors_if_attribute_is_exact_length
@@ -50,23 +50,6 @@ module Allowing
         @validation.validate(@object, @errors)
 
         refute @errors.empty?
-      end
-
-      def test_raises_error_if_attribute_does_not_respond_to_length
-        @object.name = true
-
-        assert_raises(LengthValidation::NoLengthError) do
-          @validation.validate(@object, @errors)
-        end
-      end
-
-      def test_validate_raises_error_if_rule_is_invalid
-        @object.name = 'Gregory'
-        validation = LengthValidation.new('three', @attribute)
-
-        assert_raises(LengthValidation::UnknownLengthError) do
-          validation.validate(@object, @errors)
-        end
       end
     end
   end

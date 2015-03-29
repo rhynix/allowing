@@ -132,7 +132,7 @@ validates :email, format: /@/
 
 ### Length
 
-Checks whether the attribute has a certain length. The rule can be both an exact number and a range. Because the `#cover?` method is used for ranges, minimum and maximum values are possible using Ruby's `Float::INFINITY`. See example for a minimum length. Nil is considered invalid. 
+Checks whether the attribute has a certain length. The rule can be both an exact number and a range. Because the `#cover?` method is used for ranges, minimum and maximum values are possible using Ruby's `Float::INFINITY`. See example for a minimum length. Nil is considered invalid, otherwise the attribute must respond to `#length`.
 
 ###### Example
 
@@ -140,9 +140,4 @@ Checks whether the attribute has a certain length. The rule can be both an exact
 validates :bio, length: 100..Float::INFINITY
 validates :registration_number, length: 10
 ```
-
-###### Possible exceptions
-
-- `LengthValidation::UnknownLengthError`: If the length in the validation definition is not a `Number` or a `Range`.
-- `LengthValidation::NoLengthError`: If the attribute is not nil and does not respond to `#length`
 
