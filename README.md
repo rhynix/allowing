@@ -108,11 +108,11 @@ car_validator.errors # => [#<Allowing::Error @name=:incorrect_number_of_wheels, 
 
 ## Validations
 
-At this moment, there are only two validations defined:
+At this moment, three types of validation are defined:
 
 ### Presence 
 
-Checks wether the attribute is non-nil and non-empty. If the attribute is non-nil and does not respond to `empty?`, the object is always considered present.
+Checks whether the attribute is non-nil and non-empty. If the attribute is non-nil and does not respond to `empty?`, the object is always considered present.
 
 ###### Example
 
@@ -132,17 +132,17 @@ validates :email, format: /@/
 
 ### Length
 
-Checks wether the attribute has a certain length. The rule can be both an exact number and a range. Because the `#cover?` method is used for ranges, minimum and maximum values are possible using Ruby's `Float::Infinity`. See example for a minimum length. Nil is considered invalid. 
+Checks whether the attribute has a certain length. The rule can be both an exact number and a range. Because the `#cover?` method is used for ranges, minimum and maximum values are possible using Ruby's `Float::INFINITY`. See example for a minimum length. Nil is considered invalid. 
 
 ###### Example
 
 ```ruby
-validates :bio, length: 100..Float::INFITY
+validates :bio, length: 100..Float::INFINITY
 validates :registration_number, length: 10
 ```
 
 ###### Possible exceptions
 
-- `LengthValidation::UnknownLengthError`: If the error is not a `Number` or a `Range`.
+- `LengthValidation::UnknownLengthError`: If the length in the validation definition is not a `Number` or a `Range`.
 - `LengthValidation::NoLengthError`: If the attribute is not nil and does not respond to `#length`
 
