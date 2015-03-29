@@ -28,7 +28,7 @@ module Allowing
       def test_valid_raises_not_implemented_error
         assert_raises(NotImplementedError) do
           @validation.valid?(nil)
-       end
+        end
       end
 
       def test_validate_adds_no_error_for_a_valid_subject
