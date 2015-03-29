@@ -8,26 +8,51 @@ module Allowing
 
       def setup
         @rule       = true
-        @attribute  = :attribute
+        @attribute  = :name
         @type       = :presence
         @validation = PresenceValidation.new(@rule, @attribute)
+        @errors     = []
+
+        @object     = OpenStruct.new
       end
 
-      def test_valid_is_true_if_attribute_has_a_value
-        assert @validation.valid?('value')
+      def test_validate_adds_no_errors_if_attribute_is_present
+        @object.name = 'Gregory House'
+        @validation.validate(@object, @errors)
+
+        assert @errors.empty?
       end
 
-      def test_valid_is_false_if_subject_is_empty
-        attribute = OpenStruct.new(:empty? => true)
-        refute @validation.valid?(attribute)
+      def test_validate_adds_error_if_attribute_is_empty
+        @object.name = OpenStruct.new(:empty? => true)
+        @validation.validate(@object, @errors)
+
+        refute @errors.empty?
       end
 
-      def test_valid_is_false_if_subject_is_empty_string
-        refute @validation.valid?('')
+      def test_validate_adds_error_if_attribute_is_empty_string
+        @object.name = ''
+        @validation.validate(@object, @errors)
+
+        refute @errors.empty?
       end
 
-      def test_valid_is_false_if_subject_is_nil
-        refute @validation.valid?(nil)
+      def test_validate_adds_error_if_attribute_is_nil
+        @object.name = nil
+        @validation.validate(@object, @errors)
+
+        refute @errors.empty?
+      end
+
+      def test_validate_adds_correct_error
+        @object.name = nil
+        @validation.validate(@object, @errors)
+
+        error = @errors.first
+
+        assert_equal :presence,   error.name
+        assert_equal @validation, error.validation
+        assert_equal [:name],     error.scope
       end
     end
   end
