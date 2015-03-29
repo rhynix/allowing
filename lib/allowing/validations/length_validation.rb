@@ -10,20 +10,11 @@ module Allowing
       end
 
       def correct_length?(length)
-        case rule
-        when Range
-          length_in_range?(length)
+        if rule.is_a?(Range)
+          rule.cover?(length)
         else
-          equal_length?(length)
+          rule == length
         end
-      end
-
-      def equal_length?(length)
-        rule == length
-      end
-
-      def length_in_range?(length)
-        rule.cover?(length)
       end
     end
   end
