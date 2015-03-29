@@ -7,7 +7,7 @@ module Allowing
                                          true,
                                          :attribute).build
 
-      assert validation.kind_of?(Validations::PresenceValidation)
+      assert validation.is_a?(Validations::PresenceValidation)
       assert_equal true,       validation.rule
       assert_equal :attribute, validation.attribute
     end
@@ -17,8 +17,8 @@ module Allowing
                                          /Greg/,
                                          :attribute).build
 
-      assert validation.kind_of?(Validations::FormatValidation)
-      assert_equal /Greg/,     validation.rule
+      assert validation.is_a?(Validations::FormatValidation)
+      assert_equal(/Greg/,     validation.rule)
       assert_equal :attribute, validation.attribute
     end
 

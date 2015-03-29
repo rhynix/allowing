@@ -28,7 +28,7 @@ module Allowing
     def test_adding_a_validation_creates_the_right_validation
       @manager.validates(:attribute, presence: true)
 
-      assert @group.validations.first.kind_of?(Validations::PresenceValidation)
+      assert @group.validations.first.is_a?(Validations::PresenceValidation)
     end
 
     def test_adding_nested_validations_adds_a_new_manager_validation
@@ -36,7 +36,7 @@ module Allowing
         validates :nested_attribute, presence: true
       end
 
-      assert @group.validations.first.kind_of? ValidationsGroup
+      assert @group.validations.first.is_a? ValidationsGroup
     end
 
     def test_adding_nested_validations_sets_the_attribute_on_the_validation
@@ -55,13 +55,13 @@ module Allowing
       assert_equal 1, @group.validations.first.validations.count
     end
 
-    def test_naming_multiple_attributes_creates_validations_for_each_attribute
+    def test_multiple_attributes_creates_validations_for_each_attribute
       @manager.validates :a, :b, presence: true, format: /[A-Z]/
 
       assert_equal 4, @group.validations.count
     end
 
-    def test_naming_multiple_attributes_creates_nested_validations_for_each_attribute
+    def test_multiple_attributes_creates_nested_validations_for_each_attribute
       @manager.validates :a, :b do
         validates :attribute, presence: true
       end
@@ -76,7 +76,7 @@ module Allowing
     def test_raises_invalid_validation_error_if_no_validation_given
       assert_raises(IncompleteValidationError) do
         @manager.validates(:name)
-     end
+      end
     end
 
     def test_validates_takes_no_arguments_with_block

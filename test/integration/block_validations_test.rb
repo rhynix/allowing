@@ -3,7 +3,7 @@ require 'test_helper'
 Manufacturer = Struct.new(:name)
 Car          = Struct.new(:wheels, :manufacturer)
 
-CAR_MANUFACTURERS = ['Volkswagen', 'Ford', 'Fiat']
+CAR_MANUFACTURERS = %w(Volkswagen Ford Fiat)
 
 class CarValidator < Allowing::Validator
   validates do |car, errors|
@@ -52,7 +52,7 @@ module IntegrationTests
       refute @validator.valid?
     end
 
-    def test_error_has_the_correct_name_and_scope_for_invalid_nested_block_validation
+    def test_error_is_correct_for_invalid_nested_block_validation
       @manufacturer.name = 'Apple'
 
       @validator.valid?

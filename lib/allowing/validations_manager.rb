@@ -53,10 +53,9 @@ module Allowing
       ValidationBuilder.new(type, rule, attribute).build
     end
 
-    def guard_complete_validation(validations, &block)
-      unless validations.any? || block_given?
-        raise IncompleteValidationError, 'Either block or rules should be provided'
-      end
+    def guard_complete_validation(validations)
+      return if validations.any? || block_given?
+      fail IncompleteValidationError, 'Either block or rules should be provided'
     end
   end
 end

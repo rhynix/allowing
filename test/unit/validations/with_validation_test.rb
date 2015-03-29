@@ -2,7 +2,7 @@ require 'test_helper'
 require 'unit/validations/attribute_validation_test'
 
 class AddErrorValidator < Allowing::Validator
-  def validate(subject, errors)
+  def validate(_subject, errors)
     errors << Error.new(:error)
   end
 end
