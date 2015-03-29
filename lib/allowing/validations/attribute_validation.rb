@@ -11,10 +11,6 @@ module Allowing
         @attribute = attribute
       end
 
-      def valid?(value)
-        raise NotImplementedError, 'Should be implemented by subclass'
-      end
-
       def type
         class_name.underscore.split('_')[0...-1].join('_').to_sym
       end
@@ -24,6 +20,10 @@ module Allowing
       end
 
       private
+
+      def valid?(value)
+        raise NotImplementedError, 'Should be implemented by subclass'
+      end
 
       def value(subject)
         subject.send(attribute)

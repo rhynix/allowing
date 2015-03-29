@@ -17,50 +17,21 @@ module Allowing
     end
 
     class AttributeValidationTest < Minitest::Test
+      include SharedAttributeValidationTest
+
       def setup
         @rule      = true
         @attribute = :attribute
+        @type      = :attribute
         @subject   = OpenStruct.new(attribute: :value)
 
         @validation = AttributeValidation.new(@rule, @attribute)
       end
 
-      def test_valid_raises_not_implemented_error
+      def test_validate_raises_not_implemented_error
         assert_raises(NotImplementedError) do
-          @validation.valid?(nil)
+          @validation.validate(@subject, [])
         end
-      end
-
-      def test_validate_adds_no_error_for_a_valid_subject
-        errors = []
-        @validation.stub :valid?, true do
-          @validation.validate(@subject, errors)
-        end
-
-        assert errors.empty?
-      end
-
-      def test_validate_adds_an_error_for_an_invalid_subject
-        errors = []
-        @validation.stub :valid?, false do
-          @validation.validate(@subject, errors)
-        end
-
-        refute errors.empty?
-      end
-
-      def test_validate_adds_the_correct_error_for_an_invalid_subject
-        errors = []
-
-        @validation.stub :valid?, false do
-          @validation.stub :type, :validation_type do
-            @validation.validate(@subject, errors)
-          end
-        end
-
-        assert_equal :validation_type, errors.first.name
-        assert_equal @validation, errors.first.validation
-        assert_equal [@attribute], errors.first.scope
       end
     end
   end

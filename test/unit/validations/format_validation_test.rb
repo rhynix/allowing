@@ -8,26 +8,51 @@ module Allowing
 
       def setup
         @rule       = /Greg/
-        @attribute  = :attribute
+        @attribute  = :name
         @type       = :format
         @validation = FormatValidation.new(@rule, @attribute)
+        @errors     = []
+
+        @object     = OpenStruct.new
       end
 
-      def test_valid_is_true_if_subject_confirms_to_format
-        assert @validation.valid?('Gregory house')
+      def test_validate_adds_no_errors_if_attribute_confirms_to_format
+        @object.name = 'Gregory House'
+        @validation.validate(@object, @errors)
+
+        assert @errors.empty?
       end
 
-      def test_valid_is_true_if_to_s_confirms_to_format
-        attribute = OpenStruct.new(to_s: 'Gregory House')
-        assert @validation.valid?(attribute)
+      def test_validate_adds_no_errors_if_to_s_on_attribute_confirms_to_format
+        @object.name = OpenStruct.new(to_s: 'Gregory House')
+        @validation.validate(@object, @errors)
+
+        assert @errors.empty?
       end
 
-      def test_valid_is_false_if_subject_does_not_confirm_to_format
-        refute @validation.valid?('James Wilson')
+      def test_validate_adds_an_error_if_attribute_does_not_confirm_to_format
+        @object.name = 'James Wilson'
+        @validation.validate(@object, @errors)
+
+        refute @errors.empty?
       end
 
-      def test_valid_is_false_if_subject_is_nil
-        refute @validation.valid?(nil)
+      def test_validate_adds_an_error_if_attribute_is_nil
+        @object.name = nil
+        @validation.validate(@object, @errors)
+
+        refute @errors.empty?
+      end
+
+      def test_validate_adds_correct_error
+        @object.name = nil
+        @validation.validate(@object, @errors)
+
+        error = @errors.first
+
+        assert_equal :format,     error.name
+        assert_equal @validation, error.validation
+        assert_equal [:name],     error.scope
       end
     end
   end
