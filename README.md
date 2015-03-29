@@ -108,7 +108,36 @@ car_validator.errors # => [#<Allowing::Error @name=:incorrect_number_of_wheels, 
 
 ## Validations
 
-At this moment, there are only two validations defined:
+At this moment, three types of validation are defined:
 
-1. `presence` checks wether the attribute is non-nil and non-empty
-2. `format` checks wether the attribute matches a regular expression
+### Presence 
+
+Checks whether the attribute is non-nil and non-empty. If the attribute is non-nil and does not respond to `empty?`, the object is always considered present.
+
+###### Example
+
+```ruby
+validates :name, presence: true
+```
+
+### Format
+
+Checks whether the attribute matches a regular expression. Calls `#to_s` on attribute before matching against the regular expression. Nil is considered invalid.
+
+###### Example
+
+```ruby
+validates :email, format: /@/
+```
+
+### Length
+
+Checks whether the attribute has a certain length. The rule can be both an exact number and a range. Because the `#cover?` method is used for ranges, minimum and maximum values are possible using Ruby's `Float::INFINITY`. See example for a minimum length. Nil is considered invalid, otherwise the attribute must respond to `#length`.
+
+###### Example
+
+```ruby
+validates :bio, length: 100..Float::INFINITY
+validates :registration_number, length: 10
+```
+

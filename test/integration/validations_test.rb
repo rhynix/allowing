@@ -1,15 +1,22 @@
 require 'test_helper'
 
-Person = Struct.new(:first_name, :last_name)
+Person = Struct.new(:first_name, :last_name, :email, :bio)
 
 class PersonValidator < Allowing::Validator
   validates :first_name, :last_name, presence: true
+  validates :email, format: /@/
+  validates :bio, length: 0..500
 end
 
 module IntegrationTests
   class ValidationsTest < Minitest::Test
     def setup
-      @subject   = Person.new('Gregory', 'House')
+      @subject = Person.new(
+        'Gregory',
+        'House',
+        'greg@example.com',
+        'A doctor at Princeton-Plainsboro Teaching Hospital'
+      )
       @validator = PersonValidator.new(@subject)
     end
 
