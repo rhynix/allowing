@@ -141,3 +141,11 @@ validates :bio, length: 100..Float::INFINITY
 validates :registration_number, length: 10
 ```
 
+
+### Inclusion
+
+Checks wether the value is included in an array or range, or any other object responding to `#include?`.
+
+```ruby
+validates :gender, inclusion: %w(Male Female)
+```
