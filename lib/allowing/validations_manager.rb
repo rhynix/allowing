@@ -64,7 +64,7 @@ module Allowing
 
     def extract_wrappers!(rules)
       wrappers = {}
-      Wrappers::Wrapper.wrappers.each do |type, _wrapper|
+      Wrappers::Wrapper.wrappers.each do |type|
         wrappers[type] = rules.delete(type)
       end
 

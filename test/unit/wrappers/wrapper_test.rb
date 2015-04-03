@@ -7,7 +7,7 @@ module Allowing
   module Wrappers
     class WrapperTest < Minitest::Test
       def test_wrappers_returns_array_of_inherited_classes
-        assert_equal DummyWrapper, Wrapper.wrappers[:dummy]
+        assert Wrapper.wrappers.include?(:dummy)
       end
     end
   end

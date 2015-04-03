@@ -17,11 +17,11 @@ module Allowing
       end
 
       def self.inherited(base)
-        wrappers[base.type] = base
+        wrappers << base.type
       end
 
       def self.wrappers
-        @wrappers ||= {}
+        @wrappers ||= []
       end
 
       def self.class_name
