@@ -149,3 +149,12 @@ Checks wether the value is included in an array or range, or any other object re
 ```ruby
 validates :gender, inclusion: %w(Male Female)
 ```
+
+
+### Exclusion
+
+Checks whether the value is not included in an array or range, or any other object responding to `#include?`. This validation is the opposite of the inclusion validation.
+
+```ruby
+validates :age, exclusion: 0..17
+```
