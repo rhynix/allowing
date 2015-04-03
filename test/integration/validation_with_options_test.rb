@@ -2,9 +2,9 @@ require 'test_helper'
 
 Order = Struct.new(:paid_with_card, :card_number)
 class OrderValidator < Allowing::Validator
-  validates :card_number, presence: true, if: proc {
-    |order| order.paid_with_card
-  }
+  validates :card_number,
+            presence: true,
+            if: proc { |order| order.paid_with_card }
 end
 
 module Allowing

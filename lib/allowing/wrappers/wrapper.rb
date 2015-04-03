@@ -24,10 +24,8 @@ module Allowing
         @wrappers ||= {}
       end
 
-      private
-
       def self.class_name
-        class_name = to_s.split('::').last
+        to_s.split('::').last
       end
     end
   end

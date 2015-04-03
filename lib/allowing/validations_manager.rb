@@ -64,11 +64,11 @@ module Allowing
 
     def extract_wrappers!(rules)
       wrappers = {}
-      Wrappers::Wrapper.wrappers.each do |type, wrapper|
+      Wrappers::Wrapper.wrappers.each do |type, _wrapper|
         wrappers[type] = rules.delete(type)
       end
 
-      wrappers.reject { |type, rule| rule.nil? }
+      wrappers.reject { |_type, rule| rule.nil? }
     end
 
     def wrap_validations(validations, wrappers)
