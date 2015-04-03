@@ -2,11 +2,11 @@ require 'allowing/validations/attribute_validation'
 
 module Allowing
   module Validations
-    class FormatValidation < AttributeValidation
+    class InclusionValidation < AttributeValidation
       private
 
       def valid?(value)
-        !value.nil? && value.to_s =~ rule
+        rule.include?(value)
       end
     end
   end

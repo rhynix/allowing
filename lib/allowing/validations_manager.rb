@@ -57,11 +57,9 @@ module Allowing
       Validations::BlockValidation.new(&block)
     end
 
-    def guard_complete_validation(validations, &block)
-      unless validations.any? || block_given?
-        fail IncompleteValidationError,
-          'Either block or rules should be provided'
-      end
+    def guard_complete_validation(validations)
+      return if validations.any? || block_given?
+      fail IncompleteValidationError, 'Either block or rules should be provided'
     end
 
     def extract_wrappers!(rules)

@@ -8,8 +8,8 @@ module Allowing
       alias_method :validator, :rule
 
       def validate(subject, errors)
-        with_scope(attribute, subject, errors) do |subject, errors|
-          validator.new(subject).validate(subject, errors)
+        with_scope(attribute, subject, errors) do |attr_subject, scoped_errors|
+          validator.new(subject).validate(attr_subject, scoped_errors)
         end
       end
     end

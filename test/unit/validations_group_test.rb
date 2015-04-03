@@ -21,7 +21,7 @@ module Allowing
     end
 
     def test_group_has_validations_manager_for_group
-      assert @group.manager.kind_of?(ValidationsManager)
+      assert @group.manager.is_a?(ValidationsManager)
       assert_equal @group, @group.manager.group
     end
 
@@ -41,14 +41,14 @@ module Allowing
     end
 
     def test_validate_adds_the_correct_scope_on_error
-      errors = []
-      @mock_validation.expect :validate, true do |subject, errors|
+      all_errors = []
+      @mock_validation.expect :validate, true do |_subject, errors|
         errors << Error.new(:name, :nested_attribute)
       end
 
-      @group.validate(@subject, errors)
+      @group.validate(@subject, all_errors)
 
-      assert_equal [:attribute, :nested_attribute], errors.first.scope
+      assert_equal [:attribute, :nested_attribute], all_errors.first.scope
 
       @mock_validation.verify
     end
