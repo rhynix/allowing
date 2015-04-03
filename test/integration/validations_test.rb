@@ -1,9 +1,10 @@
 require 'test_helper'
 
-Person = Struct.new(:first_name, :last_name, :email, :bio)
+Person = Struct.new(:first_name, :last_name, :gender, :email, :bio)
 
 class PersonValidator < Allowing::Validator
   validates :first_name, :last_name, presence: true
+  validates :gender, inclusion: %w(M F)
   validates :email, format: /@/
   validates :bio, length: 0..500
 end
@@ -14,6 +15,7 @@ module IntegrationTests
       @subject = Person.new(
         'Gregory',
         'House',
+        'M',
         'greg@example.com',
         'A doctor at Princeton-Plainsboro Teaching Hospital'
       )
