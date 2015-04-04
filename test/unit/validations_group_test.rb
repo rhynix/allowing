@@ -20,7 +20,7 @@ module Allowing
       assert_equal :attribute, @group.attribute
     end
 
-    def test_group_has_validations_manager_for_group
+    def test_group_has_validations_manager
       assert @group.manager.is_a?(ValidationsManager)
       assert_equal @group, @group.manager.group
     end
@@ -31,6 +31,17 @@ module Allowing
       end
 
       assert_equal 1, group.validations.count
+    end
+
+    def test_validate_calls_validate_on_manager
+      mock_manager = Minitest::Mock.new
+      mock_manager.expect(:validates, true, [:attribute, { presence: true }])
+
+      @group.manager = mock_manager
+
+      @group.validates(:attribute, presence: true)
+
+      mock_manager.verify
     end
 
     def test_validate_calls_validate_on_validations

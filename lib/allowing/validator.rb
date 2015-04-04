@@ -5,7 +5,7 @@ module Allowing
     attr_reader :subject
 
     def self.validates(*attributes, **options, &block)
-      group.manager.validates(*attributes, **options, &block)
+      group.validates(*attributes, **options, &block)
     end
 
     def self.group

@@ -21,6 +21,14 @@ module Allowing
       @manager ||= ValidationsManager.new(self)
     end
 
+    def manager=(manager)
+      @manager = manager
+    end
+
+    def validates(*attributes, **options, &block)
+      manager.validates(*attributes, **options, &block)
+    end
+
     def validate(subject, errors)
       with_scope(attribute, subject, errors) do |attr_subject, scoped_errors|
         validations.each do |validation|
