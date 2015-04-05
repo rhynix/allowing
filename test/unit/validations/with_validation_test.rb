@@ -46,7 +46,8 @@ module Allowing
       end
 
       def test_validate_does_not_affect_other_errors_scope
-        error = Error.new(:old_error, value: :value)
+        error = Error.new(:old_error)
+
         @validation.validate(@subject, [error])
 
         assert_equal [], error.scope
