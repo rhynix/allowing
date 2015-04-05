@@ -19,13 +19,12 @@ module Allowing
         value = value(subject)
         return if valid?(value)
 
-        error = Error.new(
+        errors << Error.new(
           type,
           value: value,
           scope: attribute,
           validation: self
         )
-        errors << error
       end
 
       private
