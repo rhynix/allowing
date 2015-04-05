@@ -148,6 +148,8 @@ validates :registration_number, size: 10
 
 Checks wether the value is included in an array or range, or any other object responding to `#include?`.
 
+###### Example
+
 ```ruby
 validates :gender, inclusion: %w(Male Female)
 ```
@@ -156,6 +158,8 @@ validates :gender, inclusion: %w(Male Female)
 ### Exclusion
 
 Checks whether the value is not included in an array or range, or any other object responding to `#include?`. This validation is the opposite of the inclusion validation.
+
+###### Example
 
 ```ruby
 validates :age, exclusion: 0..17
