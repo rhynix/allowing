@@ -11,22 +11,6 @@ module Allowing
         @rule       = rule
         @validation = validation
       end
-
-      def self.type
-        class_name.underscore.split('_')[0...-1].join('_').to_sym
-      end
-
-      def self.inherited(base)
-        wrappers << base.type
-      end
-
-      def self.wrappers
-        @wrappers ||= []
-      end
-
-      def self.class_name
-        to_s.split('::').last
-      end
     end
   end
 end

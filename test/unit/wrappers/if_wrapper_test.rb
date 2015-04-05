@@ -25,10 +25,6 @@ module Allowing
 
         @mock_validation.verify
       end
-
-      def test_type_returns_correct_type
-        assert_equal :if, IfWrapper.type
-      end
     end
   end
 end

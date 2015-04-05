@@ -1,3 +1,4 @@
+require 'allowing/extensions/string'
 require 'allowing/validations/block_validation'
 require 'allowing/validation_builder'
 require 'allowing/validations_group'
@@ -9,6 +10,8 @@ module Allowing
   IncompleteValidationError = Class.new(StandardError)
 
   class ValidationsManager
+    using Extensions::String
+
     attr_reader :group
 
     def initialize(group)
@@ -22,8 +25,9 @@ module Allowing
     def validates(*attributes, **rules, &block)
       guard_complete_validation(rules, &block)
 
-      wrappers            = extract_wrappers!(rules)
-      validations         = create_validations(attributes, rules, &block)
+      (wrappers, validations) = extract_wrappers_and_validations(rules)
+
+      validations         = create_validations(attributes, validations, &block)
       wrapped_validations = wrap_validations(validations, wrappers)
 
       group.validations.push(*wrapped_validations)
@@ -62,13 +66,12 @@ module Allowing
       fail IncompleteValidationError, 'Either block or rules should be provided'
     end
 
-    def extract_wrappers!(rules)
-      wrappers = {}
-      Wrappers::Wrapper.wrappers.each do |type|
-        wrappers[type] = rules.delete(type)
-      end
+    def extract_wrappers_and_validations(rules)
+      rules.partition { |type, _rule| wrapper?(type) }.map(&:to_h)
+    end
 
-      wrappers.reject { |_type, rule| rule.nil? }
+    def wrapper?(type)
+      Wrappers.const_defined?("#{type}_wrapper".classify)
     end
 
     def wrap_validations(validations, wrappers)

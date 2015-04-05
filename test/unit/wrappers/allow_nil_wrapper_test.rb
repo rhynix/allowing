@@ -30,10 +30,6 @@ module Allowing
 
         @mock_validation.verify
       end
-
-      def test_type_returns_correct_type
-        assert_equal :allow_nil, AllowNilWrapper.type
-      end
     end
   end
 end
