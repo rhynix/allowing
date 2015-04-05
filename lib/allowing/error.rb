@@ -6,7 +6,7 @@ class Error
     @value      = value
     @validation = validation
 
-    unshift_scope(scope) if scope
+    unshift_scope(scope)
   end
 
   def scope
