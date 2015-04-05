@@ -130,15 +130,15 @@ Checks whether the attribute matches a regular expression. Calls `#to_s` on attr
 validates :email, format: /@/
 ```
 
-### Length
+### Size
 
-Checks whether the attribute has a certain length. The rule can be both an exact number and a range. Because the `#cover?` method is used for ranges, minimum and maximum values are possible using Ruby's `Float::INFINITY`. See example for a minimum length. Nil is considered invalid, otherwise the attribute must respond to `#length`.
+Checks whether the attribute has a certain size. The rule can be both an exact number and a range. Because the `#cover?` method is used for ranges, minimum and maximum values are possible using Ruby's `Float::INFINITY`. See example for a minimum size. Nil is considered invalid, otherwise the attribute must respond to `#size`.
 
 ###### Example
 
 ```ruby
-validates :bio, length: 100..Float::INFINITY
-validates :registration_number, length: 10
+validates :bio, size: 100..Float::INFINITY
+validates :registration_number, size: 10
 ```
 
 
