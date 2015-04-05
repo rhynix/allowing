@@ -24,7 +24,7 @@ user.valid? # => true
 user.name = nil
 
 user.valid? # => false
-user.errors # => [#<Allowing::Error @name=:presence, @scope=[:name], @validation=...>]
+user.errors # => [#<Allowing::Error @name=:presence, @scope=[:name], @value=nil, @validation=...>]
 ```
 
 The `errors` method should be called after validating the object using `valid?`.
@@ -51,7 +51,7 @@ user    = User.new('User', company)
 user_validator = UserValidator.new(user)
 
 user_validator.valid? # => false
-user_validator.errors # => [#<Allowing::Error @name=:presence, @scope=[:company, :vat_number], @validation=...>]
+user_validator.errors # => [#<Allowing::Error @name=:presence, @scope=[:company, :vat_number], @value=nil @validation=...>]
 ```
 
 This same validator could also be defined in a more reusable way:
@@ -67,7 +67,7 @@ class UserValidator < Allowing::Validator
 end
 ```
 
-The argument for `with` can be any class that responds to the `validate` method. This method should take one argument and all errors for the validation should be added to this variable. The class should also `initialize` with the object that should be validated.
+The argument for `with` can be any class that responds to the `validate` method. This method should take one argument and all errors for the validation will be added to this variable. The class should also `initialize` with the object that should be validated. For example:
 
 ```ruby
 class EmailValidator
@@ -76,7 +76,7 @@ class EmailValidator
   end 
 
   def validate(errors)
-    errors << Error.new(:invalid_email) unless @email =~ /@/
+    errors << Error.new(:invalid_email, value: @email) unless @email =~ /@/
   end
 end
 
@@ -93,7 +93,9 @@ Custom validations can also be defined inline using a block validation:
 ```ruby
 class CarValidator < Allowing::Validator
   validates do |subject, errors|
-    errors << Error.new(:incorrect_number_of_wheels) unless subject.wheels == 4
+    unless subject.wheels == 4
+      errors << Error.new(:incorrect_number, value: subject.wheels, scope: :wheels)
+    end
   end
 end
 
@@ -103,7 +105,7 @@ car = Car.new(3)
 car_validator = CarValidator.new(car)
 
 car_validator.valid? # => false
-car_validator.errors # => [#<Allowing::Error @name=:incorrect_number_of_wheels, @scope=[], @validation=...>]
+car_validator.errors # => [#<Allowing::Error @name=:incorrect_number, @scope=[:wheels], @value=3, @validation=...>]
 ```
 
 ## Validations
@@ -130,21 +132,23 @@ Checks whether the attribute matches a regular expression. Calls `#to_s` on attr
 validates :email, format: /@/
 ```
 
-### Length
+### Size
 
-Checks whether the attribute has a certain length. The rule can be both an exact number and a range. Because the `#cover?` method is used for ranges, minimum and maximum values are possible using Ruby's `Float::INFINITY`. See example for a minimum length. Nil is considered invalid, otherwise the attribute must respond to `#length`.
+Checks whether the attribute has a certain size. The rule can be both an exact number and a range. Because the `#cover?` method is used for ranges, minimum and maximum values are possible using Ruby's `Float::INFINITY`. See example for a minimum size. Nil is considered invalid, otherwise the attribute must respond to `#size`.
 
 ###### Example
 
 ```ruby
-validates :bio, length: 100..Float::INFINITY
-validates :registration_number, length: 10
+validates :bio, size: 100..Float::INFINITY
+validates :registration_number, size: 10
 ```
 
 
 ### Inclusion
 
 Checks wether the value is included in an array or range, or any other object responding to `#include?`.
+
+###### Example
 
 ```ruby
 validates :gender, inclusion: %w(Male Female)
@@ -154,6 +158,8 @@ validates :gender, inclusion: %w(Male Female)
 ### Exclusion
 
 Checks whether the value is not included in an array or range, or any other object responding to `#include?`. This validation is the opposite of the inclusion validation.
+
+###### Example
 
 ```ruby
 validates :age, exclusion: 0..17

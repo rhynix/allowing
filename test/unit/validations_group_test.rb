@@ -20,7 +20,7 @@ module Allowing
       assert_equal :attribute, @group.attribute
     end
 
-    def test_group_has_validations_manager_for_group
+    def test_group_has_validations_manager
       assert @group.manager.is_a?(ValidationsManager)
       assert_equal @group, @group.manager.group
     end
@@ -33,6 +33,17 @@ module Allowing
       assert_equal 1, group.validations.count
     end
 
+    def test_validate_calls_validate_on_manager
+      mock_manager = Minitest::Mock.new
+      mock_manager.expect(:validates, true, [:attribute, { presence: true }])
+
+      @group.manager = mock_manager
+
+      @group.validates(:attribute, presence: true)
+
+      mock_manager.verify
+    end
+
     def test_validate_calls_validate_on_validations
       @mock_validation.expect :validate, true, [:value, []]
       @group.validate(@subject, [])
@@ -43,7 +54,7 @@ module Allowing
     def test_validate_adds_the_correct_scope_on_error
       all_errors = []
       @mock_validation.expect :validate, true do |_subject, errors|
-        errors << Error.new(:name, :nested_attribute)
+        errors << Error.new(:name, scope: :nested_attribute)
       end
 
       @group.validate(@subject, all_errors)

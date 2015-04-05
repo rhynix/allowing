@@ -12,15 +12,12 @@ module Allowing
       TestValidator.group = @mock_group
     end
 
-    def test_validates_calls_validates_on_group_manager
-      @mock_manager = Minitest::Mock.new
-
-      @mock_manager.expect :validates, true, [:attribute, presence: true]
-      @mock_group.expect :manager, @mock_manager
+    def test_validates_calls_validates_on_group
+      @mock_group.expect :validates, true, [:attribute, { presence: true }]
 
       TestValidator.validates(:attribute, presence: true)
 
-      @mock_manager.verify
+      @mock_group.verify
     end
 
     def test_errors_is_empty_if_not_validated
@@ -36,15 +33,18 @@ module Allowing
 
     def test_valid_returns_true_if_there_are_no_errors
       @mock_group.expect :validate, true, [@subject, []]
+
       assert @validator.valid?
+      @mock_group.verify
     end
 
     def test_valid_returns_false_if_validate_adds_errors
       @mock_group.expect :validate, true do |_subject, errors|
-        errors << Error.new(:error, nil)
+        errors << Error.new(:error)
       end
 
       refute @validator.valid?
+      @mock_group.verify
     end
   end
 end

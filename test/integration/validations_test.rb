@@ -13,7 +13,7 @@ class PersonValidator < Allowing::Validator
   validates :first_name, :last_name, presence: true
   validates :gender, inclusion: %w(M F)
   validates :email, format: /@/
-  validates :bio, length: 0..500
+  validates :bio, size: 0..500
   validates :age, exclusion: 0..17
 end
 

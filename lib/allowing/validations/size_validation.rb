@@ -2,18 +2,18 @@ require 'allowing/validations/attribute_validation'
 
 module Allowing
   module Validations
-    class LengthValidation < AttributeValidation
+    class SizeValidation < AttributeValidation
       private
 
       def valid?(value)
-        !value.nil? && correct_length?(value.length)
+        !value.nil? && correct_size?(value.size)
       end
 
-      def correct_length?(length)
+      def correct_size?(size)
         if rule.is_a?(Range)
-          rule.cover?(length)
+          rule.cover?(size)
         else
-          rule == length
+          rule == size
         end
       end
     end
