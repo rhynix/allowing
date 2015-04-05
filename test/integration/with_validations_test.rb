@@ -36,15 +36,29 @@ module IntegrationTests
     end
 
     def test_valid_returns_false_for_invalid_email
-      @user.email = 'gregexample.com'
+      @user.email = 'greg'
 
       refute @validator.valid?
+    end
+
+    def test_valid_adds_correctly_scoped_error_for_invalid_email
+      @user.email = 'greg'
+
+      @validator.valid?
+      assert_equal [:email], @validator.errors.first.scope
     end
 
     def test_valid_returns_false_for_invalid_address
       @address.street = nil
 
       refute @validator.valid?
+    end
+
+    def test_valid_adds_correctly_scoped_error_for_invalid_address
+      @address.street = nil
+
+      @validator.valid?
+      assert_equal [:address, :street], @validator.errors.first.scope
     end
 
     def test_error_has_correct_name_and_scope_for_with_validation
