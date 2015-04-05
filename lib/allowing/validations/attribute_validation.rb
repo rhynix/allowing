@@ -16,7 +16,15 @@ module Allowing
       end
 
       def validate(subject, errors)
-        errors << Error.new(type, attribute, self) unless valid?(value(subject))
+        value = value(subject)
+        return if valid?(value)
+
+        errors << Error.new(
+          type,
+          value: value,
+          scope: attribute,
+          validation: self
+        )
       end
 
       private

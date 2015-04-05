@@ -54,7 +54,7 @@ module Allowing
     def test_validate_adds_the_correct_scope_on_error
       all_errors = []
       @mock_validation.expect :validate, true do |_subject, errors|
-        errors << Error.new(:name, :nested_attribute)
+        errors << Error.new(:name, scope: :nested_attribute)
       end
 
       @group.validate(@subject, all_errors)

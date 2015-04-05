@@ -40,7 +40,7 @@ module Allowing
 
     def test_valid_returns_false_if_validate_adds_errors
       @mock_group.expect :validate, true do |_subject, errors|
-        errors << Error.new(:error, nil)
+        errors << Error.new(:error)
       end
 
       refute @validator.valid?

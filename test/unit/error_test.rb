@@ -9,7 +9,8 @@ module Allowing
       )
 
       @name       = :error_name
-      @error      = Error.new(@name, nil, @validation)
+      @value      = :value
+      @error      = Error.new(@name, value: @value, validation: @validation)
     end
 
     def test_sets_the_validation
@@ -20,8 +21,12 @@ module Allowing
       assert_equal @name, @error.name
     end
 
+    def test_sets_the_value
+      assert_equal @value, @error.value
+    end
+
     def test_allows_initial_scope_via_initialize
-      error = Error.new(@name, :initial_scope, @validation)
+      error = Error.new(@name, scope: :initial_scope)
       assert_equal [:initial_scope], error.scope
     end
 
