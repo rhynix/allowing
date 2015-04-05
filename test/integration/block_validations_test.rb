@@ -7,13 +7,23 @@ CAR_MANUFACTURERS = %w(Volkswagen Ford Fiat)
 
 class CarValidator < Allowing::Validator
   validates do |car, errors|
-    errors << Error.new(:incorrect_number_of_wheels) if car.wheels != 4
+    if car.wheels != 4
+      errors << Error.new(
+        :incorrect_number,
+        value: car.wheels,
+        scope: :wheels
+      )
+    end
   end
 
   validates :manufacturer do
     validates do |manufacturer, errors|
       unless CAR_MANUFACTURERS.include? manufacturer.name
-        errors << Error.new(:no_car_manufacturer)
+        errors << Error.new(
+          :no_car_manufacturer,
+          value: manufacturer.name,
+          scope: :name
+        )
       end
     end
   end
@@ -38,12 +48,16 @@ module IntegrationTests
       refute @validator.valid?
     end
 
-    def test_error_has_the_correct_name_and_scope_for_invalid_block_validation
+    def test_error_is_correct_for_invalid_block_validation
       @car.wheels = 3
 
       @validator.valid?
-      assert_equal :incorrect_number_of_wheels, @validator.errors.first.name
-      assert_equal [], @validator.errors.first.scope
+      error = @validator.errors.first
+
+      assert_equal :incorrect_number, error.name
+      assert_equal nil,               error.validation
+      assert_equal [:wheels],         error.scope
+      assert_equal 3,                 error.value
     end
 
     def test_valid_returns_false_for_invalid_nested_block_validation
@@ -56,8 +70,12 @@ module IntegrationTests
       @manufacturer.name = 'Apple'
 
       @validator.valid?
-      assert_equal :no_car_manufacturer, @validator.errors.first.name
-      assert_equal [:manufacturer], @validator.errors.first.scope
+      error = @validator.errors.first
+
+      assert_equal :no_car_manufacturer,   error.name
+      assert_equal nil,                    error.validation
+      assert_equal [:manufacturer, :name], error.scope
+      assert_equal 'Apple',                error.value
     end
   end
 end

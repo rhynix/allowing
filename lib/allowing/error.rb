@@ -1,10 +1,12 @@
 class Error
-  attr_reader :validation, :name
+  attr_reader :validation, :name, :value
 
-  def initialize(name, initial_scope = nil, validation = nil)
+  def initialize(name, value: nil, scope: nil, validation: nil)
+    @name       = name
+    @value      = value
     @validation = validation
-    @name = name
-    unshift_scope(initial_scope) if initial_scope
+
+    unshift_scope(scope) if scope
   end
 
   def scope

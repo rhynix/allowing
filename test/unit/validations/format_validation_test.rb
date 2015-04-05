@@ -53,6 +53,7 @@ module Allowing
         assert_equal :format,     error.name
         assert_equal @validation, error.validation
         assert_equal [:name],     error.scope
+        assert_equal nil,         error.value
       end
     end
   end

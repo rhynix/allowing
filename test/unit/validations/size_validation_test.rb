@@ -51,6 +51,18 @@ module Allowing
 
         refute @errors.empty?
       end
+
+      def test_validate_adds_correct_error
+        @object.name = nil
+        @validation.validate(@object, @errors)
+
+        error = @errors.first
+
+        assert_equal :size,       error.name
+        assert_equal @validation, error.validation
+        assert_equal [:name],     error.scope
+        assert_equal nil,         error.value
+      end
     end
   end
 end

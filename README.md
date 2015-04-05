@@ -24,7 +24,7 @@ user.valid? # => true
 user.name = nil
 
 user.valid? # => false
-user.errors # => [#<Allowing::Error @name=:presence, @scope=[:name], @validation=...>]
+user.errors # => [#<Allowing::Error @name=:presence, @scope=[:name], @value=nil, @validation=...>]
 ```
 
 The `errors` method should be called after validating the object using `valid?`.
@@ -51,7 +51,7 @@ user    = User.new('User', company)
 user_validator = UserValidator.new(user)
 
 user_validator.valid? # => false
-user_validator.errors # => [#<Allowing::Error @name=:presence, @scope=[:company, :vat_number], @validation=...>]
+user_validator.errors # => [#<Allowing::Error @name=:presence, @scope=[:company, :vat_number], @value=nil @validation=...>]
 ```
 
 This same validator could also be defined in a more reusable way:
@@ -76,7 +76,7 @@ class EmailValidator
   end 
 
   def validate(errors)
-    errors << Error.new(:invalid_email) unless @email =~ /@/
+    errors << Error.new(:invalid_email, value: @email) unless @email =~ /@/
   end
 end
 
@@ -93,7 +93,9 @@ Custom validations can also be defined inline using a block validation:
 ```ruby
 class CarValidator < Allowing::Validator
   validates do |subject, errors|
-    errors << Error.new(:incorrect_number_of_wheels) unless subject.wheels == 4
+    unless subject.wheels == 4
+      errors << Error.new(:incorrect_number, value: subject.wheels, scope: :wheels)
+    end
   end
 end
 
@@ -103,7 +105,7 @@ car = Car.new(3)
 car_validator = CarValidator.new(car)
 
 car_validator.valid? # => false
-car_validator.errors # => [#<Allowing::Error @name=:incorrect_number_of_wheels, @scope=[], @validation=...>]
+car_validator.errors # => [#<Allowing::Error @name=:incorrect_number, @scope=[:wheels], @value=3, @validation=...>]
 ```
 
 ## Validations

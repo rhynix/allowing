@@ -9,7 +9,9 @@ class EmailValidator
   end
 
   def validate(errors)
-    errors << Error.new(:incorrect_email) unless @subject =~ /@/
+    return if @subject =~ /@/
+
+    errors << Error.new(:incorrect_email, value: @subject)
   end
 end
 
@@ -61,12 +63,15 @@ module IntegrationTests
       assert_equal [:address, :street], @validator.errors.first.scope
     end
 
-    def test_error_has_correct_name_and_scope_for_with_validation
-      @user.email = 'gregexample.com'
+    def test_error_is_correct_for_with_validation
+      @user.email = 'greg'
 
       @validator.valid?
-      assert_equal :incorrect_email, @validator.errors.first.name
-      assert_equal [:email], @validator.errors.first.scope
+      error = @validator.errors.first
+
+      assert_equal :incorrect_email, error.name
+      assert_equal [:email],         error.scope
+      assert_equal 'greg',           error.value
     end
   end
 end
