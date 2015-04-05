@@ -67,7 +67,7 @@ class UserValidator < Allowing::Validator
 end
 ```
 
-The argument for `with` can be any class that responds to the `validate` method. This method should take one argument and all errors for the validation should be added to this variable. The class should also `initialize` with the object that should be validated.
+The argument for `with` can be any class that responds to the `validate` method. This method should take one argument and all errors for the validation will be added to this variable. The class should also `initialize` with the object that should be validated. For example:
 
 ```ruby
 class EmailValidator

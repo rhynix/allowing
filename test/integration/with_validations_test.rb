@@ -1,21 +1,33 @@
 require 'test_helper'
 
-User = Struct.new(:name, :email)
+Address = Struct.new(:street, :number)
+User    = Struct.new(:name, :email, :address)
 
-class EmailValidator < Allowing::Validator
-  def validate(subject, errors)
-    errors << Error.new(:incorrect_email) unless subject =~ /@/
+class EmailValidator
+  def initialize(subject)
+    @subject = subject
+  end
+
+  def validate(errors)
+    errors << Error.new(:incorrect_email) unless @subject =~ /@/
   end
 end
 
+class AddressValidator < Allowing::Validator
+  validates :street, presence: true
+  validates :number, presence: true
+end
+
 class UserValidator < Allowing::Validator
-  validates :email, with: EmailValidator
+  validates :email,   with: EmailValidator
+  validates :address, with: AddressValidator
 end
 
 module IntegrationTests
   class WithValidationsTest < Minitest::Test
     def setup
-      @user      = User.new('Gregory House', 'greg@example.com')
+      @address   = Address.new('Baker Street', '221B')
+      @user      = User.new('Gregory House', 'greg@example.com', @address)
       @validator = UserValidator.new(@user)
     end
 
@@ -23,8 +35,14 @@ module IntegrationTests
       assert @validator.valid?
     end
 
-    def test_valid_returns_false_for_invalid_subject
+    def test_valid_returns_false_for_invalid_email
       @user.email = 'gregexample.com'
+
+      refute @validator.valid?
+    end
+
+    def test_valid_returns_false_for_invalid_address
+      @address.street = nil
 
       refute @validator.valid?
     end

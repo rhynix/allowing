@@ -9,7 +9,7 @@ module Allowing
 
       def validate(subject, errors)
         with_scope(attribute, subject, errors) do |attr_subject, scoped_errors|
-          validator.new(subject).validate(attr_subject, scoped_errors)
+          validator.new(attr_subject).validate(scoped_errors)
         end
       end
     end
