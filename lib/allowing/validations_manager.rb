@@ -50,11 +50,11 @@ module Allowing
     end
 
     def attribute_validations(attributes, rules)
-      attributes.map do |attribute|
+      attributes.flat_map do |attribute|
         rules.map do |type, rule|
           ValidationBuilder.new(type, rule, attribute).build
         end
-      end.flatten
+      end
     end
 
     def block_validation(&block)
