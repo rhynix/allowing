@@ -46,7 +46,7 @@ module Allowing
       assert group.is_a?(ValidationsGroup)
     end
 
-    def test_build_retursn_group_with_correct_attribute_for_nested_validations
+    def test_build_returns_group_with_correct_attribute_for_nested_validations
       builder = ValidationsBuilder.new([:attribute], {}) do
         validates :nested_attribute, presence: true
       end
