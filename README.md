@@ -167,7 +167,7 @@ validates :age, exclusion: 0..17
 
 ## Options
 
-Validations can also take options on when to validate. Multiple options can be used on a single validation. At this moment, the following options are available:
+Validations can also take options about when to validate. Multiple options can be used on a single validation. At this moment, the following options are available:
 
 ### If
 
@@ -191,7 +191,7 @@ validates :name, unless: proc { |user| user.admin? }
 
 ### Allow nil
 
-Only perform the validation if the attribute is not equal to nil. If the attribute is nil, no validation is performed and thus the attribute will be considered valid. This option can not be used on block validations, because this validation is not defined on an attribute.
+Only perform the validation if the attribute is not equal to nil. If the attribute is nil, no validation is performed and thus the attribute will be considered valid. This option can not be used on block validations, because block validations are not defined on an attribute.
 
 ###### Example
 
