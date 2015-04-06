@@ -1,29 +1,39 @@
 require 'test_helper'
+require 'unit/wrappers/wrapper_test'
 
 module Allowing
   module Wrappers
     class UnlessWrapperTest < Minitest::Test
+      include SharedWrapperTest
+
       def setup
-        condition = proc { |subject| subject.validate? }
-        @mock_validation = Minitest::Mock.new
-        @wrapper = UnlessWrapper.new(condition, @mock_validation)
-      end
+        @rule       = proc { |subject| subject.dont_validate? }
+        @validation = :validation
 
-      def test_does_not_call_validate_on_validation_if_rule_returns_true
-        subject = OpenStruct.new(validate?: true)
-
-        @wrapper.validate(subject, [])
-
-        @mock_validation.verify
+        @wrapper = UnlessWrapper.new(@rule, @validation)
       end
 
       def test_calls_validate_on_validation_if_rule_returns_false
-        subject = OpenStruct.new(validate?: false)
-        @mock_validation.expect :validate, true, [subject, []]
+        subject = OpenStruct.new(dont_validate?: false)
 
-        @wrapper.validate(subject, [])
+        mock_validation = Minitest::Mock.new
+        mock_validation.expect :validate, true, [subject, []]
 
-        @mock_validation.verify
+        wrapper = UnlessWrapper.new(@rule, mock_validation)
+        wrapper.validate(subject, [])
+
+        mock_validation.verify
+      end
+
+      def test_does_not_call_validate_on_validation_if_rule_returns_false
+        subject = OpenStruct.new(dont_validate?: true)
+
+        mock_validation = Minitest::Mock.new
+
+        wrapper = UnlessWrapper.new(@rule, mock_validation)
+        wrapper.validate(subject, [])
+
+        mock_validation.verify
       end
     end
   end
