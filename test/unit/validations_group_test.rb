@@ -1,28 +1,16 @@
 require 'test_helper'
 
-class ValidationsBuilderDouble
-  def initialize(attributes, rules, &_block)
-    @attribute = attributes.first
-    @rule      = rules.values.first
-  end
-
-  def build
-    [Allowing::Validations::PresenceValidation.new(@rule, @attribute)]
-  end
-end
-
 module Allowing
   class ValidationsGroupTest < Minitest::Test
     def setup
-      @mock_validation = Minitest::Mock.new
       @group           = ValidationsGroup.new(:attribute)
       @subject         = OpenStruct.new(attribute: :value)
 
-      @group.builder_class = ValidationsBuilderDouble
+      @group.builder_class = Doubles::ValidationsBuilder
     end
 
     def test_validations_returns_empty_array_by_default
-      assert_equal [], ValidationsGroup.new.validations
+      assert_equal [], @group.validations
     end
 
     def test_sets_the_attribute
@@ -55,39 +43,31 @@ module Allowing
     end
 
     def test_validate_calls_validate_on_validations
-      @group.validations << @mock_validation
+      mock_validation = Minitest::Mock.new
+      mock_validation.expect :validate, true, [:value, []]
 
-      @mock_validation.expect :validate, true, [:value, []]
+      @group.validations << mock_validation
       @group.validate(@subject, [])
 
-      @mock_validation.verify
+      mock_validation.verify
     end
 
     def test_validate_adds_the_correct_scope_on_error
-      @group.validations << @mock_validation
+      error  = Error.new(:name, scope: :nested_attribute)
+      errors = []
 
-      all_errors = []
-      @mock_validation.expect :validate, true do |_subject, errors|
-        errors << Error.new(:name, scope: :nested_attribute)
-      end
+      @group.validations << Doubles::ErrorValidation.new(error)
+      @group.validate(@subject, errors)
 
-      @group.validate(@subject, all_errors)
-
-      assert_equal [:attribute, :nested_attribute], all_errors.first.scope
-
-      @mock_validation.verify
+      assert_equal [:attribute, :nested_attribute], errors.first.scope
     end
 
     def test_validate_does_not_affect_scope_of_irrelevant_errors
-      @group.validations << @mock_validation
-
-      error = Error.new(:error)
-      errors = [error]
-
-      @mock_validation.expect :validate, true, [:value, []]
+      error   = Error.new(:error, scope: :initial)
+      errors  = [error]
 
       @group.validate(@subject, errors)
-      assert_equal [], error.scope
+      assert_equal [:initial], error.scope
     end
   end
 end
