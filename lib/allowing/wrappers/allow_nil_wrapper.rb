@@ -1,12 +1,8 @@
-require 'allowing/wrappers/wrapper'
+require 'allowing/wrappers/conditional_wrapper'
 
 module Allowing
   module Wrappers
-    class AllowNilWrapper < Wrapper
-      def validate(subject, errors)
-        validation.validate(subject, errors) if validate?(subject)
-      end
-
+    class AllowNilWrapper < ConditionalWrapper
       private
 
       def validate?(subject)
