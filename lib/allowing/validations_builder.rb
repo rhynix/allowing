@@ -1,5 +1,5 @@
 require 'allowing/extensions/string'
-
+require 'allowing/wrapping_builder'
 require 'allowing/attribute_validation_builder'
 require 'allowing/validations/block_validation'
 
