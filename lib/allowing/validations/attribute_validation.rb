@@ -1,5 +1,7 @@
 require 'allowing/extensions/string'
 
+require 'allowing/error'
+
 module Allowing
   module Validations
     class AttributeValidation

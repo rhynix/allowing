@@ -1,4 +1,4 @@
-require 'allowing/validations_manager'
+require 'allowing/validations_group'
 
 module Allowing
   class Validator
