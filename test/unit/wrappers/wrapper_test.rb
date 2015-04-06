@@ -26,6 +26,12 @@ module Allowing
 
         @wrapper = Wrapper.new(@rule, @validation, @attribute)
       end
+
+      def test_validate_raises_error
+        assert_raises(NotImplementedError) do
+          @wrapper.validate(:subject, [])
+        end
+      end
     end
   end
 end

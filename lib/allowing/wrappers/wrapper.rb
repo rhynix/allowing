@@ -8,6 +8,10 @@ module Allowing
         @validation = validation
         @attribute  = attribute
       end
+
+      def validate(subject, errors)
+        fail NotImplementedError, 'Should be implemented by subclass'
+      end
     end
   end
 end
