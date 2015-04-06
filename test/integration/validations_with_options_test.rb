@@ -16,16 +16,16 @@ module Allowing
         @validator = OrderValidator.new(@order)
       end
 
-      def test_validation_is_not_validated_if_trusted_is_true
+      def test_validation_with_unless_is_not_validated_if_condition_is_true
         assert @validator.valid?
       end
 
-      def test_validation_is_validated_if_trusted_is_false
+      def test_validation_with_unless_is_validated_if_condition_is_false
         @order.trusted = false
         refute @validator.valid?
       end
 
-      def test_validationis_not_validated_if_card_number_is_nil
+      def test_validation_with_allow_nil_allows_nil_as_value
         @order.trusted     = false
         @order.card_number = nil
 
