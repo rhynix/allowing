@@ -9,8 +9,9 @@ module Allowing
       def setup
         @rule       = proc { |subject| subject.validate? }
         @validation = :validation
+        @attribute  = :attribute
 
-        @wrapper = IfWrapper.new(@rule, @validation)
+        @wrapper = IfWrapper.new(@rule, @validation, @attribute)
       end
 
       def test_calls_validate_on_validation_if_rule_returns_true

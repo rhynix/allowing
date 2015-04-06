@@ -94,6 +94,13 @@ module Allowing
       assert wrapper.validation.is_a?(Validations::PresenceValidation)
     end
 
+    def test_build_wrapper_has_correct_attribute
+      builder = ValidationsBuilder.new([:attribute], presence: true, if: :cond)
+
+      wrapper = builder.build.first
+      assert_equal :attribute, wrapper.attribute
+    end
+
     def test_raises_error_on_incomplete_validation
       assert_raises(ArgumentError) do
         ValidationsBuilder.new([], {}).build

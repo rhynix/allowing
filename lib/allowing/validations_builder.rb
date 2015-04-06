@@ -15,7 +15,7 @@ module Allowing
 
     def build
       bare_validations.map do |validation|
-        WrappingBuilder.new(validation, wrappers).build
+        WrappingBuilder.new(validation, wrappers, validation.attribute).build
       end
     end
 

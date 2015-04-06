@@ -9,40 +9,41 @@ module Allowing
       def setup
         @rule       = true
         @validation = :validation
+        @attribute  = :attribute
 
-        @wrapper = AllowNilWrapper.new(@rule, @validation)
+        @wrapper = AllowNilWrapper.new(@rule, @validation, @attribute)
       end
 
-      def test_calls_validate_on_validation_if_subject_is_not_nil
-        subject = Object.new
+      def test_calls_validate_on_validation_if_attribute_is_not_nil
+        subject = OpenStruct.new(attribute: 'value')
 
         mock_validation = Minitest::Mock.new
         mock_validation.expect :validate, true, [subject, []]
 
-        wrapper = AllowNilWrapper.new(@rule, mock_validation)
+        wrapper = AllowNilWrapper.new(@rule, mock_validation, @attribute)
         wrapper.validate(subject, [])
 
         mock_validation.verify
       end
 
-      def test_does_not_call_validate_on_validation_if_subject_is_nil
-        subject = nil
+      def test_does_not_call_validate_on_validation_if_attribute_is_nil
+        subject = OpenStruct.new(attribute: nil)
 
         mock_validation = Minitest::Mock.new
 
-        wrapper = AllowNilWrapper.new(@rule, mock_validation)
+        wrapper = AllowNilWrapper.new(@rule, mock_validation, @attribute)
         wrapper.validate(subject, [])
 
         mock_validation.verify
       end
 
-      def test_calls_validate_on_validation_if_subject_is_nil_and_rule_is_false
-        subject = nil
+      def test_calls_validate_on_validation_if_attribute_nil_and_rule_false
+        subject = OpenStruct.new(attribute: nil)
 
         mock_validation = Minitest::Mock.new
-        mock_validation.expect :validate, true, [nil, []]
+        mock_validation.expect :validate, true, [subject, []]
 
-        wrapper = AllowNilWrapper.new(false, mock_validation)
+        wrapper = AllowNilWrapper.new(false, mock_validation, @attribute)
         wrapper.validate(subject, [])
 
         mock_validation.verify

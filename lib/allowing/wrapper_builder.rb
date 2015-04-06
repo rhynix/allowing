@@ -8,14 +8,15 @@ module Allowing
 
     WRAPPER_CLASS_FORMAT = '%{type}Wrapper'
 
-    def initialize(type, rule, validation)
+    def initialize(type, rule, attribute, validation)
       @type       = type
       @rule       = rule
+      @attribute  = attribute
       @validation = validation
     end
 
     def build
-      wrapper_class.new(@rule, @validation)
+      wrapper_class.new(@rule, @validation, @attribute)
     end
 
     private

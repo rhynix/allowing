@@ -5,11 +5,12 @@ module Allowing
     class Wrapper
       using Extensions::String
 
-      attr_reader :rule, :validation
+      attr_reader :rule, :validation, :attribute
 
-      def initialize(rule, validation)
+      def initialize(rule, validation, attribute = nil)
         @rule       = rule
         @validation = validation
+        @attribute  = attribute
       end
     end
   end

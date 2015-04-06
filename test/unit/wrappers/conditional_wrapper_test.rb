@@ -9,8 +9,9 @@ module Allowing
       def setup
         @rule       = true
         @validation = :validation
+        @attribute  = :attribute
 
-        @wrapper = ConditionalWrapper.new(@rule, @validation)
+        @wrapper = ConditionalWrapper.new(@rule, @validation, @attribute)
       end
 
       def test_validate_raises_error

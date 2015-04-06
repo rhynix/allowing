@@ -10,6 +10,10 @@ module Allowing
       def validate(subject, errors)
         @block.call(subject, errors)
       end
+
+      def attribute
+        nil
+      end
     end
   end
 end

@@ -10,6 +10,10 @@ module Allowing
       def test_sets_the_validation
         assert_equal @validation, @wrapper.validation
       end
+
+      def test_sets_the_attribute
+        assert_equal @attribute, @wrapper.attribute
+      end
     end
 
     class WrapperTest < Minitest::Test
@@ -18,8 +22,9 @@ module Allowing
       def setup
         @rule       = true
         @validation = :validation
+        @attribute  = :attribute
 
-        @wrapper = Wrapper.new(@rule, @validation)
+        @wrapper = Wrapper.new(@rule, @validation, @attribute)
       end
     end
   end
