@@ -1,8 +1,8 @@
-require 'allowing/validations/attribute_validation'
+require 'allowing/validations/validation'
 
 module Allowing
   module Validations
-    class BlockValidation
+    class BlockValidation < Validation
       def initialize(&block)
         @block = block
       end

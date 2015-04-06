@@ -1,4 +1,5 @@
 require 'allowing/helpers/scope_helpers'
+require 'allowing/validations_builder'
 
 module Allowing
   class ValidationsGroup
@@ -6,27 +7,27 @@ module Allowing
 
     attr_reader :attribute
 
-    def initialize(attribute = nil, validations = nil, &block)
-      @validations = validations
-      @attribute   = attribute
+    def initialize(attribute = nil, &block)
+      @attribute = attribute
 
-      manager.define_validations(&block) if block_given?
+      instance_eval(&block) if block_given?
     end
 
     def validations
       @validations ||= []
     end
 
-    def manager
-      @manager ||= ValidationsManager.new(self)
+    def validates(*attributes, **rules, &block)
+      built_validations = builder_class.new(attributes, rules, &block).build
+      validations.push(*built_validations)
     end
 
-    def manager=(manager)
-      @manager = manager
+    def builder_class
+      @builder_class ||= ValidationsBuilder
     end
 
-    def validates(*attributes, **options, &block)
-      manager.validates(*attributes, **options, &block)
+    def builder_class=(builder_class)
+      @builder_class = builder_class
     end
 
     def validate(subject, errors)

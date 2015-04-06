@@ -6,6 +6,7 @@ if ENV['COVERAGE']
 end
 
 require_relative '../lib/allowing'
+require_relative 'support/doubles'
 
 require 'minitest'
 require 'minitest/autorun'

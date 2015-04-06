@@ -4,7 +4,7 @@ require 'allowing/validations'
 module Allowing
   UnknownValidationError = Class.new(StandardError)
 
-  class ValidationBuilder
+  class AttributeValidationBuilder
     using Extensions::String
 
     VALIDATION_CLASS_FORMAT = '%{type}Validation'

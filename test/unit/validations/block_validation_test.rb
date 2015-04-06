@@ -21,6 +21,10 @@ module Allowing
 
         assert_equal :subject, @subject
       end
+
+      def test_attribute_returns_nil
+        assert @validation.attribute.nil?
+      end
     end
   end
 end

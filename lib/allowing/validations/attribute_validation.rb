@@ -1,8 +1,10 @@
 require 'allowing/extensions/string'
+require 'allowing/validations/validation'
+require 'allowing/error'
 
 module Allowing
   module Validations
-    class AttributeValidation
+    class AttributeValidation < Validation
       using Extensions::String
       attr_reader :rule, :attribute
 
