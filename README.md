@@ -164,3 +164,37 @@ Checks whether the value is not included in an array or range, or any other obje
 ```ruby
 validates :age, exclusion: 0..17
 ```
+
+## Options
+
+Validations can also take options on when to validate. Multiple options can be used on a single validation. At this moment, the following options are available:
+
+### If
+
+Validates only if the condition returns true. The supplied option can be a proc or lambda, or any other object that responds to `#call(subject)`.
+
+###### Example
+
+```ruby
+validates :name, if: proc { |user| user.validate_name? }
+```
+
+### Unless
+
+The opposite of the if-option, only validates if the condition returns false.
+
+###### Example
+
+```ruby
+validates :name, unless: proc { |user| user.admin? }
+```
+
+### Allow nil
+
+Only perform the validation if the attribute is not equal to nil. If the attribute is nil, no validation is performed and thus the attribute will be considered valid. This option can not be used on block validations, because this validation is not defined on an attribute.
+
+###### Example
+
+```ruby
+validates :email, format: /@/, allow_nil: true
+```
