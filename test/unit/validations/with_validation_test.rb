@@ -16,8 +16,6 @@ module Allowing
       include SharedAttributeValidationTest
 
       def setup
-        @mock_validator = Minitest::Mock.new
-
         @rule         = AddErrorValidator
         @attribute    = :attribute
         @type         = :with
