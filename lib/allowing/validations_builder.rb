@@ -64,7 +64,7 @@ module Allowing
     end
 
     def wrapper?(type)
-      Wrappers.const_defined?("#{type}_wrapper".classify)
+      Wrappers.exists?(type)
     end
 
     def attribute_validations?

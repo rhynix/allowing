@@ -6,8 +6,6 @@ module Allowing
   class WrapperBuilder
     using Extensions::String
 
-    WRAPPER_CLASS_FORMAT = '%{type}Wrapper'
-
     def initialize(type, rule, attribute, validation)
       @type       = type
       @rule       = rule
@@ -22,14 +20,14 @@ module Allowing
     private
 
     def wrapper_class
-      Wrappers.const_get(constant_name)
+      Wrappers.const_get(class_name)
     rescue NameError
       raise UnknownWrapperError,
             "Don't know how to create wrapper '#{@type}'"
     end
 
-    def constant_name
-      WRAPPER_CLASS_FORMAT % { type: @type.to_s.classify }
+    def class_name
+      Wrappers.class_name(@type)
     end
   end
 end
