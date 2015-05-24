@@ -3,10 +3,7 @@ require 'test_helper'
 module Allowing
   class ErrorTest < Minitest::Test
     def setup
-      @validation = Validations::PresenceValidation.new(
-        true,
-        attribute: :attribute
-      )
+      @validation = Validations::PresenceValidation.new(true)
 
       @name       = :error_name
       @value      = :value

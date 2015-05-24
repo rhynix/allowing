@@ -7,9 +7,8 @@ module Allowing
 
     attr_reader :attribute
 
-    def initialize(attribute = nil, &block)
-      @attribute = attribute
-
+    def initialize(validations = [], &block)
+      @validations = validations
       instance_eval(&block) if block_given?
     end
 
@@ -19,7 +18,7 @@ module Allowing
 
     def validates(*attributes, **rules, &block)
       built_validations = builder_class.new(attributes, rules, &block).build
-      validations.push(*built_validations)
+      validations.push(built_validations)
     end
 
     def builder_class
@@ -30,11 +29,9 @@ module Allowing
       @builder_class = builder_class
     end
 
-    def validate(subject, errors)
-      with_scope(attribute, subject, errors) do |attr_subject, scoped_errors|
-        validations.each do |validation|
-          validation.validate(attr_subject, scoped_errors)
-        end
+    def validate(value, errors, subject)
+      validations.each do |validation|
+        validation.validate(value, errors, subject)
       end
     end
   end

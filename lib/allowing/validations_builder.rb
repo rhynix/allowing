@@ -14,41 +14,66 @@ module Allowing
     end
 
     def build
-      bare_validations.map do |validation|
-        WrappingBuilder.new(validation, wrappers, validation.attribute).build
-      end
-    end
-
-    private
-
-    def bare_validations
       return build_attribute_validations if attribute_validations?
-      return build_block_validations     if block_validations?
+      return build_block_validation      if block_validations?
       return build_nested_validations    if nested_validations?
 
       fail ArgumentError, 'Wrong argument combination given'
     end
 
+    private
+
+    def build_bare_validations
+      validations.map do |type, rule|
+        AttributeValidationBuilder.new(type, rule, :attribute).build
+      end
+    end
+
+    def group_validations(validations)
+      return validations.first if validations.size == 1
+
+      ValidationsGroup.new(validations)
+    end
+
+    # TODO: No longer use validations group for building nested validations
+    def ungroup_validations(group)
+      return group if group.validations.size > 1
+
+      group.validations.first
+    end
+
     def build_attribute_validation(type, rule, attribute)
-      AttributeValidationBuilder.new(type, rule, attribute).build
+      validation = AttributeValidationBuilder.new(type, rule, attribute).build
+      Validations::AttributeValidation.new(attribute_validation, attribute)
     end
 
     def build_attribute_validations
-      @attributes.flat_map do |attribute|
-        validations.map do |type, rule|
-          build_attribute_validation(type, rule, attribute)
-        end
-      end
+      add_attributes_wrapper
+      bare_validation = group_validations(build_bare_validations)
+
+      WrappingBuilder.new(bare_validation,wrappers).build
     end
 
-    def build_block_validations
-      [Validations::BlockValidation.new(&@block)]
+    def build_block_validation
+      bare_validation = Validations::BlockValidation.new(&@block)
+      WrappingBuilder.new(bare_validation,wrappers).build
     end
 
     def build_nested_validations
-      @attributes.map do |attribute|
-        ValidationsGroup.new(attribute, &@block)
+      add_attributes_wrapper
+
+      validation = ungroup_validations(ValidationsGroup.new(&@block))
+      WrappingBuilder.new(validation, wrappers).build
+    end
+
+    def wrap_validations(validations)
+      validations.map do |validation|
+        WrappingBuilder.new(validation, wrappers).build
       end
+    end
+
+    def add_attributes_wrapper
+      @rules = { attributes: @attributes }.merge(@rules)
     end
 
     def wrappers

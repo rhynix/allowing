@@ -6,15 +6,14 @@ module Allowing
   class WrapperBuilder
     using Extensions::String
 
-    def initialize(type, rule, attribute, validation)
+    def initialize(type, rule, validation)
       @type       = type
       @rule       = rule
-      @attribute  = attribute
       @validation = validation
     end
 
     def build
-      wrapper_class.new(@rule, @validation, @attribute)
+      wrapper_class.new(@rule, @validation)
     end
 
     private

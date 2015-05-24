@@ -9,19 +9,18 @@ module Allowing
       def setup
         @rule       = proc { |subject| subject.validate? }
         @validation = :validation
-        @attribute  = :attribute
 
-        @wrapper = IfWrapper.new(@rule, @validation, @attribute)
+        @wrapper = IfWrapper.new(@rule, @validation)
       end
 
       def test_calls_validate_on_validation_if_rule_returns_true
         subject = OpenStruct.new(validate?: true)
 
         mock_validation = Minitest::Mock.new
-        mock_validation.expect :validate, true, [subject, []]
+        mock_validation.expect :validate, true, [:value, [], subject]
 
         wrapper = IfWrapper.new(@rule, mock_validation)
-        wrapper.validate(subject, [])
+        wrapper.validate(:value, [], subject)
 
         mock_validation.verify
       end
@@ -32,7 +31,7 @@ module Allowing
         mock_validation = Minitest::Mock.new
 
         wrapper = IfWrapper.new(@rule, mock_validation)
-        wrapper.validate(subject, [])
+        wrapper.validate(:value, [], subject)
 
         mock_validation.verify
       end

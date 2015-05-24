@@ -6,7 +6,7 @@ module Doubles
     end
 
     def build
-      [Allowing::Validations::PresenceValidation.new(@rule, @attribute)]
+      Allowing::Validations::PresenceValidation.new(@rule)
     end
   end
 

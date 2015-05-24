@@ -1,58 +1,47 @@
 require 'test_helper'
-require 'unit/validations/attribute_validation_test'
 
 module Allowing
   module Validations
     class PresenceValidationTest < Minitest::Test
-      include SharedAttributeValidationTest
-
       def setup
         @rule       = true
-        @attribute  = :name
         @type       = :presence
-        @validation = PresenceValidation.new(@rule, @attribute)
+        @validation = PresenceValidation.new(@rule)
         @errors     = []
-
-        @object     = OpenStruct.new
       end
 
-      def test_validate_adds_no_errors_if_attribute_is_present
-        @object.name = 'Gregory House'
-        @validation.validate(@object, @errors)
+      def test_validate_adds_no_errors_if_value_is_present
+        @validation.validate('Gregory House', @errors, :subject)
 
         assert @errors.empty?
       end
 
-      def test_validate_adds_error_if_attribute_is_empty
-        @object.name = OpenStruct.new(:empty? => true)
-        @validation.validate(@object, @errors)
+      def test_validate_adds_error_if_value_is_empty
+        value = OpenStruct.new(:empty? => true)
+        @validation.validate(value, @errors, :subject)
 
         refute @errors.empty?
       end
 
-      def test_validate_adds_error_if_attribute_is_empty_string
-        @object.name = ''
-        @validation.validate(@object, @errors)
+      def test_validate_adds_error_if_value_is_empty_string
+        @validation.validate('', @errors, :subject)
 
         refute @errors.empty?
       end
 
-      def test_validate_adds_error_if_attribute_is_nil
-        @object.name = nil
-        @validation.validate(@object, @errors)
+      def test_validate_adds_error_if_value_is_nil
+        @validation.validate(nil, @errors, :subject)
 
         refute @errors.empty?
       end
 
       def test_validate_adds_correct_error
-        @object.name = nil
-        @validation.validate(@object, @errors)
+        @validation.validate(nil, @errors, :subject)
 
         error = @errors.first
 
         assert_equal :presence,   error.name
         assert_equal @validation, error.validation
-        assert_equal [:name],     error.scope
         assert_equal nil,         error.value
       end
     end

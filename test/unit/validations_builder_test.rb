@@ -2,103 +2,113 @@ require 'test_helper'
 
 module Allowing
   class ValidationsBuilderTest < Minitest::Test
-    def test_build_returns_attribute_validation_for_attribute_validation
+    def test_build_builds_attribute_validations
       builder = ValidationsBuilder.new([:attribute], presence: true)
-      validation = builder.build.first
+      validation = builder.build
 
-      assert validation.is_a?(Validations::PresenceValidation)
+      assert validation.is_a?(Wrappers::AttributesWrapper)
     end
 
-    def test_build_returns_validation_with_correct_attribute_for_attr_validation
-      builder = ValidationsBuilder.new([:attribute], presence: true)
-      validation = builder.build.first
+    def test_build_returns_attribute_validation_with_correct_attributes
+      builder = ValidationsBuilder.new([:attr_a, :attr_b], presence: true)
+      validation = builder.build
 
-      assert_equal :attribute, validation.attribute
+      assert_equal [:attr_a, :attr_b], validation.rule
     end
 
-    def test_build_returns_validation_with_correct_rule_for_attr_validation
+    def test_build_returns_attribute_validation_with_correct_true_validation
       builder = ValidationsBuilder.new([:attribute], presence: true)
-      validation = builder.build.first
+      presence_validation = builder.build.validation
 
-      assert_equal true, validation.rule
+      assert presence_validation.is_a?(Validations::PresenceValidation)
     end
 
-    def test_build_returns_multiple_validations_for_attr_validation
+    def test_build_returns_validation_with_correct_rule
+      builder = ValidationsBuilder.new([:attribute], presence: true)
+      presence_validation = builder.build.validation
+
+      assert_equal true, presence_validation.rule
+    end
+
+    def test_build_returns_multiple_validations_with_group
       builder = ValidationsBuilder.new([:a, :b], presence: true, format: /A/)
-      validations = builder.build
+      attribute_validation = builder.build
+      group                = attribute_validation.validation
 
-      assert_equal 4, validations.size
+      assert_equal [:a, :b], attribute_validation.rule
+
+      assert group.is_a?(ValidationsGroup)
+      assert_equal 2, group.validations.size
     end
 
     def test_build_returns_block_validation_for_block_validation
       builder    = ValidationsBuilder.new([], {}) { :block }
-      validation = builder.build.first
+      validation = builder.build
 
       assert validation.is_a?(Validations::BlockValidation)
     end
 
-    def test_build_returns_group_for_nested_validations
+    def test_build_returns_nested_attribute_validation_for_nested_validations
       builder = ValidationsBuilder.new([:attribute], {}) do
         validates :nested_attribute, presence: true
       end
 
-      group = builder.build.first
+      outer_attribute_validation = builder.build
+      inner_attribute_validation = outer_attribute_validation.validation
+
+      assert_equal [:attribute],        outer_attribute_validation.rule
+      assert_equal [:nested_attribute], inner_attribute_validation.rule
+    end
+
+    def test_build_returns_correct_validation_for_nested_validation
+      builder = ValidationsBuilder.new([:attribute], {}) do
+        validates :nested_attribute, presence: true
+      end
+
+      outer_attribute_validation = builder.build
+      inner_attribute_validation = outer_attribute_validation.validation
+      presence_validation        = inner_attribute_validation.validation
+
+      assert presence_validation.is_a?(Validations::PresenceValidation)
+    end
+
+    def test_build_returns_group_for_multiple_nested_validations
+      builder = ValidationsBuilder.new([:attribute], {}) do
+        validates :nested_attribute_a, presence: true
+        validates :nested_attribute_b, presence: true
+      end
+
+      group = builder.build.validation
+
       assert group.is_a?(ValidationsGroup)
-    end
-
-    def test_build_returns_group_with_correct_attribute_for_nested_validations
-      builder = ValidationsBuilder.new([:attribute], {}) do
-        validates :nested_attribute, presence: true
-      end
-
-      group = builder.build.first
-      assert_equal :attribute, group.attribute
-    end
-
-    def test_build_returns_group_with_correct_validations_for_nested_validations
-      builder = ValidationsBuilder.new([:attribute], {}) do
-        validates :nested_attribute, presence: true
-      end
-
-      group = builder.build.first
-      assert_equal 1, group.validations.size
-    end
-
-    def test_build_returns_multiple_groups_for_nested_validations
-      builder = ValidationsBuilder.new([:a, :b], {}) do
-        validates :c, presence: true
-      end
-
-      groups = builder.build
-      assert_equal 2, groups.size
+      assert_equal 2, group.validations.size
     end
 
     def test_build_wraps_the_validation_with_option
       builder = ValidationsBuilder.new([:attribute], presence: true, if: :cond)
 
-      wrapper = builder.build.first
+      attribute_validation = builder.build
+      wrapper              = attribute_validation.validation
+
       assert wrapper.is_a?(Wrappers::IfWrapper)
     end
 
     def test_build_wrapper_has_correct_rule
       builder = ValidationsBuilder.new([:attribute], presence: true, if: :cond)
 
-      wrapper = builder.build.first
+      attribute_validation = builder.build
+      wrapper              = attribute_validation.validation
+
       assert_equal :cond, wrapper.rule
     end
 
     def test_build_wrapper_has_correct_validation
       builder = ValidationsBuilder.new([:attribute], presence: true, if: :cond)
 
-      wrapper = builder.build.first
+      attribute_validation = builder.build
+      wrapper              = attribute_validation.validation
+
       assert wrapper.validation.is_a?(Validations::PresenceValidation)
-    end
-
-    def test_build_wrapper_has_correct_attribute
-      builder = ValidationsBuilder.new([:attribute], presence: true, if: :cond)
-
-      wrapper = builder.build.first
-      assert_equal :attribute, wrapper.attribute
     end
 
     def test_raises_error_on_incomplete_validation

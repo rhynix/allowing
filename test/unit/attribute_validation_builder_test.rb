@@ -10,8 +10,7 @@ module Allowing
       ).build
 
       assert validation.is_a?(Validations::PresenceValidation)
-      assert_equal true,       validation.rule
-      assert_equal :attribute, validation.attribute
+      assert_equal true, validation.rule
     end
 
     def test_builds_a_format_validation
@@ -22,8 +21,7 @@ module Allowing
       ).build
 
       assert validation.is_a?(Validations::FormatValidation)
-      assert_equal(/Greg/,     validation.rule)
-      assert_equal :attribute, validation.attribute
+      assert_equal(/Greg/, validation.rule)
     end
 
     def test_raises_for_unknown_validation

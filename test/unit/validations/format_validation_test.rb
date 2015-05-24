@@ -1,58 +1,47 @@
 require 'test_helper'
-require 'unit/validations/attribute_validation_test'
 
 module Allowing
   module Validations
     class FormatValidationTest < Minitest::Test
-      include SharedAttributeValidationTest
-
       def setup
         @rule       = /Greg/
-        @attribute  = :name
         @type       = :format
-        @validation = FormatValidation.new(@rule, @attribute)
+        @validation = FormatValidation.new(@rule)
         @errors     = []
-
-        @object     = OpenStruct.new
       end
 
-      def test_validate_adds_no_errors_if_attribute_confirms_to_format
-        @object.name = 'Gregory House'
-        @validation.validate(@object, @errors)
+      def test_validate_adds_no_errors_if_value_confirms_to_format
+        @validation.validate('Gregory House', @errors, :subject)
 
         assert @errors.empty?
       end
 
-      def test_validate_adds_no_errors_if_to_s_on_attribute_confirms_to_format
-        @object.name = OpenStruct.new(to_s: 'Gregory House')
-        @validation.validate(@object, @errors)
+      def test_validate_adds_no_errors_if_to_s_on_value_confirms_to_format
+        value = OpenStruct.new(to_s: 'Gregory House')
+        @validation.validate(value, @errors, :subject)
 
         assert @errors.empty?
       end
 
-      def test_validate_adds_an_error_if_attribute_does_not_confirm_to_format
-        @object.name = 'James Wilson'
-        @validation.validate(@object, @errors)
+      def test_validate_adds_an_error_if_value_does_not_confirm_to_format
+        @validation.validate('James Wilson', @errors, :subject)
 
         refute @errors.empty?
       end
 
-      def test_validate_adds_an_error_if_attribute_is_nil
-        @object.name = nil
-        @validation.validate(@object, @errors)
+      def test_validate_adds_an_error_if_value_is_nil
+        @validation.validate(nil, @errors, :subject)
 
         refute @errors.empty?
       end
 
       def test_validate_adds_correct_error
-        @object.name = nil
-        @validation.validate(@object, @errors)
+        @validation.validate(nil, @errors, :subject)
 
         error = @errors.first
 
         assert_equal :format,     error.name
         assert_equal @validation, error.validation
-        assert_equal [:name],     error.scope
         assert_equal nil,         error.value
       end
     end

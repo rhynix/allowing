@@ -31,7 +31,7 @@ module Allowing
     end
 
     def validate(errors)
-      group.validate(subject, errors)
+      group.validate(subject, errors, subject)
     end
 
     private

@@ -1,8 +1,8 @@
-require 'allowing/validations/attribute_validation'
+require 'allowing/validations/validation'
 
 module Allowing
   module Validations
-    class FormatValidation < AttributeValidation
+    class FormatValidation < Validation
       private
 
       def valid?(value)

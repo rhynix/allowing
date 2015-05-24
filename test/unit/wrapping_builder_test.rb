@@ -8,7 +8,6 @@ module Allowing
       @outer_wrapper = WrappingBuilder.new(
         :validation,
         wrappers,
-        :attribute
       ).build
 
       @inner_wrapper = @outer_wrapper.validation
@@ -24,11 +23,6 @@ module Allowing
     def test_build_assings_rules_to_wrappers
       assert_equal :if_condition,     @outer_wrapper.rule
       assert_equal :unless_condition, @inner_wrapper.rule
-    end
-
-    def test_build_assigns_attributes_to_wrappers
-      assert_equal :attribute, @outer_wrapper.attribute
-      assert_equal :attribute, @inner_wrapper.attribute
     end
   end
 end
