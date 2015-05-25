@@ -4,16 +4,14 @@ require 'allowing/validations'
 module Allowing
   UnknownValidationError = Class.new(StandardError)
 
-  # TODO: Rename to validation builder
-  class AttributeValidationBuilder
+  class ValidationBuilder
     using Extensions::String
 
     VALIDATION_CLASS_FORMAT = '%{type}Validation'
 
-    def initialize(type, rule, attribute)
+    def initialize(type, rule)
       @type      = type
       @rule      = rule
-      @attribute = attribute
     end
 
     def build

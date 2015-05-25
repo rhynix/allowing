@@ -1,6 +1,6 @@
 require 'allowing/extensions/string'
 require 'allowing/wrapping_builder'
-require 'allowing/attribute_validation_builder'
+require 'allowing/validation_builder'
 require 'allowing/validations/block_validation'
 
 module Allowing
@@ -25,9 +25,7 @@ module Allowing
     private
 
     def build_bare_validations
-      validations.map do |type, rule|
-        AttributeValidationBuilder.new(type, rule, :attribute).build
-      end
+      validations.map { |type, rule| ValidationBuilder.new(type, rule).build }
     end
 
     def group_validations(validations)
