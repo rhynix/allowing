@@ -1,5 +1,5 @@
 require 'allowing/helpers/scope_helpers'
-require 'allowing/validations_builder'
+require 'allowing/wrapped_validation_builder'
 
 module Allowing
   class ValidationsGroup

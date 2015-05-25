@@ -12,7 +12,7 @@ module Allowing
 
     def test_builder_class_is_validations_builder_by_default
       dsl = ValidationDSL.new(@validations)
-      assert_equal ValidationsBuilder, dsl.builder_class
+      assert_equal WrappedValidationBuilder, dsl.builder_class
     end
 
     def test_validates_adds_validation_created_by_builder

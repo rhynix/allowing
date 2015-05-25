@@ -4,7 +4,7 @@ require 'allowing/attribute_validation_builder'
 require 'allowing/validations/block_validation'
 
 module Allowing
-  class ValidationsBuilder
+  class WrappedValidationBuilder
     using Extensions::String
 
     def initialize(attributes, rules, &block)
