@@ -15,7 +15,7 @@ module Allowing
     end
 
     def build
-      validation = validation_class.new(@rule)
+      validation_class.new(@rule)
     end
 
     private
