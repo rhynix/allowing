@@ -1,9 +1,6 @@
-require 'allowing/helpers/scope_helpers'
-require 'allowing/wrapped_validation_builder'
-
 module Allowing
   class ValidationsGroup
-    attr_reader :attribute, :validations
+    attr_reader :validations
 
     def initialize(validations = [])
       @validations = validations
