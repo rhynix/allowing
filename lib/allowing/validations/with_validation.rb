@@ -1,5 +1,4 @@
 require 'allowing/validations/validation'
-require 'allowing/helpers/scope_helpers'
 
 module Allowing
   module Validations

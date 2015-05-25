@@ -1,17 +1,32 @@
 require 'allowing/wrappers/wrapper'
-require 'allowing/helpers/scope_helpers'
 
 module Allowing
   module Wrappers
     class AttributesWrapper < Wrapper
-      include Helpers::ScopeHelpers
-
       def validate(value, errors, subject)
         rule.each do |attribute|
-          with_scope(attribute, value, errors) do |scoped_value, scoped_errors|
-            validation.validate(scoped_value, scoped_errors, subject)
-          end
+          validate_attribute(attribute, value, errors, subject)
         end
+      end
+
+      def validate_attribute(attribute, value, errors, subject)
+        scoped_errors = []
+        scoped_value  = scoped_value_for(attribute, value)
+
+        validation.validate(scoped_value, scoped_errors, subject)
+
+        scope_errors_for(attribute, scoped_errors)
+        errors.push(*scoped_errors)
+      end
+
+      def scoped_value_for(attribute, value)
+        return value if attribute.nil?
+
+        value.send(attribute)
+      end
+
+      def scope_errors_for(attribute, errors)
+        errors.each { |error| error.unshift_scope(attribute) }
       end
     end
   end
