@@ -1,8 +1,8 @@
-require 'allowing/validations/attribute_validation'
+require 'allowing/validations/validation'
 
 module Allowing
   module Validations
-    class ExclusionValidation < AttributeValidation
+    class ExclusionValidation < Validation
       private
 
       def valid?(value)

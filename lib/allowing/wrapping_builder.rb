@@ -2,10 +2,9 @@ require 'allowing/wrapper_builder'
 
 module Allowing
   class WrappingBuilder
-    def initialize(validation, wrappers, attribute)
+    def initialize(validation, wrappers)
       @validation = validation
       @wrappers   = wrappers.to_a
-      @attribute  = attribute
     end
 
     def build
@@ -17,7 +16,7 @@ module Allowing
 
     def build_next
       (type, rule) = @wrappers.pop
-      WrapperBuilder.new(type, rule, @attribute, outer_wrapper).build
+      WrapperBuilder.new(type, rule, outer_wrapper).build
     end
 
     def outer_wrapper

@@ -1,15 +1,14 @@
 module Allowing
   module Wrappers
     class Wrapper
-      attr_reader :rule, :validation, :attribute
+      attr_reader :rule, :validation
 
-      def initialize(rule, validation, attribute = nil)
+      def initialize(rule, validation)
         @rule       = rule
         @validation = validation
-        @attribute  = attribute
       end
 
-      def validate(_subject, _errors)
+      def validate(_value, _subject, _errors)
         fail NotImplementedError, 'Should be implemented by subclass'
       end
     end

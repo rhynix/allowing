@@ -1,12 +1,34 @@
+require 'allowing/extensions/string'
+require 'allowing/error'
+
 module Allowing
   module Validations
     class Validation
-      def attribute
-        nil
+      using Extensions::String
+      attr_reader :rule
+
+      def initialize(rule = nil)
+        @rule = rule
       end
 
-      def validate(_subject, _errors)
+      def type
+        class_name.underscore.split('_')[0...-1].join('_').to_sym
+      end
+
+      def validate(value, _subject, errors)
+        return if valid?(value)
+
+        errors << Error.new(type, value: value, validation: self)
+      end
+
+      private
+
+      def valid?(_value)
         fail NotImplementedError, 'Should be implemented by subclass'
+      end
+
+      def class_name
+        self.class.to_s.split('::').last
       end
     end
   end

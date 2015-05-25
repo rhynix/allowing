@@ -1,8 +1,8 @@
-require 'allowing/validations/attribute_validation'
+require 'allowing/validations/validation'
 
 module Allowing
   module Validations
-    class SizeValidation < AttributeValidation
+    class SizeValidation < Validation
       private
 
       def valid?(value)

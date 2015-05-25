@@ -108,9 +108,21 @@ car_validator.valid? # => false
 car_validator.errors # => [#<Allowing::Error @name=:incorrect_number, @scope=[:wheels], @value=3, @validation=...>]
 ```
 
+## Validations on self
+
+If no attributes are given, the validation is performed on self:
+
+```ruby
+class EmailValidator < Allowing::Validator
+  validates format: /@/
+end
+
+EmailValidator.new('user@example.com').valid? # => true
+```
+
 ## Validations
 
-At this moment, three types of validation are defined:
+At this moment, the following types of validation are defined:
 
 ### Presence 
 

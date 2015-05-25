@@ -1,16 +1,10 @@
-require 'allowing/validations/attribute_validation'
-require 'allowing/helpers/scope_helpers'
+require 'allowing/validations/validation'
 
 module Allowing
   module Validations
-    class WithValidation < AttributeValidation
-      include Helpers::ScopeHelpers
-      alias_method :validator, :rule
-
-      def validate(subject, errors)
-        with_scope(attribute, subject, errors) do |attr_subject, scoped_errors|
-          validator.new(attr_subject).validate(scoped_errors)
-        end
+    class WithValidation < Validation
+      def validate(value, _subject, errors)
+        rule.new(value).validate(errors)
       end
     end
   end
