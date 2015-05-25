@@ -1,11 +1,8 @@
 require 'test_helper'
-require 'unit/wrappers/wrapper_test'
 
 module Allowing
   module Wrappers
     class ConditionalWrapperTest < Minitest::Test
-      include SharedWrapperTest
-
       def setup
         @rule       = true
         @validation = :validation

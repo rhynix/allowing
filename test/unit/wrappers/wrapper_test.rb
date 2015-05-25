@@ -2,12 +2,7 @@ require 'test_helper'
 
 module Allowing
   module Wrappers
-    module SharedWrapperTest
-    end
-
     class WrapperTest < Minitest::Test
-      include SharedWrapperTest
-
       def setup
         @rule       = true
         @validation = :validation
