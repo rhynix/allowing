@@ -2,17 +2,17 @@ require 'allowing/wrapped_validation_builder'
 
 module Allowing
   class ValidationDSL
-    DEFAULT_BUILDER_CLASS = WrappedValidationBuilder
+    DEFAULT_BUILDER = WrappedValidationBuilder
     attr_reader :builder_class
 
-    def self.define(builder_class = DEFAULT_BUILDER_CLASS, &block)
+    def self.define(builder_class = DEFAULT_BUILDER, &block)
       validations = []
       ValidationDSL.new(validations, builder_class, &block)
 
       validations
     end
 
-    def initialize(validations = [], builder_class = DEFAULT_BUILDER_CLASS, &block)
+    def initialize(validations = [], builder_class = DEFAULT_BUILDER, &block)
       @validations   = validations
       @builder_class = builder_class
 

@@ -38,7 +38,12 @@ module Allowing
     end
 
     def test_build_returns_multiple_validations_with_group
-      builder = WrappedValidationBuilder.new([:a, :b], presence: true, format: /A/)
+      builder = WrappedValidationBuilder.new(
+        [:a, :b],
+        presence: true,
+        format: /A/
+      )
+
       attribute_validation = builder.build
       group                = attribute_validation.validation
 
@@ -92,7 +97,7 @@ module Allowing
     end
 
     def test_build_wraps_the_validation_with_option
-      builder = WrappedValidationBuilder.new([:attribute], presence: true, if: :cond)
+      builder = WrappedValidationBuilder.new([:attr], presence: true, if: :cond)
 
       attribute_validation = builder.build
       wrapper              = attribute_validation.validation
@@ -101,7 +106,7 @@ module Allowing
     end
 
     def test_build_wrapper_has_correct_rule
-      builder = WrappedValidationBuilder.new([:attribute], presence: true, if: :cond)
+      builder = WrappedValidationBuilder.new([:attr], presence: true, if: :cond)
 
       attribute_validation = builder.build
       wrapper              = attribute_validation.validation
@@ -110,7 +115,7 @@ module Allowing
     end
 
     def test_build_wrapper_has_correct_validation
-      builder = WrappedValidationBuilder.new([:attribute], presence: true, if: :cond)
+      builder = WrappedValidationBuilder.new([:attr], presence: true, if: :cond)
 
       attribute_validation = builder.build
       wrapper              = attribute_validation.validation

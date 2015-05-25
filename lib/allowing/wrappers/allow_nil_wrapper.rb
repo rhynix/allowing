@@ -5,7 +5,7 @@ module Allowing
     class AllowNilWrapper < ConditionalWrapper
       private
 
-      def validate?(value, subject)
+      def validate?(value, _subject)
         !rule || !value.nil?
       end
     end
