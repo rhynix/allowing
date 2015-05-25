@@ -1,9 +1,9 @@
 require 'test_helper'
 
 Address = Struct.new(:street, :number)
-User    = Struct.new(:name, :email, :address)
+User    = Struct.new(:name, :email, :address, :password)
 
-class EmailValidator
+class EmailValidator < Allowing::Validator
   def initialize(subject)
     @subject = subject
   end
@@ -15,12 +15,18 @@ class EmailValidator
   end
 end
 
+class AuthenticatableValidator < Allowing::Validator
+  validates :password, presence: true
+end
+
 class AddressValidator < Allowing::Validator
   validates :street, presence: true
   validates :number, presence: true
 end
 
 class UserValidator < Allowing::Validator
+  validates with: AuthenticatableValidator
+
   validates :email,   with: EmailValidator
   validates :address, with: AddressValidator
 end
@@ -29,7 +35,7 @@ module IntegrationTests
   class WithValidationsTest < Minitest::Test
     def setup
       @address   = Address.new('Baker Street', '221B')
-      @user      = User.new('Gregory House', 'greg@example.com', @address)
+      @user      = User.new('Gregory House', 'greg@example.com', @address, 'q')
       @validator = UserValidator.new(@user)
     end
 
@@ -61,6 +67,19 @@ module IntegrationTests
 
       @validator.valid?
       assert_equal [:address, :street], @validator.errors.first.scope
+    end
+
+    def test_valid_returns_false_for_invalid_password
+      @user.password = nil
+
+      refute @validator.valid?
+    end
+
+    def test_valid_adds_correct_scoped_error_for_invalid_password
+      @user.password = nil
+
+      @validator.valid?
+      assert_equal [:password], @validator.errors.first.scope
     end
 
     def test_error_is_correct_for_with_validation
