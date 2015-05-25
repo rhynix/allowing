@@ -23,7 +23,7 @@ module Allowing
     def unwrapped_validation
       return build_simple_validations if simple_validations?
       return build_nested_validations if nested_validations?
-      return build_block_validation   if block_validations?
+      return build_block_validation   if block_validation?
 
       fail ArgumentError, 'Wrong argument combination given'
     end
@@ -66,16 +66,16 @@ module Allowing
       @validations = @rules.reject { |type, _| Wrappers.exists?(type) }.to_h
     end
 
-    def block_validations?
-      @attributes.empty? && @rules.empty? && @block
+    def simple_validations?
+      @rules.any? && !@block
     end
 
     def nested_validations?
       @attributes.any? && @rules.empty? && @block
     end
 
-    def simple_validations?
-      @rules.any? && !@block
+    def block_validation?
+      @attributes.empty? && @rules.empty? && @block
     end
   end
 end
