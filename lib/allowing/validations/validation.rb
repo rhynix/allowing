@@ -1,5 +1,4 @@
 require 'allowing/extensions/string'
-require 'allowing/validations/validation'
 require 'allowing/error'
 
 module Allowing
