@@ -14,10 +14,9 @@ module Allowing
     end
 
     def build
-      return build_attribute_validations if attribute_validations?
-      return build_block_validation      if block_validations?
-      return build_nested_validations    if nested_validations?
-      return build_simple_validations    if simple_validations?
+      return build_simple_validations if simple_validations?
+      return build_nested_validations if nested_validations?
+      return build_block_validation   if block_validations?
 
       fail ArgumentError, 'Wrong argument combination given'
     end
@@ -26,22 +25,6 @@ module Allowing
 
     def build_bare_validations
       validations.map { |type, rule| ValidationBuilder.new(type, rule).build }
-    end
-
-    def group_validations(validations)
-      return validations.first if validations.size == 1
-
-      ValidationsGroup.new(validations)
-    end
-
-    def build_attribute_validation(type, rule, attribute)
-      validation = AttributeValidationBuilder.new(type, rule, attribute).build
-      Validations::AttributeValidation.new(attribute_validation, attribute)
-    end
-
-    def build_attribute_validations
-      add_attributes_wrapper
-      build_simple_validations
     end
 
     def build_block_validation
@@ -59,8 +42,10 @@ module Allowing
     end
 
     def build_simple_validations
+      add_attributes_wrapper
+
       bare_validation = group_validations(build_bare_validations)
-      WrappingBuilder.new(bare_validation,wrappers).build
+      WrappingBuilder.new(bare_validation, wrappers).build
     end
 
     def wrap_validations(validations)
@@ -69,28 +54,22 @@ module Allowing
       end
     end
 
+    def group_validations(validations)
+      return validations.first if validations.size == 1
+
+      ValidationsGroup.new(validations)
+    end
+
     def add_attributes_wrapper
-      @rules = { attributes: @attributes }.merge(@rules)
+      @rules = { attributes: @attributes }.merge(@rules) if @attributes.any?
     end
 
     def wrappers
-      wrappers_and_validations.first
+      @wrappers = @rules.select { |type, _| Wrappers.exists?(type) }.to_h
     end
 
     def validations
-      wrappers_and_validations.last
-    end
-
-    def wrappers_and_validations
-      @split ||= @rules.partition { |type, _rule| wrapper?(type) }.map(&:to_h)
-    end
-
-    def wrapper?(type)
-      Wrappers.exists?(type)
-    end
-
-    def attribute_validations?
-      @attributes.any? && @rules.any? && !@block
+      @validations = @rules.reject { |type, _| Wrappers.exists?(type) }.to_h
     end
 
     def block_validations?
@@ -102,7 +81,7 @@ module Allowing
     end
 
     def simple_validations?
-      @attributes.empty? && @rules.any? && !@block
+      @rules.any? && !@block
     end
   end
 end
