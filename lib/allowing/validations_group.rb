@@ -6,9 +6,9 @@ module Allowing
       @validations = validations
     end
 
-    def validate(value, errors, subject)
+    def validate(value, subject, errors)
       validations.each do |validation|
-        validation.validate(value, errors, subject)
+        validation.validate(value, subject, errors)
       end
     end
   end

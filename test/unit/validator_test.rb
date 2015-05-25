@@ -27,21 +27,21 @@ module Allowing
     end
 
     def test_validate_calls_validate_on_group
-      @mock_group.expect :validate, true, [@subject, [], @subject]
+      @mock_group.expect :validate, true, [@subject, @subject, []]
 
       @validator.validate([])
       @mock_group.verify
     end
 
     def test_valid_returns_true_if_there_are_no_errors
-      @mock_group.expect :validate, true, [@subject, [], @subject]
+      @mock_group.expect :validate, true, [@subject, @subject, []]
 
       assert @validator.valid?
       @mock_group.verify
     end
 
     def test_valid_returns_false_if_validate_adds_errors
-      @mock_group.expect :validate, true do |_subject, errors|
+      @mock_group.expect :validate, true do |_value, _subject, errors|
         errors << Error.new(:error)
       end
 

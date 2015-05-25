@@ -11,13 +11,13 @@ module Allowing
       end
 
       def test_calls_block_with_errors
-        @validation.validate(:value, :errors, :subject)
+        @validation.validate(:value, :subject, :errors)
 
         assert_equal :errors, @errors
       end
 
       def test_calls_block_with_subject
-        @validation.validate(:value, :errors, :subject)
+        @validation.validate(:value, :subject, :errors)
 
         assert_equal :value, @subject
       end

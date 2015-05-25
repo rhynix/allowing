@@ -14,32 +14,32 @@ module Allowing
       end
 
       def test_validate_adds_no_errors_if_value_is_present
-        @validation.validate('Gregory House', @errors, :subject)
+        @validation.validate('Gregory House', :subject, @errors)
 
         assert @errors.empty?
       end
 
       def test_validate_adds_error_if_value_is_empty
         value = OpenStruct.new(:empty? => true)
-        @validation.validate(value, @errors, :subject)
+        @validation.validate(value, :subject, @errors)
 
         refute @errors.empty?
       end
 
       def test_validate_adds_error_if_value_is_empty_string
-        @validation.validate('', @errors, :subject)
+        @validation.validate('', :subject, @errors)
 
         refute @errors.empty?
       end
 
       def test_validate_adds_error_if_value_is_nil
-        @validation.validate(nil, @errors, :subject)
+        @validation.validate(nil, :subject, @errors)
 
         refute @errors.empty?
       end
 
       def test_validate_adds_correct_error
-        @validation.validate(nil, @errors, :subject)
+        @validation.validate(nil, :subject, @errors)
 
         error = @errors.first
 

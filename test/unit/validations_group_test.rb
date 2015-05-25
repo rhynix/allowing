@@ -17,10 +17,10 @@ module Allowing
 
     def test_validate_calls_validate_on_validations
       mock_validation = Minitest::Mock.new
-      mock_validation.expect :validate, true, [:value, [], :subject]
+      mock_validation.expect :validate, true, [:value, :subject, []]
 
       @group.validations << mock_validation
-      @group.validate(:value, [], :subject)
+      @group.validate(:value, :subject, [])
 
       mock_validation.verify
     end

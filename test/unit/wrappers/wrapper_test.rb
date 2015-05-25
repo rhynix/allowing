@@ -12,7 +12,7 @@ module Allowing
 
       def test_validate_raises_error
         assert_raises(NotImplementedError) do
-          @wrapper.validate(:value, [], :subject)
+          @wrapper.validate(:value, :subject, [])
         end
       end
     end

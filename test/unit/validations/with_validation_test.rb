@@ -23,7 +23,7 @@ module Allowing
 
       def test_validate_calls_validate_on_validator
         errors = []
-        @validation.validate(:value, errors, :subject)
+        @validation.validate(:value, :subject, errors)
 
         assert_equal 1, errors.count
       end
@@ -31,7 +31,7 @@ module Allowing
       def test_validate_adds_the_correct_error
         errors = []
 
-        @validation.validate(:value, errors, :subject)
+        @validation.validate(:value, :subject, errors)
 
         error = errors.first
 
@@ -43,7 +43,7 @@ module Allowing
       def test_validate_does_not_affect_other_errors_scope
         error = Error.new(:old_error)
 
-        @validation.validate(:value, [error], :subject)
+        @validation.validate(:value, :subject, [error])
 
         assert_equal [], error.scope
       end

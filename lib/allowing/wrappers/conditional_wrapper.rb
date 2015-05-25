@@ -3,8 +3,8 @@ require 'allowing/wrappers/wrapper'
 module Allowing
   module Wrappers
     class ConditionalWrapper < Wrapper
-      def validate(value, errors, subject)
-        validation.validate(value, errors, subject) if validate?(value, subject)
+      def validate(value, subject, errors)
+        validation.validate(value, subject, errors) if validate?(value, subject)
       end
 
       private

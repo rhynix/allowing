@@ -7,7 +7,7 @@ module Allowing
         @block = block
       end
 
-      def validate(value, errors, _subject)
+      def validate(value, _subject, errors)
         @block.call(value, errors)
       end
     end

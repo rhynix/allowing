@@ -14,9 +14,9 @@ module Allowing
 
       def test_calls_validate_on_validation_if_rule_returns_true
         subject = OpenStruct.new(validate?: true)
-        @mock_validation.expect :validate, true, [:value, [], subject]
+        @mock_validation.expect :validate, true, [:value, subject, []]
 
-        @wrapper.validate(:value, [], subject)
+        @wrapper.validate(:value, subject, [])
 
         @mock_validation.verify
       end
@@ -24,7 +24,7 @@ module Allowing
       def test_does_not_call_validate_on_validation_if_rule_returns_false
         subject = OpenStruct.new(validate?: false)
 
-        @wrapper.validate(:value, [], subject)
+        @wrapper.validate(:value, subject, [])
 
         @mock_validation.verify
       end

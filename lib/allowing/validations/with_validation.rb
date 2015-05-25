@@ -5,7 +5,7 @@ module Allowing
     class WithValidation < Validation
       alias_method :validator, :rule
 
-      def validate(value, errors, _subject)
+      def validate(value, _subject, errors)
         validator.new(value).validate(errors)
       end
     end

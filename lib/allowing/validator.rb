@@ -40,7 +40,7 @@ module Allowing
     end
 
     def validate(errors)
-      group.validate(subject, errors, subject)
+      group.validate(subject, subject, errors)
     end
 
     private
