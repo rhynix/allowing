@@ -14,8 +14,11 @@ module Allowing
     class WithValidationTest < Minitest::Test
       def setup
         @rule         = AddErrorValidator
-        @type         = :with
         @validation   = WithValidation.new(@rule)
+      end
+
+      def test_type_returns_with
+        assert_equal :with, @validation.type
       end
 
       def test_validate_calls_validate_on_validator

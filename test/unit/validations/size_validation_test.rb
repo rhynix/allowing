@@ -5,10 +5,13 @@ module Allowing
     class SizeValidationTest < Minitest::Test
       def setup
         @rule             = 7
-        @type             = :size
         @range_validation = SizeValidation.new(2..Float::INFINITY)
         @validation       = SizeValidation.new(@rule)
         @errors           = []
+      end
+
+      def test_type_returns_size
+        assert_equal :size, @validation.type
       end
 
       def test_validate_adds_no_errors_if_value_is_exact_size

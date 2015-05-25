@@ -5,10 +5,13 @@ module Allowing
     class ExclusionValidationTest < Minitest::Test
       def setup
         @rule             = [1, 2, 3]
-        @type             = :exclusion
         @range_validation = ExclusionValidation.new(1..10)
         @validation       = ExclusionValidation.new(@rule)
         @errors           = []
+      end
+
+      def test_type_returns_exclusion
+        assert_equal :exclusion, @validation.type
       end
 
       def test_validate_adds_no_errors_if_value_is_not_rule

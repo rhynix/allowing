@@ -5,10 +5,13 @@ module Allowing
     class InclusionValidationTest < Minitest::Test
       def setup
         @rule             = [1, 2, 3]
-        @type             = :inclusion
         @range_validation = InclusionValidation.new(1..10)
         @validation       = InclusionValidation.new(@rule)
         @errors           = []
+      end
+
+      def test_type_returns_inclusion
+        assert_equal :inclusion, @validation.type
       end
 
       def test_validate_adds_no_errors_if_value_is_in_rule

@@ -5,9 +5,12 @@ module Allowing
     class FormatValidationTest < Minitest::Test
       def setup
         @rule       = /Greg/
-        @type       = :format
         @validation = FormatValidation.new(@rule)
         @errors     = []
+      end
+
+      def test_type_returns_format
+        assert_equal :format, @validation.type
       end
 
       def test_validate_adds_no_errors_if_value_confirms_to_format

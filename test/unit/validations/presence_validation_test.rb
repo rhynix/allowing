@@ -5,9 +5,12 @@ module Allowing
     class PresenceValidationTest < Minitest::Test
       def setup
         @rule       = true
-        @type       = :presence
         @validation = PresenceValidation.new(@rule)
         @errors     = []
+      end
+
+      def test_type_returns_presence
+        assert_equal :presence, @validation.type
       end
 
       def test_validate_adds_no_errors_if_value_is_present
