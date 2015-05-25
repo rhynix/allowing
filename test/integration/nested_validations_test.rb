@@ -26,7 +26,7 @@ module IntegrationTests
       @validator = DoctorValidator.new(@doctor)
     end
 
-    def test_valid_returns_true_for_invalid_subject
+    def test_valid_returns_true_for_valid_subject
       assert @validator.valid?
     end
 
