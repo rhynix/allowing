@@ -17,6 +17,7 @@ module Allowing
       return build_attribute_validations if attribute_validations?
       return build_block_validation      if block_validations?
       return build_nested_validations    if nested_validations?
+      return build_simple_validations    if simple_validations?
 
       fail ArgumentError, 'Wrong argument combination given'
     end
@@ -35,13 +36,6 @@ module Allowing
       ValidationsGroup.new(validations)
     end
 
-    # TODO: No longer use validations group for building nested validations
-    def ungroup_validations(group)
-      return group if group.validations.size > 1
-
-      group.validations.first
-    end
-
     def build_attribute_validation(type, rule, attribute)
       validation = AttributeValidationBuilder.new(type, rule, attribute).build
       Validations::AttributeValidation.new(attribute_validation, attribute)
@@ -49,21 +43,26 @@ module Allowing
 
     def build_attribute_validations
       add_attributes_wrapper
-      bare_validation = group_validations(build_bare_validations)
-
-      WrappingBuilder.new(bare_validation,wrappers).build
+      build_simple_validations
     end
 
     def build_block_validation
       bare_validation = Validations::BlockValidation.new(&@block)
-      WrappingBuilder.new(bare_validation,wrappers).build
+      WrappingBuilder.new(bare_validation, wrappers).build
     end
 
     def build_nested_validations
       add_attributes_wrapper
 
-      validation = ungroup_validations(ValidationsGroup.new(&@block))
+      validations = ValidationDSL.define(&@block)
+      validation  = group_validations(validations)
+
       WrappingBuilder.new(validation, wrappers).build
+    end
+
+    def build_simple_validations
+      bare_validation = group_validations(build_bare_validations)
+      WrappingBuilder.new(bare_validation,wrappers).build
     end
 
     def wrap_validations(validations)
@@ -102,6 +101,10 @@ module Allowing
 
     def nested_validations?
       @attributes.any? && @rules.empty? && @block
+    end
+
+    def simple_validations?
+      @attributes.empty? && @rules.any? && !@block
     end
   end
 end

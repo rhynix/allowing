@@ -1,11 +1,12 @@
 require 'allowing/validations_group'
+require 'allowing/validation_dsl'
 
 module Allowing
   class Validator
     attr_reader :subject
 
     def self.validates(*attributes, **options, &block)
-      group.validates(*attributes, **options, &block)
+      dsl.validates(*attributes, **options, &block)
     end
 
     def self.group
@@ -14,6 +15,14 @@ module Allowing
 
     def self.group=(group)
       @group = group
+    end
+
+    def self.dsl=(dsl)
+      @dsl = dsl
+    end
+
+    def self.dsl
+      @dsl ||= ValidationDSL.new(group.validations)
     end
 
     def initialize(subject)

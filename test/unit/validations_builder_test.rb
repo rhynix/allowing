@@ -2,7 +2,14 @@ require 'test_helper'
 
 module Allowing
   class ValidationsBuilderTest < Minitest::Test
-    def test_build_builds_attribute_validations
+    def test_build_builds_simple_validation
+      builder = ValidationsBuilder.new([], presence: true)
+      validation = builder.build
+
+      assert validation.is_a?(Validations::PresenceValidation)
+    end
+
+    def test_build_builds_attribute_validation
       builder = ValidationsBuilder.new([:attribute], presence: true)
       validation = builder.build
 
