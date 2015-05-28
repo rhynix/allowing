@@ -28,31 +28,21 @@ module IntegrationTests
         'A doctor at Princeton-Plainsboro Teaching Hospital',
         40
       )
-      @validator = PersonValidator.new(@subject)
+
+      @validator = PersonValidator.new
     end
 
-    def test_valid_returns_true_for_a_valid_subject
-      assert @validator.valid?
+    def test_validate_returns_no_errors_for_a_valid_subject
+      assert_equal [], @validator.validate(@subject)
     end
 
-    def test_errors_are_empty_for_a_valid_subject
-      @validator.valid?
-
-      assert @validator.errors.empty?
-    end
-
-    def test_valid_returns_false_for_an_invalid_subject
+    def test_validate_returns_the_correct_error_for_invalid_subject
       @subject.first_name = nil
 
-      refute @validator.valid?
-    end
+      errors = @validator.validate(@subject)
 
-    def test_errors_returns_the_correct_error_name_and_scope_for_invalid_subject
-      @subject.first_name = nil
-
-      @validator.valid?
-      assert_equal :presence, @validator.errors.first.name
-      assert_equal [:first_name], @validator.errors.first.scope
+      assert_equal :presence,     errors.first.name
+      assert_equal [:first_name], errors.first.scope
     end
   end
 end

@@ -35,24 +35,17 @@ module IntegrationTests
       @manufacturer = Manufacturer.new('Volkswagen')
       @car          = Car.new(4, @manufacturer)
 
-      @validator = CarValidator.new(@car)
+      @validator = CarValidator.new
     end
 
-    def test_valid_returns_true_for_valid_subject
-      assert @validator.valid?
+    def test_validate_returns_no_errors_for_valid_subject
+      assert_equal [], @validator.validate(@car)
     end
 
-    def test_valid_returns_false_for_invalid_block_validation
+    def test_validate_returns_correct_error_for_block_validation
       @car.wheels = 3
 
-      refute @validator.valid?
-    end
-
-    def test_error_is_correct_for_invalid_block_validation
-      @car.wheels = 3
-
-      @validator.valid?
-      error = @validator.errors.first
+      error = @validator.validate(@car).first
 
       assert_equal :incorrect_number, error.name
       assert_equal nil,               error.validation
@@ -60,17 +53,10 @@ module IntegrationTests
       assert_equal 3,                 error.value
     end
 
-    def test_valid_returns_false_for_invalid_nested_block_validation
+    def test_validate_returns_correct_error_for_nested_block_validation
       @manufacturer.name = 'Apple'
 
-      refute @validator.valid?
-    end
-
-    def test_error_is_correct_for_invalid_nested_block_validation
-      @manufacturer.name = 'Apple'
-
-      @validator.valid?
-      error = @validator.errors.first
+      error = @validator.validate(@car).first
 
       assert_equal :no_car_manufacturer,   error.name
       assert_equal nil,                    error.validation

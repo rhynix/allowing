@@ -1,11 +1,8 @@
 require 'test_helper'
 
 class AddErrorValidator
-  def initialize(_subject)
-  end
-
-  def validate(errors)
-    errors << Error.new(:dummy, value: :value)
+  def validate(_subject)
+    [Error.new(:dummy, value: :value)]
   end
 end
 

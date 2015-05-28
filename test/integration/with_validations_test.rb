@@ -4,14 +4,10 @@ Address = Struct.new(:street, :number)
 User    = Struct.new(:name, :email, :address, :password)
 
 class EmailValidator < Allowing::Validator
-  def initialize(subject)
-    @subject = subject
-  end
+  def validate(subject)
+    return if subject =~ /@/
 
-  def validate(errors)
-    return if @subject =~ /@/
-
-    errors << Error.new(:incorrect_email, value: @subject)
+    [Error.new(:incorrect_email, value: subject)]
   end
 end
 
@@ -35,62 +31,43 @@ module IntegrationTests
   class WithValidationsTest < Minitest::Test
     def setup
       @address   = Address.new('Baker Street', '221B')
-      @user      = User.new('Gregory House', 'greg@example.com', @address, 'q')
-      @validator = UserValidator.new(@user)
+      @subject   = User.new('Gregory House', 'greg@example.com', @address, 'q')
+
+      @validator = UserValidator.new
     end
 
-    def test_valid_returns_true_for_valid_subject
-      assert @validator.valid?
+    def test_validate_returns_no_errors_for_valid_subject
+      assert_equal [], @validator.validate(@subject)
     end
 
-    def test_valid_returns_false_for_invalid_email
-      @user.email = 'greg'
+    def test_validate_returns_correct_error_for_invalid_email
+      @subject.email = 'greg'
 
-      refute @validator.valid?
-    end
-
-    def test_valid_adds_correctly_scoped_error_for_invalid_email
-      @user.email = 'greg'
-
-      @validator.valid?
-      assert_equal [:email], @validator.errors.first.scope
-    end
-
-    def test_valid_returns_false_for_invalid_address
-      @address.street = nil
-
-      refute @validator.valid?
-    end
-
-    def test_valid_adds_correctly_scoped_error_for_invalid_address
-      @address.street = nil
-
-      @validator.valid?
-      assert_equal [:address, :street], @validator.errors.first.scope
-    end
-
-    def test_valid_returns_false_for_invalid_password
-      @user.password = nil
-
-      refute @validator.valid?
-    end
-
-    def test_valid_adds_correct_scoped_error_for_invalid_password
-      @user.password = nil
-
-      @validator.valid?
-      assert_equal [:password], @validator.errors.first.scope
-    end
-
-    def test_error_is_correct_for_with_validation
-      @user.email = 'greg'
-
-      @validator.valid?
-      error = @validator.errors.first
+      error = @validator.validate(@subject).first
 
       assert_equal :incorrect_email, error.name
       assert_equal [:email],         error.scope
       assert_equal 'greg',           error.value
+    end
+
+    def test_validate_returns_correct_error_for_invalid_address
+      @address.street = nil
+
+      error = @validator.validate(@subject).first
+
+      assert_equal :presence,           error.name
+      assert_equal [:address, :street], error.scope
+      assert_equal nil,                 error.value
+    end
+
+    def test_validate_returns_correct_error_for_invalid_password
+      @subject.password = nil
+
+      error = @validator.validate(@subject).first
+
+      assert_equal :presence,   error.name
+      assert_equal [:password], error.scope
+      assert_equal nil,         error.value
     end
   end
 end

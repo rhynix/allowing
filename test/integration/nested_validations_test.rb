@@ -23,50 +23,41 @@ module IntegrationTests
       @hospital = Hospital.new('Plainsboro', @dean)
       @doctor   = Doctor.new('Gregory House', @hospital)
 
-      @validator = DoctorValidator.new(@doctor)
+      @validator = DoctorValidator.new
     end
 
-    def test_valid_returns_true_for_valid_subject
-      assert @validator.valid?
+    def test_validate_returns_no_errors_for_valid_subject
+      assert_equal [], @validator.validate(@doctor)
     end
 
-    def test_valid_returns_false_for_invalid_attribute
+    def test_validate_returns_correct_error_for_invalid_attribute
       @doctor.name = nil
 
-      refute @validator.valid?
+      error = @validator.validate(@doctor).first
+
+      assert_equal :presence, error.name
+      assert_equal [:name],   error.scope
+      assert_equal nil,       error.value
     end
 
-    def test_error_has_the_correct_scope_for_invalid_attribute
-      @doctor.name = nil
-
-      @validator.valid?
-      assert_equal [:name], @validator.errors.first.scope
-    end
-
-    def test_valid_returns_false_for_invalid_nested_attribute
+    def test_validate_returns_with_correct_scope_for_invalid_nested_attribute
       @hospital.name = nil
 
-      refute @validator.valid?
-    end
+      error = @validator.validate(@doctor).first
 
-    def test_error_has_the_correct_scope_for_invalid_nested_attribute
-      @hospital.name = nil
-
-      @validator.valid?
-      assert_equal [:hospital, :name], @validator.errors.first.scope
-    end
-
-    def test_valid_returns_false_for_invalid_deep_nested_attribute
-      @dean.name = nil
-
-      refute @validator.valid?
+      assert_equal :presence,          error.name
+      assert_equal [:hospital, :name], error.scope
+      assert_equal nil,                error.value
     end
 
     def test_error_has_the_correct_scope_for_invalid_deep_nested_attribute
       @dean.name = nil
 
-      @validator.valid?
-      assert_equal [:hospital, :dean, :name], @validator.errors.first.scope
+      error = @validator.validate(@doctor).first
+
+      assert_equal :presence,                 error.name
+      assert_equal [:hospital, :dean, :name], error.scope
+      assert_equal nil,                       error.value
     end
   end
 end

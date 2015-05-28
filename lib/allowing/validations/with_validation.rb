@@ -4,7 +4,8 @@ module Allowing
   module Validations
     class WithValidation < Validation
       def validate(value, _subject, errors)
-        rule.new(value).validate(errors)
+        new_errors = rule.new.validate(value)
+        errors.push(*new_errors)
       end
     end
   end
