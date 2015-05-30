@@ -13,9 +13,7 @@ module Allowing
         scoped_value  = scoped_value_for(attribute, value)
         errors        = validation.validate(scoped_value, subject)
 
-        scope_errors_for(attribute, errors)
-
-        errors
+        scoped_errors_for(attribute, errors)
       end
 
       def scoped_value_for(attribute, value)
@@ -24,8 +22,8 @@ module Allowing
         value.send(attribute)
       end
 
-      def scope_errors_for(attribute, errors)
-        errors.each { |error| error.unshift_scope(attribute) }
+      def scoped_errors_for(attribute, errors)
+        errors.map { |error| error.scoped(attribute) }
       end
     end
   end

@@ -31,17 +31,11 @@ module Allowing
       assert @error.scope.empty?
     end
 
-    def test_unshift_scope_scopes_the_error
-      @error.unshift_scope :b
-      @error.unshift_scope :a
+    def test_scoped_returns_error_with_new_scope
+      scoped_error_a = @error.scoped(:a)
+      scoped_error_b = scoped_error_a.scoped(:b)
 
-      assert_equal [:a, :b], @error.scope
-    end
-
-    def test_unshift_scope_ignores_nil
-      @error.unshift_scope nil
-
-      assert @error.scope.empty?
+      assert_equal [:b, :a], @error.scope
     end
   end
 end

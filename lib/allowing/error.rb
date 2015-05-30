@@ -1,19 +1,16 @@
 class Error
-  attr_reader :validation, :name, :value
+  attr_reader :validation, :name, :value, :scope
 
   def initialize(name, value: nil, scope: nil, validation: nil)
     @name       = name
     @value      = value
     @validation = validation
-
-    unshift_scope(scope)
+    @scope      = Array(scope)
   end
 
-  def scope
-    @scope ||= []
-  end
+  def scoped(scope_to_add)
+    new_scope = scope.unshift(scope_to_add)
 
-  def unshift_scope(new_scope)
-    scope.unshift(new_scope) if new_scope
+    Error.new(name, value: value, scope: new_scope, validation: validation)
   end
 end
