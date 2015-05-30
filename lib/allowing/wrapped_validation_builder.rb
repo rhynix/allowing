@@ -28,8 +28,22 @@ module Allowing
       fail ArgumentError, 'Wrong argument combination given'
     end
 
-    def build_block_validation
-      Validations::BlockValidation.new(&@block)
+    def simple_validations?
+      @rules.any? && !@block
+    end
+
+    def nested_validations?
+      @attributes.any? && @rules.empty? && @block
+    end
+
+    def block_validation?
+      @attributes.empty? && @rules.empty? && @block
+    end
+
+    def build_simple_validations
+      add_attributes_wrapper
+
+      group_validations(ungrouped_validations)
     end
 
     def build_nested_validations
@@ -38,10 +52,8 @@ module Allowing
       group_validations(ValidationDSL.define(&@block))
     end
 
-    def build_simple_validations
-      add_attributes_wrapper
-
-      group_validations(ungrouped_validations)
+    def build_block_validation
+      Validations::BlockValidation.new(&@block)
     end
 
     def ungrouped_validations
@@ -59,23 +71,11 @@ module Allowing
     end
 
     def wrappers
-      @wrappers = @rules.select { |type, _| Wrappers.exists?(type) }.to_h
+      @wrappers ||= @rules.select { |type, _| Wrappers.exists?(type) }.to_h
     end
 
     def validations
-      @validations = @rules.reject { |type, _| Wrappers.exists?(type) }.to_h
-    end
-
-    def simple_validations?
-      @rules.any? && !@block
-    end
-
-    def nested_validations?
-      @attributes.any? && @rules.empty? && @block
-    end
-
-    def block_validation?
-      @attributes.empty? && @rules.empty? && @block
+      @validations ||= @rules.reject { |type, _| Wrappers.exists?(type) }.to_h
     end
   end
 end
