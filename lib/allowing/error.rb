@@ -9,7 +9,7 @@ class Error
   end
 
   def scoped(scope_to_add)
-    new_scope = scope.unshift(scope_to_add)
+    new_scope = scope.dup.unshift(scope_to_add)
 
     Error.new(name, value: value, scope: new_scope, validation: validation)
   end

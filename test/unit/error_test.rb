@@ -35,7 +35,13 @@ module Allowing
       scoped_error_a = @error.scoped(:a)
       scoped_error_b = scoped_error_a.scoped(:b)
 
-      assert_equal [:b, :a], @error.scope
+      assert_equal [:b, :a], scoped_error_b.scope
+    end
+
+    def test_scoped_does_not_edit_own_scope
+      @error.scoped(:scope)
+
+      assert @error.scope.empty?
     end
   end
 end
