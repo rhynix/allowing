@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AddErrorValidator
   def validate(_subject)
-    [Error.new(:dummy, value: :value)]
+    Error.new(:dummy, value: :value)
   end
 end
 
