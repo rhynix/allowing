@@ -13,31 +13,31 @@ module Allowing
       end
 
       def test_validate_returns_no_errors_if_value_is_not_rule
-        errors = @validation.validate(4, :subject)
+        errors = @validation.validate(4)
 
         assert errors.empty?
       end
 
       def test_validate_returns_error_if_value_is_in_rule
-        errors = @validation.validate(3, :subject)
+        errors = @validation.validate(3)
 
         assert_equal 1, errors.size
       end
 
       def test_validate_returns_no_errors_if_value_is_not_in_range
-        errors = @range_validation.validate(11, :subject)
+        errors = @range_validation.validate(11)
 
         assert errors.empty?
       end
 
       def test_validate_returns_error_if_value_is_in_range
-        errors = @range_validation.validate(8, :subject)
+        errors = @range_validation.validate(8)
 
         assert_equal 1, errors.size
       end
 
       def test_validate_returns_correct_error
-        error = @validation.validate(3, :subject).first
+        error = @validation.validate(3).first
 
         assert_equal :exclusion,  error.name
         assert_equal @validation, error.validation

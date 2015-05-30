@@ -4,8 +4,7 @@ module Allowing
   module Wrappers
     class IfWrapperTest < Minitest::Test
       def setup
-        @error      = Error.new(:error)
-        @validation = Doubles::ErrorValidation.new(@error)
+        @validation = Doubles::ErrorValidation.new(:error)
 
         rule     = proc { |subject| subject.validate? }
         @wrapper = IfWrapper.new(rule, @validation)
@@ -15,7 +14,7 @@ module Allowing
         subject = OpenStruct.new(validate?: true)
         errors  = @wrapper.validate(:value, subject)
 
-        assert_equal [@error], errors
+        assert_equal [:error], errors.map(&:name)
       end
 
       def test_does_not_call_validate_on_validation_if_rule_returns_false

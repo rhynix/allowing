@@ -3,7 +3,7 @@ require 'allowing/wrappers/wrapper'
 module Allowing
   module Wrappers
     class AttributesWrapper < Wrapper
-      def validate(value, subject)
+      def validate(value, subject = value)
         rule.flat_map do |attribute|
           validate_attribute(attribute, value, subject)
         end

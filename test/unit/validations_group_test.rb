@@ -16,12 +16,12 @@ module Allowing
     end
 
     def test_validate_delegates_to_all_validations
-      @group.validations << Doubles::ErrorValidation.new(:error1)
+      @group.validations << Doubles::ErrorValidation.new(:error)
       @group.validations << Doubles::ValidValidation.new
 
-      errors = @group.validate(:value, :subject)
+      errors = @group.validate(:value)
 
-      assert_equal [:error1], errors
+      assert_equal [:error], errors.map(&:name)
     end
   end
 end

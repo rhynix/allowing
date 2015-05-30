@@ -24,7 +24,7 @@ module Allowing
 
     def test_validate_delegates_to_group
       errors = @validator.validate(@subject)
-      assert_equal [:error], errors
+      assert_equal [:error], errors.map(&:name)
     end
   end
 end

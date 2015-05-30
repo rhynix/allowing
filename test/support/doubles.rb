@@ -11,17 +11,17 @@ module Doubles
   end
 
   class ErrorValidation
-    def initialize(error)
-      @error = error
+    def initialize(error_name)
+      @error_name = error_name
     end
 
-    def validate(_value, _subject)
-      [@error]
+    def validate(value, _subject = value)
+      [Error.new(@error_name)]
     end
   end
 
   class ValidValidation
-    def validate(_value, _subject)
+    def validate(value, _subject = value)
       []
     end
   end

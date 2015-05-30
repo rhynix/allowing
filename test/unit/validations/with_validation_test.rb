@@ -18,7 +18,7 @@ module Allowing
       end
 
       def test_validate_delegates_to_validator
-        errors = @validation.validate(:value, :subject)
+        errors = @validation.validate(:value)
 
         assert_equal [:error], errors
       end
