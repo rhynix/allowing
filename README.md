@@ -70,7 +70,7 @@ class EmailValidator
   def validate(email)
     return [] if @email =~ /@/
 
-    [Error.new(:invalid_email, value: @email)]
+    [Allowing::Error.new(:invalid_email, value: @email)]
   end
 end
 
@@ -90,7 +90,7 @@ class CarValidator < Allowing::Validator
     if subject.wheels == 4
       []
     else
-      [Error.new(:incorrect_number, value: subject.wheels, scope: :wheels)]
+      [Allowing::Error.new(:incorrect_number, value: subject.wheels, scope: :wheels)]
     end
   end
 end

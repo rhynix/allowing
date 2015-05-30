@@ -7,7 +7,7 @@ class EmailValidator < Allowing::Validator
   def validate(subject)
     return [] if subject =~ /@/
 
-    [Error.new(:incorrect_email, value: subject)]
+    [Allowing::Error.new(:incorrect_email, value: subject)]
   end
 end
 

@@ -10,7 +10,11 @@ class CarValidator < Allowing::Validator
     if car.wheels == 4
       []
     else
-      [Error.new(:incorrect_number, value: car.wheels, scope: :wheels)]
+      [Allowing::Error.new(
+        :incorrect_number,
+        value: car.wheels,
+        scope: :wheels
+      )]
     end
   end
 
@@ -19,7 +23,11 @@ class CarValidator < Allowing::Validator
       if CAR_MANUFACTURERS.include? manufacturer.name
         []
       else
-        [Error.new(:no_manufacturer, value: manufacturer.name, scope: :name)]
+        [Allowing::Error.new(
+          :no_manufacturer,
+          value: manufacturer.name,
+          scope: :name
+        )]
       end
     end
   end
