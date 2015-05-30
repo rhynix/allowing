@@ -15,8 +15,14 @@ module Doubles
       @error = error
     end
 
-    def validate(_subject, errors)
-      errors << @error
+    def validate(_value, _subject)
+      [@error]
+    end
+  end
+
+  class ValidValidation
+    def validate(_value, _subject)
+      []
     end
   end
 end

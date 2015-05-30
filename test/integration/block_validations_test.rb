@@ -6,24 +6,20 @@ Car          = Struct.new(:wheels, :manufacturer)
 CAR_MANUFACTURERS = %w(Volkswagen Ford Fiat)
 
 class CarValidator < Allowing::Validator
-  validates do |car, errors|
-    if car.wheels != 4
-      errors << Error.new(
-        :incorrect_number,
-        value: car.wheels,
-        scope: :wheels
-      )
+  validates do |car|
+    if car.wheels == 4
+      []
+    else
+      [Error.new(:incorrect_number, value: car.wheels, scope: :wheels)]
     end
   end
 
   validates :manufacturer do
-    validates do |manufacturer, errors|
-      unless CAR_MANUFACTURERS.include? manufacturer.name
-        errors << Error.new(
-          :no_car_manufacturer,
-          value: manufacturer.name,
-          scope: :name
-        )
+    validates do |manufacturer|
+      if CAR_MANUFACTURERS.include? manufacturer.name
+        []
+      else
+        [Error.new(:no_manufacturer, value: manufacturer.name, scope: :name)]
       end
     end
   end
@@ -39,7 +35,8 @@ module IntegrationTests
     end
 
     def test_validate_returns_no_errors_for_valid_subject
-      assert_equal [], @validator.validate(@car)
+      errors = @validator.validate(@car)
+      assert errors.empty?
     end
 
     def test_validate_returns_correct_error_for_block_validation
@@ -58,7 +55,7 @@ module IntegrationTests
 
       error = @validator.validate(@car).first
 
-      assert_equal :no_car_manufacturer,   error.name
+      assert_equal :no_manufacturer,       error.name
       assert_equal nil,                    error.validation
       assert_equal [:manufacturer, :name], error.scope
       assert_equal 'Apple',                error.value

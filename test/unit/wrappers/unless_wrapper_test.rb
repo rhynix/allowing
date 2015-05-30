@@ -4,29 +4,25 @@ module Allowing
   module Wrappers
     class UnlessWrapperTest < Minitest::Test
       def setup
-        @mock_validation = Minitest::Mock.new
+        @error      = Error.new(:error)
+        @validation = Doubles::ErrorValidation.new(@error)
 
-        @wrapper = UnlessWrapper.new(
-          proc { |subject| subject.skip? },
-          @mock_validation
-        )
+        rule     = proc { |subject| subject.skip? }
+        @wrapper = UnlessWrapper.new(rule, @validation)
       end
 
       def test_calls_validate_on_validation_if_rule_returns_false
         subject = OpenStruct.new(skip?: false)
-        @mock_validation.expect :validate, true, [:value, subject, []]
+        errors  = @wrapper.validate(:value, subject)
 
-        @wrapper.validate(:value, subject, [])
-
-        @mock_validation.verify
+        assert_equal [@error], errors
       end
 
       def test_does_not_call_validate_on_validation_if_rule_returns_false
         subject = OpenStruct.new(skip?: true)
+        errors  = @wrapper.validate(:value, subject)
 
-        @wrapper.validate(:value, subject, [])
-
-        @mock_validation.verify
+        assert errors.empty?
       end
     end
   end

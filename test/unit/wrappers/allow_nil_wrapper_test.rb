@@ -4,31 +4,28 @@ module Allowing
   module Wrappers
     class AllowNilWrapperTest < Minitest::Test
       def setup
-        @mock_validation = Minitest::Mock.new
-        @wrapper         = AllowNilWrapper.new(true, @mock_validation)
+        @error      = Error.new(:error)
+        @validation = Doubles::ErrorValidation.new(@error)
+        @wrapper    = AllowNilWrapper.new(true, @validation)
       end
 
-      def test_calls_validate_on_validation_if_value_is_not_nil
-        @mock_validation.expect :validate, true, [:value, :subject, []]
+      def test_validate_returns_errors_from_validation_if_value_is_not_nil
+        errors = @wrapper.validate(:value, :subject)
 
-        @wrapper.validate(:value, :subject, [])
-
-        @mock_validation.verify
+        assert_equal [@error], errors
       end
 
-      def test_does_not_call_validate_on_validation_if_value_is_nil
-        @wrapper.validate(nil, :subject, [])
+      def test_validate_returns_no_errors_if_value_is_nil
+        errors = @wrapper.validate(nil, :subject)
 
-        @mock_validation.verify
+        assert errors.empty?
       end
 
-      def test_calls_validate_on_validation_if_value_nil_and_rule_false
-        @mock_validation.expect :validate, true, [nil, :subject, []]
+      def test_validate_always_returns_errors_from_validation_if_rule_is_false
+        wrapper = AllowNilWrapper.new(false, @validation)
+        errors  = wrapper.validate(nil, :subject)
 
-        wrapper = AllowNilWrapper.new(false, @mock_validation)
-        wrapper.validate(nil, :subject, [])
-
-        @mock_validation.verify
+        assert_equal [@error], errors
       end
     end
   end

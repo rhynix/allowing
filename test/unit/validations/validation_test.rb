@@ -9,7 +9,7 @@ module Allowing
 
       def test_validate_raises_error
         assert_raises(NotImplementedError) do
-          @validation.validate(:value, [], :subject)
+          @validation.validate(:value, :subject)
         end
       end
     end

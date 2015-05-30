@@ -15,14 +15,13 @@ module Allowing
       assert_equal [:validation], group.validations
     end
 
-    def test_validate_calls_validate_on_validations
-      mock_validation = Minitest::Mock.new
-      mock_validation.expect :validate, true, [:value, :subject, []]
+    def test_validate_delegates_to_all_validations
+      @group.validations << Doubles::ErrorValidation.new(:error1)
+      @group.validations << Doubles::ValidValidation.new
 
-      @group.validations << mock_validation
-      @group.validate(:value, :subject, [])
+      errors = @group.validate(:value, :subject)
 
-      mock_validation.verify
+      assert_equal [:error1], errors
     end
   end
 end

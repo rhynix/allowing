@@ -4,29 +4,25 @@ module Allowing
   module Wrappers
     class IfWrapperTest < Minitest::Test
       def setup
-        @mock_validation = Minitest::Mock.new
+        @error      = Error.new(:error)
+        @validation = Doubles::ErrorValidation.new(@error)
 
-        @wrapper = IfWrapper.new(
-          proc { |subject| subject.validate? },
-          @mock_validation
-        )
+        rule     = proc { |subject| subject.validate? }
+        @wrapper = IfWrapper.new(rule, @validation)
       end
 
-      def test_calls_validate_on_validation_if_rule_returns_true
+      def test_validate_returns_errors_from_validation_if_rule_returns_true
         subject = OpenStruct.new(validate?: true)
-        @mock_validation.expect :validate, true, [:value, subject, []]
+        errors  = @wrapper.validate(:value, subject)
 
-        @wrapper.validate(:value, subject, [])
-
-        @mock_validation.verify
+        assert_equal [@error], errors
       end
 
       def test_does_not_call_validate_on_validation_if_rule_returns_false
         subject = OpenStruct.new(validate?: false)
+        errors  = @wrapper.validate(:value, subject)
 
-        @wrapper.validate(:value, subject, [])
-
-        @mock_validation.verify
+        assert errors.empty?
       end
     end
   end

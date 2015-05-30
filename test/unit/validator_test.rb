@@ -8,10 +8,10 @@ module Allowing
       @subject    = OpenStruct.new(name: 'Gregory House')
       @validator  = TestValidator.new
       @mock_dsl   = Minitest::Mock.new
-      @mock_group = Minitest::Mock.new
+      @validation = Doubles::ErrorValidation.new(:error)
 
       TestValidator.dsl   = @mock_dsl
-      TestValidator.group = @mock_group
+      TestValidator.group = @validation
     end
 
     def test_validates_calls_validates_on_group
@@ -22,15 +22,9 @@ module Allowing
       @mock_dsl.verify
     end
 
-    def test_validate_returns_errors_from_group
-      @mock_group.expect :validate, true do |_, _, errors|
-        errors << :error
-      end
-
+    def test_validate_delegates_to_group
       errors = @validator.validate(@subject)
-
       assert_equal [:error], errors
-      @mock_group.verify
     end
   end
 end
