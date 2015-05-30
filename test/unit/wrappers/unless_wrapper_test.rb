@@ -10,14 +10,14 @@ module Allowing
         @wrapper = UnlessWrapper.new(rule, @validation)
       end
 
-      def test_calls_validate_on_validation_if_rule_returns_false
+      def test_validate_returns_errors_from_validation_if_rule_returns_false
         subject = OpenStruct.new(skip?: false)
         errors  = @wrapper.validate(:value, subject)
 
         assert_equal [:error], errors.map(&:name)
       end
 
-      def test_does_not_call_validate_on_validation_if_rule_returns_false
+      def test_validate_returns_no_errors_if_rule_returns_false
         subject = OpenStruct.new(skip?: true)
         errors  = @wrapper.validate(:value, subject)
 

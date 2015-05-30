@@ -17,7 +17,7 @@ module Allowing
         assert_equal [:error], errors.map(&:name)
       end
 
-      def test_does_not_call_validate_on_validation_if_rule_returns_false
+      def test_validate_returns_no_errors_if_rule_returns_false
         subject = OpenStruct.new(validate?: false)
         errors  = @wrapper.validate(:value, subject)
 
