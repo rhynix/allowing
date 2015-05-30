@@ -4,44 +4,40 @@ module Allowing
   module Validations
     class FormatValidationTest < Minitest::Test
       def setup
-        @rule       = /Greg/
-        @validation = FormatValidation.new(@rule)
-        @errors     = []
+        @validation = FormatValidation.new(/Greg/)
       end
 
       def test_type_returns_format
         assert_equal :format, @validation.type
       end
 
-      def test_validate_adds_no_errors_if_value_confirms_to_format
-        @validation.validate('Gregory House', :subject, @errors)
+      def test_validate_returns_no_errors_if_value_confirms_to_format
+        errors = @validation.validate('Gregory House')
 
-        assert @errors.empty?
+        assert errors.empty?
       end
 
-      def test_validate_adds_no_errors_if_to_s_on_value_confirms_to_format
-        value = OpenStruct.new(to_s: 'Gregory House')
-        @validation.validate(value, :subject, @errors)
+      def test_validate_retursn_no_errors_if_to_s_on_value_confirms_to_format
+        value  = OpenStruct.new(to_s: 'Gregory House')
+        errors = @validation.validate(value)
 
-        assert @errors.empty?
+        assert errors.empty?
       end
 
-      def test_validate_adds_an_error_if_value_does_not_confirm_to_format
-        @validation.validate('James Wilson', :subject, @errors)
+      def test_validate_returns_an_error_if_value_does_not_confirm_to_format
+        errors = @validation.validate('James Wilson')
 
-        refute @errors.empty?
+        assert_equal 1, errors.size
       end
 
-      def test_validate_adds_an_error_if_value_is_nil
-        @validation.validate(nil, :subject, @errors)
+      def test_validate_returns_an_error_if_value_is_nil
+        errors = @validation.validate(nil)
 
-        refute @errors.empty?
+        assert_equal 1, errors.size
       end
 
-      def test_validate_adds_correct_error
-        @validation.validate(nil, :subject, @errors)
-
-        error = @errors.first
+      def test_validate_returns_correct_error
+        error = @validation.validate(nil).first
 
         assert_equal :format,     error.name
         assert_equal @validation, error.validation

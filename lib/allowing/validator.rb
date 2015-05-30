@@ -3,8 +3,6 @@ require 'allowing/validation_dsl'
 
 module Allowing
   class Validator
-    attr_reader :subject
-
     def self.validates(*attributes, **options, &block)
       dsl.validates(*attributes, **options, &block)
     end
@@ -25,22 +23,8 @@ module Allowing
       @dsl ||= ValidationDSL.new(group.validations)
     end
 
-    def initialize(subject)
-      @subject = subject
-    end
-
-    def errors
-      @errors ||= []
-    end
-
-    def valid?
-      errors.clear
-      validate(errors)
-      errors.empty?
-    end
-
-    def validate(errors)
-      group.validate(subject, subject, errors)
+    def validate(subject)
+      group.validate(subject, subject)
     end
 
     private

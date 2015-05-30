@@ -1,6 +1,7 @@
 require 'test_helper'
 
 Order = Struct.new(:trusted, :card_number)
+
 class OrderValidator < Allowing::Validator
   validates :card_number,
             format: /^d+$/,
@@ -12,24 +13,25 @@ module Allowing
   module IntegrationTests
     class ValidationsWithOptionsTest < Minitest::Test
       def setup
-        @order     = Order.new(true, 'abc')
-        @validator = OrderValidator.new(@order)
+        @subject   = Order.new(true, 'abc')
+        @validator = OrderValidator.new
       end
 
-      def test_validation_with_unless_is_not_validated_if_condition_is_true
-        assert @validator.valid?
+      def test_validate_returns_no_errors_if_unless_conditions_is_not_met
+        assert @validator.validate(@subject).empty?
       end
 
-      def test_validation_with_unless_is_validated_if_condition_is_false
-        @order.trusted = false
-        refute @validator.valid?
+      def test_validate_returns_no_error_if_unless_conditions_is_met
+        @subject.trusted = false
+
+        refute @validator.validate(@subject).empty?
       end
 
-      def test_validation_with_allow_nil_allows_nil_as_value
-        @order.trusted     = false
-        @order.card_number = nil
+      def test_validate_returns_no_errors_if_nil_value_is_given
+        @subject.trusted     = false
+        @subject.card_number = nil
 
-        assert @validator.valid?
+        assert @validator.validate(@subject).empty?
       end
     end
   end

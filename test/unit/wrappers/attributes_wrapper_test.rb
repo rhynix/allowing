@@ -5,34 +5,22 @@ module Allowing
   module Wrappers
     class AttributesWrapperTest < Minitest::Test
       def setup
-        @subject         = OpenStruct.new(attr_a: :value_a, attr_b: :value_b)
-        @mock_validation = Minitest::Mock.new
-        @errors          = []
+        @subject    = OpenStruct.new(attr_a: :value_a, attr_b: :value_b)
+        @validation = Doubles::ErrorValidation.new(:error)
 
-        @wrapper = AttributesWrapper.new([:attr_a, :attr_b], @mock_validation)
+        @wrapper = AttributesWrapper.new([:attr_a, :attr_b], @validation)
       end
 
-      def test_validate_delegates_to_validations_with_value_changed
-        @mock_validation.expect :validate, true, [:value_a, :subject, @errors]
-        @mock_validation.expect :validate, true, [:value_b, :subject, @errors]
+      def test_validate_returns_errors_for_all_attributes
+        errors = @wrapper.validate(@subject)
 
-        @wrapper.validate(@subject, :subject, @errors)
-
-        @mock_validation.verify
+        assert_equal 2, errors.size
       end
 
-      def test_validate_adds_scope_to_errors
-        2.times do
-          @mock_validation.expect :validate, true do |value, _subject, errors|
-            errors << Error.new(:presence) if value == :value_b
+      def test_validate_returns_scoped_errors_from_validations
+        errors = @wrapper.validate(@subject)
 
-            true
-          end
-        end
-
-        @wrapper.validate(@subject, :subject, @errors)
-
-        assert_equal [:attr_b], @errors.first.scope
+        assert_equal [[:attr_a], [:attr_b]], errors.map(&:scope).sort
       end
     end
   end

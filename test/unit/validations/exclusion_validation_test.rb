@@ -4,44 +4,40 @@ module Allowing
   module Validations
     class ExclusionValidationTest < Minitest::Test
       def setup
-        @rule             = [1, 2, 3]
+        @validation       = ExclusionValidation.new([1, 2, 3])
         @range_validation = ExclusionValidation.new(1..10)
-        @validation       = ExclusionValidation.new(@rule)
-        @errors           = []
       end
 
       def test_type_returns_exclusion
         assert_equal :exclusion, @validation.type
       end
 
-      def test_validate_adds_no_errors_if_value_is_not_rule
-        @validation.validate(4, :subject, @errors)
+      def test_validate_returns_no_errors_if_value_is_not_rule
+        errors = @validation.validate(4)
 
-        assert @errors.empty?
+        assert errors.empty?
       end
 
-      def test_validate_adds_error_if_value_is_in_rule
-        @validation.validate(3, :subject, @errors)
+      def test_validate_returns_error_if_value_is_in_rule
+        errors = @validation.validate(3)
 
-        refute @errors.empty?
+        assert_equal 1, errors.size
       end
 
-      def test_validate_adds_no_errors_if_value_is_not_in_range
-        @range_validation.validate(11, :subject, @errors)
+      def test_validate_returns_no_errors_if_value_is_not_in_range
+        errors = @range_validation.validate(11)
 
-        assert @errors.empty?
+        assert errors.empty?
       end
 
-      def test_validate_adds_error_if_value_is_in_range
-        @range_validation.validate(8, :subject, @errors)
+      def test_validate_returns_error_if_value_is_in_range
+        errors = @range_validation.validate(8)
 
-        refute @errors.empty?
+        assert_equal 1, errors.size
       end
 
-      def test_validate_adds_correct_error
-        @validation.validate(3, :subject, @errors)
-
-        error = @errors.first
+      def test_validate_returns_correct_error
+        error = @validation.validate(3).first
 
         assert_equal :exclusion,  error.name
         assert_equal @validation, error.validation
