@@ -3,7 +3,7 @@ require 'allowing/wrappers/wrapper'
 module Allowing
   module Wrappers
     class ConditionalWrapper < Wrapper
-      def validate(value, subject = value)
+      def validate(value, subject = nil)
         return [] unless validate?(value, subject)
 
         validation.validate(value, subject)

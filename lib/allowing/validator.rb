@@ -24,7 +24,7 @@ module Allowing
     end
 
     def validate(subject)
-      group.validate(subject)
+      group.validate(subject, subject)
     end
 
     private

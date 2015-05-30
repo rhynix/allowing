@@ -15,13 +15,13 @@ module Doubles
       @error_name = error_name
     end
 
-    def validate(value, _subject = value)
+    def validate(_value, _subject = nil)
       [Error.new(@error_name)]
     end
   end
 
   class ValidValidation
-    def validate(value, _subject = value)
+    def validate(_value, _subject = nil)
       []
     end
   end
