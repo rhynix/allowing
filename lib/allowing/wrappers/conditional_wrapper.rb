@@ -3,15 +3,15 @@ require 'allowing/wrappers/wrapper'
 module Allowing
   module Wrappers
     class ConditionalWrapper < Wrapper
-      def validate(value, subject = nil)
-        return [] unless validate?(value, subject)
+      def validate(value, options = {})
+        return [] unless validate?(value, options)
 
-        validation.validate(value, subject)
+        validation.validate(value, options)
       end
 
       private
 
-      def validate?(_value, _subject)
+      def validate?(_value, _options)
         fail NotImplementedError, 'Should be implemented by subclass'
       end
     end

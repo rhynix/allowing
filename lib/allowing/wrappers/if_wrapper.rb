@@ -5,8 +5,8 @@ module Allowing
     class IfWrapper < ConditionalWrapper
       private
 
-      def validate?(_value, subject)
-        rule.call(subject)
+      def validate?(_value, options)
+        rule.call(options[:subject])
       end
     end
   end

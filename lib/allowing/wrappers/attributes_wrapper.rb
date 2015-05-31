@@ -3,15 +3,15 @@ require 'allowing/wrappers/wrapper'
 module Allowing
   module Wrappers
     class AttributesWrapper < Wrapper
-      def validate(value, subject = nil)
+      def validate(value, options = {})
         rule.flat_map do |attribute|
-          validate_attribute(attribute, value, subject)
+          validate_attribute(attribute, value, options)
         end
       end
 
-      def validate_attribute(attribute, value, subject)
+      def validate_attribute(attribute, value, options)
         scoped_value  = scoped_value_for(attribute, value)
-        errors        = validation.validate(scoped_value, subject)
+        errors        = validation.validate(scoped_value, options)
 
         scoped_errors_for(attribute, errors)
       end

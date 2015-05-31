@@ -15,7 +15,7 @@ module Allowing
         class_name.underscore.split('_')[0...-1].join('_').to_sym
       end
 
-      def validate(value, _subject = nil)
+      def validate(value, _options = {})
         return [] if valid?(value)
 
         [Error.new(type, value: value, validation: self)]

@@ -8,7 +8,7 @@ module Allowing
         @validation = validation
       end
 
-      def validate(_value, _subject = nil)
+      def validate(_value, _options = {})
         fail NotImplementedError, 'Should be implemented by subclass'
       end
     end

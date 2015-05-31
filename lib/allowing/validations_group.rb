@@ -6,8 +6,8 @@ module Allowing
       @validations = validations
     end
 
-    def validate(value, subject = nil)
-      validations.flat_map { |validation| validation.validate(value, subject) }
+    def validate(value, options = {})
+      validations.flat_map { |validation| validation.validate(value, options) }
     end
   end
 end
