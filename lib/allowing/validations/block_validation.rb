@@ -8,7 +8,7 @@ module Allowing
       end
 
       def validate(value, options = {})
-        @block.call(value, options)
+        @block.call(value, options[:subject])
       end
     end
   end
