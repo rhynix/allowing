@@ -5,13 +5,13 @@ TestValidator = Class.new(Allowing::Validator)
 module Allowing
   class ValidatorTest < Minitest::Test
     def setup
-      @subject    = OpenStruct.new(name: 'Gregory House')
-      @validator  = TestValidator.new
-      @mock_dsl   = Minitest::Mock.new
-      @validation = Doubles::ErrorValidation.new(:error)
+      @subject         = OpenStruct.new(name: 'Gregory House')
+      @validator       = TestValidator.new
+      @mock_dsl        = Minitest::Mock.new
+      @mock_validation = Minitest::Mock.new
 
       TestValidator.dsl   = @mock_dsl
-      TestValidator.group = @validation
+      TestValidator.group = @mock_validation
     end
 
     def test_validates_calls_validates_on_group
@@ -23,8 +23,12 @@ module Allowing
     end
 
     def test_validate_delegates_to_group
-      errors = @validator.validate(@subject)
-      assert_equal [:error], errors.map(&:name)
+      options = { subject: :subject, validator: @validator }
+      @mock_validation.expect :validate, [], [:subject, options]
+
+      @validator.validate(:subject)
+
+      @mock_validation.verify
     end
   end
 end
