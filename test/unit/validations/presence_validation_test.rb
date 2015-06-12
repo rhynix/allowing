@@ -20,7 +20,7 @@ module Allowing
       end
 
       def test_validate_returns_error_if_value_is_empty
-        value  = OpenStruct.new(:empty? => true)
+        value  = OpenStruct.new(empty?: true)
         errors = @validation.validate(value)
 
         assert_equal 1, errors.size
