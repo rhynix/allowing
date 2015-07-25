@@ -53,13 +53,6 @@ module Allowing
       assert_equal 2, group.validations.size
     end
 
-    def test_build_returns_block_validation_for_block_validation
-      builder    = WrappedValidationBuilder.new([], {}) { :block }
-      validation = builder.build
-
-      assert validation.is_a?(Validations::BlockValidation)
-    end
-
     def test_build_returns_nested_attribute_validation_for_nested_validations
       builder = WrappedValidationBuilder.new([:attribute], {}) do
         validates :nested_attribute, presence: true
@@ -121,12 +114,6 @@ module Allowing
       wrapper              = attribute_validation.validation
 
       assert wrapper.validation.is_a?(Validations::PresenceValidation)
-    end
-
-    def test_raises_error_on_incomplete_validation
-      assert_raises(ArgumentError) do
-        WrappedValidationBuilder.new([], {}).build
-      end
     end
 
     def test_raises_error_on_nonexisting_validation
