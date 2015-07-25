@@ -19,11 +19,11 @@ user = User.new('Gregory', 'House', 'greg@example.com')
 
 user_validator = UserValidator.new
 
-user_validator.validate(user) # => []
+user_validator.call(user) # => []
 
 user.name = nil
 
-user_validator.validate(user) # => [#<Allowing::Error @name=:presence, @scope=[:name], @value=nil, @validation=...>]
+user_validator.call(user) # => [#<Allowing::Error @name=:presence, @scope=[:name], @value=nil, @validation=...>]
 ```
 
 ## Nested validations
@@ -47,7 +47,7 @@ user    = User.new('User', company)
 
 user_validator = UserValidator.new
 
-user_validator.validate(user) # => [#<Allowing::Error @name=:presence, @scope=[:company, :vat_number], @value=nil @validation=...>]
+user_validator.call(user) # => [#<Allowing::Error @name=:presence, @scope=[:company, :vat_number], @value=nil @validation=...>]
 ```
 
 This same validator could also be defined in a more reusable way:
@@ -59,15 +59,15 @@ end
 
 class UserValidator < Allowing::Validator
   validates :name, presence: true
-  validates :company, with: CompanyValidator
+  validates :company, with: CompanyValidator.new
 end
 ```
 
-The argument for `with` can be any class that responds to the `validate` method. This method should return an array of errors. For example:
+The argument for `with` can be any object that responds to the `call` method, including `proc`s and `lambda`s. This method should return an array of errors. For example:
 
 ```ruby
 class EmailValidator
-  def validate(email)
+  def call(email)
     return [] if @email =~ /@/
 
     [Allowing::Error.new(:invalid_email, value: @email)]
@@ -76,7 +76,7 @@ end
 
 class UserValidator < Allowing::Validator
   validates :name, presence: true
-  validates :email, with: EmailValidator
+  validates :email, with: EmailValidator.new
 end
 ```
 
@@ -100,7 +100,7 @@ car = Car.new(3)
 
 car_validator = CarValidator.new
 
-car_validator.validate(car) # => [#<Allowing::Error @name=:incorrect_number, @scope=[:wheels], @value=3, @validation=...>]
+car_validator.call(car) # => [#<Allowing::Error @name=:incorrect_number, @scope=[:wheels], @value=3, @validation=...>]
 ```
 
 ## Validations on self
@@ -112,7 +112,7 @@ class EmailValidator < Allowing::Validator
   validates format: /@/
 end
 
-EmailValidator.new.validate('user@example.com') # => []
+EmailValidator.new.call('user@example.com') # => []
 ```
 
 ## Validations
@@ -178,7 +178,7 @@ All these validations can also be used directly as follows:
 
 ```ruby
 email_validation = Allowing::Validations::FormatValidation.new(/@/)
-email_validation.validate('user@example.com') # => []
+email_validation.call('user@example.com') # => []
 ```
 
 ## Options

@@ -12,14 +12,14 @@ module Allowing
 
       def test_validate_returns_errors_from_validation_if_rule_returns_true
         subject = OpenStruct.new(validate?: true)
-        errors  = @wrapper.validate(:value, subject)
+        errors  = @wrapper.call(:value, subject)
 
         assert_equal [:error], errors.map(&:name)
       end
 
       def test_validate_returns_no_errors_if_rule_returns_false
         subject = OpenStruct.new(validate?: false)
-        errors  = @wrapper.validate(:value, subject)
+        errors  = @wrapper.call(:value, subject)
 
         assert errors.empty?
       end

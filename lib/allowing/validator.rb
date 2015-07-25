@@ -23,8 +23,8 @@ module Allowing
       @dsl ||= ValidationDSL.new(group.validations)
     end
 
-    def validate(subject)
-      group.validate(subject, subject)
+    def call(subject)
+      group.call(subject, subject)
     end
 
     private

@@ -19,7 +19,7 @@ module Allowing
       @group.validations << Doubles::ErrorValidation.new(:error)
       @group.validations << Doubles::ValidValidation.new
 
-      errors = @group.validate(:value)
+      errors = @group.call(:value)
 
       assert_equal [:error], errors.map(&:name)
     end

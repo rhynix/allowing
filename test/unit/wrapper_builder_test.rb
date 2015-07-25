@@ -4,7 +4,7 @@ module Allowing
   class WrapperBuilderTest < Minitest::Test
     def test_builds_a_if_wrapper
       validation = :validation
-      rule = proc { |subject| subject.validate? }
+      rule = proc { |subject| subject.call? }
       wrapper = WrapperBuilder.new(:if, rule, validation).build
 
       assert wrapper.is_a?(Wrappers::IfWrapper)
@@ -14,7 +14,7 @@ module Allowing
 
     def test_builds_an_unless_wrapper
       validation = :validation
-      rule = proc { |subject| subject.validate? }
+      rule = proc { |subject| subject.call? }
       wrapper = WrapperBuilder.new(:unless, rule, validation).build
 
       assert wrapper.is_a?(Wrappers::UnlessWrapper)

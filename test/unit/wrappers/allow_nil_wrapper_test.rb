@@ -9,20 +9,20 @@ module Allowing
       end
 
       def test_validate_returns_errors_from_validation_if_value_is_not_nil
-        errors = @wrapper.validate(:value, :subject)
+        errors = @wrapper.call(:value, :subject)
 
         assert_equal [:error], errors.map(&:name)
       end
 
       def test_validate_returns_no_errors_if_value_is_nil
-        errors = @wrapper.validate(nil, :subject)
+        errors = @wrapper.call(nil, :subject)
 
         assert errors.empty?
       end
 
       def test_validate_always_returns_errors_from_validation_if_rule_is_false
         wrapper = AllowNilWrapper.new(false, @validation)
-        errors  = wrapper.validate(nil, :subject)
+        errors  = wrapper.call(nil, :subject)
 
         assert_equal [:error], errors.map(&:name)
       end

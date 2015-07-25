@@ -3,10 +3,10 @@ require 'allowing/wrappers/wrapper'
 module Allowing
   module Wrappers
     class ConditionalWrapper < Wrapper
-      def validate(value, subject = nil)
+      def call(value, subject = nil)
         return [] unless validate?(value, subject)
 
-        validation.validate(value, subject)
+        validation.call(value, subject)
       end
 
       private

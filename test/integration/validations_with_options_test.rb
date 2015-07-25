@@ -18,20 +18,20 @@ module Allowing
       end
 
       def test_validate_returns_no_errors_if_unless_conditions_is_not_met
-        assert @validator.validate(@subject).empty?
+        assert @validator.call(@subject).empty?
       end
 
       def test_validate_returns_no_error_if_unless_conditions_is_met
         @subject.trusted = false
 
-        refute @validator.validate(@subject).empty?
+        refute @validator.call(@subject).empty?
       end
 
       def test_validate_returns_no_errors_if_nil_value_is_given
         @subject.trusted     = false
         @subject.card_number = nil
 
-        assert @validator.validate(@subject).empty?
+        assert @validator.call(@subject).empty?
       end
     end
   end

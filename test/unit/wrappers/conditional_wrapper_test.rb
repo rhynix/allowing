@@ -9,7 +9,7 @@ module Allowing
 
       def test_validate_raises_error
         assert_raises(NotImplementedError) do
-          @wrapper.validate(:value)
+          @wrapper.call(:value)
         end
       end
     end

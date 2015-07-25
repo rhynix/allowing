@@ -16,13 +16,13 @@ module Allowing
         @error_name = error_name
       end
 
-      def validate(_value, _subject = nil)
+      def call(_value, _subject = nil)
         [Error.new(@error_name)]
       end
     end
 
     class ValidValidation
-      def validate(_value, _subject = nil)
+      def call(_value, _subject = nil)
         []
       end
     end

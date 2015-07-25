@@ -12,13 +12,13 @@ module Allowing
       end
 
       def test_validate_returns_errors_for_all_attributes
-        errors = @wrapper.validate(@subject)
+        errors = @wrapper.call(@subject)
 
         assert_equal 2, errors.size
       end
 
       def test_validate_returns_scoped_errors_from_validations
-        errors = @wrapper.validate(@subject)
+        errors = @wrapper.call(@subject)
 
         assert_equal [[:attr_a], [:attr_b]], errors.map(&:scope).sort
       end

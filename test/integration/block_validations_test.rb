@@ -43,14 +43,14 @@ module IntegrationTests
     end
 
     def test_validate_returns_no_errors_for_valid_subject
-      errors = @validator.validate(@car)
+      errors = @validator.call(@car)
       assert errors.empty?
     end
 
     def test_validate_returns_correct_error_for_block_validation
       @car.wheels = 3
 
-      error = @validator.validate(@car).first
+      error = @validator.call(@car).first
 
       assert_equal :incorrect_number, error.name
       assert_equal nil,               error.validation
@@ -61,7 +61,7 @@ module IntegrationTests
     def test_validate_returns_correct_error_for_nested_block_validation
       @manufacturer.name = 'Apple'
 
-      error = @validator.validate(@car).first
+      error = @validator.call(@car).first
 
       assert_equal :no_manufacturer,       error.name
       assert_equal nil,                    error.validation

@@ -33,13 +33,13 @@ module IntegrationTests
     end
 
     def test_validate_returns_no_errors_for_a_valid_subject
-      assert_equal [], @validator.validate(@subject)
+      assert_equal [], @validator.call(@subject)
     end
 
     def test_validate_returns_the_correct_error_for_invalid_subject
       @subject.first_name = nil
 
-      errors = @validator.validate(@subject)
+      errors = @validator.call(@subject)
 
       assert_equal :presence,     errors.first.name
       assert_equal [:first_name], errors.first.scope

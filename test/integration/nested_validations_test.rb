@@ -27,13 +27,13 @@ module IntegrationTests
     end
 
     def test_validate_returns_no_errors_for_valid_subject
-      assert_equal [], @validator.validate(@doctor)
+      assert_equal [], @validator.call(@doctor)
     end
 
     def test_validate_returns_correct_error_for_invalid_attribute
       @doctor.name = nil
 
-      error = @validator.validate(@doctor).first
+      error = @validator.call(@doctor).first
 
       assert_equal :presence, error.name
       assert_equal [:name],   error.scope
@@ -43,7 +43,7 @@ module IntegrationTests
     def test_validate_returns_with_correct_scope_for_invalid_nested_attribute
       @hospital.name = nil
 
-      error = @validator.validate(@doctor).first
+      error = @validator.call(@doctor).first
 
       assert_equal :presence,          error.name
       assert_equal [:hospital, :name], error.scope
@@ -53,7 +53,7 @@ module IntegrationTests
     def test_error_has_the_correct_scope_for_invalid_deep_nested_attribute
       @dean.name = nil
 
-      error = @validator.validate(@doctor).first
+      error = @validator.call(@doctor).first
 
       assert_equal :presence,                 error.name
       assert_equal [:hospital, :dean, :name], error.scope
