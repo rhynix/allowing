@@ -29,14 +29,12 @@ module Allowing
       @rules = { attributes: @attributes }.merge(@rules) if @attributes.any?
     end
 
-    def nested_validations
-      add_attributes_wrapper
-
-      ValidationDSL.define(&@block)
-    end
-
     def simple_validations
       validations.map { |type, rule| ValidationBuilder.new(type, rule).build }
+    end
+
+    def nested_validations
+      ValidationDSL.define(&@block)
     end
 
     def group_validations(validations)
