@@ -1,4 +1,12 @@
 Documentation:
   Enabled: false
+
+# Allow trivial accessors because they can be grouped more easily if you
+# have to define a custom reader or writes
 Style/TrivialAccessors:
+  Enabled: false
+
+# Use {...} for functional blocks (i.e. block for return value) and do...end
+# for procedural blocks (i.e. block for side effects)
+Style/Blocks:
   Enabled: false

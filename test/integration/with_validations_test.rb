@@ -23,10 +23,12 @@ end
 class UserValidator < Allowing::Validator
   validates with: AuthenticatableValidator.new
 
-  validates :name, with: ->(name) {
-    next [] if name.strip.length > 0
-
-    [Allowing::Error.new(:no_name, value: name)]
+  validates :name, with: lambda { |name|
+    if name.strip.length == 0
+      [Allowing::Error.new(:no_name, value: name)]
+    else
+      []
+    end
   }
 
   validates :email,   with: EmailValidator.new
