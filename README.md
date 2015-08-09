@@ -80,29 +80,6 @@ class UserValidator < Allowing::Validator
 end
 ```
 
-## Block validations
-
-Custom validations can also be defined inline using a block validation:
-
-```ruby
-class CarValidator < Allowing::Validator
-  validates do |subject, errors|
-    if subject.wheels == 4
-      []
-    else
-      [Allowing::Error.new(:incorrect_number, value: subject.wheels, scope: :wheels)]
-    end
-  end
-end
-
-Car = Struct.new(wheels)
-car = Car.new(3)
-
-car_validator = CarValidator.new
-
-car_validator.call(car) # => [#<Allowing::Error @name=:incorrect_number, @scope=[:wheels], @value=3, @validation=...>]
-```
-
 ## Validations on self
 
 If no attributes are given, the validation is performed on self:
