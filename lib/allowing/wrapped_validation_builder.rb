@@ -1,6 +1,6 @@
 require 'allowing/wrapping_builder'
 require 'allowing/validation_builder'
-require 'allowing/validation_dsl'
+require 'allowing/dsl'
 require 'allowing/validations_group'
 
 module Allowing
@@ -34,7 +34,7 @@ module Allowing
     end
 
     def nested_validations
-      ValidationDSL.define(&@block)
+      DSL::Capturer.new.capture(&@block)
     end
 
     def group_validations(validations)

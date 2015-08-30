@@ -1,11 +1,9 @@
 require 'allowing/validations_group'
-require 'allowing/validation_dsl'
+require 'allowing/dsl'
 
 module Allowing
   class Validator
-    def self.validates(*attributes, **options, &block)
-      dsl.validates(*attributes, **options, &block)
-    end
+    extend DSL
 
     def self.group
       @group ||= ValidationsGroup.new
@@ -15,12 +13,8 @@ module Allowing
       @group = group
     end
 
-    def self.dsl=(dsl)
-      @dsl = dsl
-    end
-
-    def self.dsl
-      @dsl ||= ValidationDSL.new(group.validations)
+    def self.validations
+      group.validations
     end
 
     def call(subject)
