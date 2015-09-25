@@ -10,8 +10,8 @@ module Allowing
     VALIDATION_CLASS_FORMAT = '%{type}Validation'
 
     def initialize(type, rule)
-      @type      = type
-      @rule      = rule
+      @type = type
+      @rule = rule
     end
 
     def build
