@@ -4,9 +4,11 @@ module Allowing
   module Wrappers
     class ConditionalWrapper < Wrapper
       def call(value, subject = nil)
-        return [] unless validate?(value, subject)
-
-        validation.call(value, subject)
+        if validate?(value, subject)
+          validation.call(value, subject)
+        else
+          []
+        end
       end
 
       private

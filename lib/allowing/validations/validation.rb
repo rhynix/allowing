@@ -16,9 +16,11 @@ module Allowing
       end
 
       def call(value, _subject = nil)
-        return [] if valid?(value)
-
-        [Error.new(type, value: value, validation: self)]
+        if valid?(value)
+          []
+        else
+          [Error.new(type, value: value, validation: self)]
+        end
       end
 
       private

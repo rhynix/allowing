@@ -5,9 +5,11 @@ User    = Struct.new(:name, :email, :address, :password)
 
 class EmailValidator < Allowing::Validator
   def call(subject)
-    return [] if subject =~ /@/
-
-    [Allowing::Error.new(:incorrect_email, value: subject)]
+    if subject =~ /@/
+      []
+    else
+      [Allowing::Error.new(:incorrect_email, value: subject)]
+    end
   end
 end
 
