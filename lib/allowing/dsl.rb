@@ -5,24 +5,17 @@ module Allowing
     class Capturer
       include DSL
 
-      def capture(&block)
-        instance_eval(&block) if block_given?
-
-        captured = validations.dup
-        validations.clear
-
-        captured
+      def initialize(&blk)
+        instance_eval(&blk) if block_given?
       end
     end
 
-    def validates(*attributes, **rules, &block)
-      validations << builder_class.new(attributes, rules, &block).build
+    def self.capture(&blk)
+      Capturer.new(&blk).validations
     end
 
-    private
-
-    def builder_class
-      WrappedValidationBuilder
+    def validates(*attributes, **rules, &blk)
+      validations << WrappedValidationBuilder.new(attributes, rules, &blk).build
     end
 
     def validations

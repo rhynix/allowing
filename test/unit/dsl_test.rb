@@ -3,12 +3,8 @@ require 'allowing/dsl'
 
 module Allowing
   class DSLTest < Minitest::Test
-    def setup
-      @capture = DSL::Capturer.new
-    end
-
     def test_capture_returns_the_captured_validations
-      validations = @capture.capture do
+      validations = DSL.capture do
         validates presence: true
       end
 

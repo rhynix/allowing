@@ -34,7 +34,7 @@ module Allowing
     end
 
     def nested_validations
-      DSL::Capturer.new.capture(&@block)
+      DSL.capture(&@block)
     end
 
     def group_validations(validations)
