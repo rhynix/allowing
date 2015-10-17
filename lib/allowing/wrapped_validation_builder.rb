@@ -38,9 +38,11 @@ module Allowing
     end
 
     def group_validations(validations)
-      return validations.first if validations.size == 1
-
-      ValidationsGroup.new(validations)
+      if validations.size == 1
+        validations.first
+      else
+        ValidationsGroup.new(validations)
+      end
     end
 
     def wrappers

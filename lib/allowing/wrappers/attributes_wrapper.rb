@@ -19,9 +19,7 @@ module Allowing
       end
 
       def scoped_value_for(attribute, value)
-        return value if attribute.nil?
-
-        value.send(attribute)
+        attribute ? value.public_send(attribute) : value
       end
 
       def scoped_errors_for(attribute, errors)
