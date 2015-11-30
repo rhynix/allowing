@@ -14,14 +14,14 @@ module Allowing
     end
 
     def build
+      add_attributes_wrapper
+
       WrappingBuilder.new(unwrapped_validation, wrappers).build
     end
 
     private
 
     def unwrapped_validation
-      add_attributes_wrapper
-
       group_validations(simple_validations + nested_validations)
     end
 
