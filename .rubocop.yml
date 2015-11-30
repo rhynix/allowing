@@ -8,5 +8,5 @@ Style/TrivialAccessors:
 
 # Use {...} for functional blocks (i.e. block for return value) and do...end
 # for procedural blocks (i.e. block for side effects)
-Style/Blocks:
+Style/BlockDelimiters:
   Enabled: false
