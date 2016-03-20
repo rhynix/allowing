@@ -1,6 +1,7 @@
-require 'allowing/wrapping_builder'
-require 'allowing/validation_builder'
 require 'allowing/dsl'
+require 'allowing/wrappers'
+require 'allowing/wrapper_builder'
+require 'allowing/validation_builder'
 require 'allowing/validations_group'
 
 module Allowing
@@ -14,7 +15,7 @@ module Allowing
     end
 
     def build
-      WrappingBuilder.new(unwrapped_validation, wrappers_with_attributes).build
+      wrap(unwrapped_validation, wrappers_with_attributes)
     end
 
     private
@@ -53,6 +54,12 @@ module Allowing
 
     def validations
       @validations ||= @rules.reject { |type, _| Wrappers.exists?(type) }.to_h
+    end
+
+    def wrap(validation, wrappers)
+      wrappers.to_a.reverse.reduce(validation) { |outer_wrapper, (type, rule)|
+        WrapperBuilder.new(type, rule, outer_wrapper).build
+      }
     end
   end
 end
