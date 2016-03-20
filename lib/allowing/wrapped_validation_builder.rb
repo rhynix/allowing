@@ -14,9 +14,7 @@ module Allowing
     end
 
     def build
-      add_attributes_wrapper
-
-      WrappingBuilder.new(unwrapped_validation, wrappers).build
+      WrappingBuilder.new(unwrapped_validation, wrappers_with_attributes).build
     end
 
     private
@@ -25,8 +23,12 @@ module Allowing
       group_validations(simple_validations + nested_validations)
     end
 
-    def add_attributes_wrapper
-      @rules = { attributes: @attributes }.merge(@rules) if @attributes.any?
+    def wrappers_with_attributes
+      if @attributes.empty?
+        wrappers
+      else
+        { attributes: @attributes }.merge(wrappers)
+      end
     end
 
     def simple_validations
