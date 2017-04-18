@@ -11,7 +11,7 @@ class UserValidator < Allowing::Validator
 end
 ```
 
-The validator can now be used as follows:
+The validator can be used on any object that responds to the attributes being validated, in this case `first_name`, `last_name` and `email`. This validator could be used as follows:
 
 ```ruby
 User = Struct.new(:first_name, :last_name, :email)
