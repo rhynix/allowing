@@ -28,7 +28,7 @@ module Allowing
     end
 
     def constant_name
-      VALIDATION_CLASS_FORMAT.format(type: @type.to_s.classify)
+      format(VALIDATION_CLASS_FORMAT, type: @type.to_s.classify)
     end
   end
 end

@@ -18,7 +18,7 @@ module Allowing
     end
 
     def class_name(wrapper)
-      WRAPPER_CLASS_FORMAT.format(type: wrapper.to_s.classify)
+      format(WRAPPER_CLASS_FORMAT, type: wrapper.to_s.classify)
     end
   end
 end
