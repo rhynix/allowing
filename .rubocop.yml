@@ -2,11 +2,15 @@ Documentation:
   Enabled: false
 
 # Allow trivial accessors because they can be grouped more easily if you
-# have to define a custom reader or writes
+# have to define a custom reader or writer
 Style/TrivialAccessors:
   Enabled: false
 
 # Use {...} for functional blocks (i.e. block for return value) and do...end
 # for procedural blocks (i.e. block for side effects)
 Style/BlockDelimiters:
+  Enabled: false
+
+# Allow regular symbol array if there are not a lot of items in the array
+Style/SymbolArray:
   Enabled: false
