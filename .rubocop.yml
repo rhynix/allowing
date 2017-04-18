@@ -14,3 +14,7 @@ Style/BlockDelimiters:
 # Allow regular symbol array if there are not a lot of items in the array
 Style/SymbolArray:
   Enabled: false
+
+# Only use raise for re-raising an exception. Otherwise, use fail
+Style/SignalException:
+  Enabled: false
