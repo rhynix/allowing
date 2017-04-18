@@ -26,7 +26,7 @@ class UserValidator < Allowing::Validator
   validates with: AuthenticatableValidator.new
 
   validates :name, with: lambda { |name|
-    if name.strip.length == 0
+    if name.strip.empty?
       [Allowing::Error.new(:no_name, value: name)]
     else
       []

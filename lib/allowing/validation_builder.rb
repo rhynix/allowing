@@ -7,7 +7,7 @@ module Allowing
   class ValidationBuilder
     using Extensions::String
 
-    VALIDATION_CLASS_FORMAT = '%{type}Validation'
+    VALIDATION_CLASS_FORMAT = '%{type}Validation'.freeze
 
     def initialize(type, rule)
       @type = type
@@ -28,7 +28,7 @@ module Allowing
     end
 
     def constant_name
-      VALIDATION_CLASS_FORMAT % { type: @type.to_s.classify }
+      VALIDATION_CLASS_FORMAT.format(type: @type.to_s.classify)
     end
   end
 end

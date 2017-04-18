@@ -9,7 +9,7 @@ module Allowing
   module Wrappers
     using Extensions::String
 
-    WRAPPER_CLASS_FORMAT = '%{type}Wrapper'
+    WRAPPER_CLASS_FORMAT = '%{type}Wrapper'.freeze
 
     module_function
 
@@ -18,7 +18,7 @@ module Allowing
     end
 
     def class_name(wrapper)
-      WRAPPER_CLASS_FORMAT % { type: wrapper.to_s.classify }
+      WRAPPER_CLASS_FORMAT.format(type: wrapper.to_s.classify)
     end
   end
 end
