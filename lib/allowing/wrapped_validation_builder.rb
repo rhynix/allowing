@@ -1,4 +1,3 @@
-require 'allowing/dsl'
 require 'allowing/wrappers'
 require 'allowing/wrapper_builder'
 require 'allowing/validation_builder'
