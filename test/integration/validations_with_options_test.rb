@@ -21,7 +21,7 @@ module Allowing
         assert @validator.call(@subject).empty?
       end
 
-      def test_validate_returns_no_error_if_unless_conditions_is_met
+      def test_validate_returns_a_error_if_unless_conditions_is_met
         @subject.trusted = false
 
         refute @validator.call(@subject).empty?
