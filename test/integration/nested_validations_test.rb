@@ -37,7 +37,7 @@ module IntegrationTests
 
       assert_equal :presence, error.name
       assert_equal [:name],   error.scope
-      assert_equal nil,       error.value
+      assert_nil   error.value
     end
 
     def test_validate_returns_with_correct_scope_for_invalid_nested_attribute
@@ -47,7 +47,7 @@ module IntegrationTests
 
       assert_equal :presence,          error.name
       assert_equal [:hospital, :name], error.scope
-      assert_equal nil,                error.value
+      assert_nil   error.value
     end
 
     def test_error_has_the_correct_scope_for_invalid_deep_nested_attribute
@@ -57,7 +57,7 @@ module IntegrationTests
 
       assert_equal :presence,                 error.name
       assert_equal [:hospital, :dean, :name], error.scope
-      assert_equal nil,                       error.value
+      assert_nil   error.value
     end
   end
 end

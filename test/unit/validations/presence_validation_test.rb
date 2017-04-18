@@ -43,7 +43,7 @@ module Allowing
 
         assert_equal :presence,   error.name
         assert_equal @validation, error.validation
-        assert_equal nil,         error.value
+        assert_nil   error.value
       end
     end
   end

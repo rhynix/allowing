@@ -77,7 +77,7 @@ module IntegrationTests
 
       assert_equal :presence,           error.name
       assert_equal [:address, :street], error.scope
-      assert_equal nil,                 error.value
+      assert_nil   error.value
     end
 
     def test_validate_returns_correct_error_for_invalid_password
@@ -87,7 +87,7 @@ module IntegrationTests
 
       assert_equal :presence,   error.name
       assert_equal [:password], error.scope
-      assert_equal nil,         error.value
+      assert_nil   error.value
     end
   end
 end
