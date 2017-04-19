@@ -135,7 +135,7 @@ Checks wether the value is included in an array or range, or any other object re
 ###### Example
 
 ```ruby
-validates :gender, inclusion: %w(Male Female)
+validates :answer, inclusion: %w[Yes No]
 ```
 
 
@@ -146,7 +146,7 @@ Checks whether the value is not included in an array or range, or any other obje
 ###### Example
 
 ```ruby
-validates :age, exclusion: 0..17
+validates :day, exclusion: %w[Saturday Sunday]
 ```
 
 ## Using simple validations directly
