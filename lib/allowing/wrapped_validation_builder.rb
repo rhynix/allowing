@@ -1,7 +1,7 @@
 require 'allowing/wrappers'
 require 'allowing/wrapper_builder'
 require 'allowing/validation_builder'
-require 'allowing/validations_group'
+require 'allowing/validations/composite_validation'
 
 module Allowing
   class WrappedValidationBuilder
@@ -43,7 +43,7 @@ module Allowing
       if validations.size == 1
         validations.first
       else
-        ValidationsGroup.new(validations)
+        Validations::CompositeValidation.new(validations)
       end
     end
 

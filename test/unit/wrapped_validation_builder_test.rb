@@ -37,7 +37,7 @@ module Allowing
       assert_equal true, presence_validation.rule
     end
 
-    def test_build_returns_multiple_validations_with_group
+    def test_build_returns_multiple_validations_with_composite_validation
       builder = WrappedValidationBuilder.new(
         [:a, :b],
         presence: true,
@@ -49,7 +49,7 @@ module Allowing
 
       assert_equal [:a, :b], attribute_validation.rule
 
-      assert group.is_a?(ValidationsGroup)
+      assert group.is_a?(Validations::CompositeValidation)
       assert_equal 2, group.validations.size
     end
 
@@ -77,7 +77,7 @@ module Allowing
       assert presence_validation.is_a?(Validations::PresenceValidation)
     end
 
-    def test_build_returns_group_for_multiple_nested_validations
+    def test_build_returns_composite_validation_for_multiple_nested_validations
       builder = WrappedValidationBuilder.new([:attribute], {}) do
         validates :nested_attribute_a, presence: true
         validates :nested_attribute_b, presence: true
@@ -85,7 +85,7 @@ module Allowing
 
       group = builder.build.validation
 
-      assert group.is_a?(ValidationsGroup)
+      assert group.is_a?(Validations::CompositeValidation)
       assert_equal 2, group.validations.size
     end
 

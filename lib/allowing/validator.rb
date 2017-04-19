@@ -1,4 +1,4 @@
-require 'allowing/validations_group'
+require 'allowing/validations/composite_validation'
 require 'allowing/dsl'
 
 module Allowing
@@ -6,7 +6,7 @@ module Allowing
     extend DSL
 
     def self.group
-      @group ||= ValidationsGroup.new
+      @group ||= Validations::CompositeValidation.new
     end
 
     def self.group=(group)
