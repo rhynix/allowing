@@ -3,9 +3,9 @@ require 'simple_validations/wrappers/wrapper'
 module SimpleValidations
   module Wrappers
     class ConditionalWrapper < Wrapper
-      def call(value, subject = nil)
+      def call(value, subject = nil, options = {})
         if validate?(value, subject)
-          validation.call(value, subject)
+          validation.call(value, subject, options)
         else
           []
         end

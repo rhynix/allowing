@@ -8,7 +8,7 @@ module SimpleValidations
         @validation = validation
       end
 
-      def call(_value, _subject = nil)
+      def call(_value, _subject = nil, _options = {})
         fail NotImplementedError, 'Should be implemented by subclass'
       end
     end

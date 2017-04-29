@@ -17,11 +17,19 @@ module SimpleValidations
       group.validations
     end
 
+    def initialize(options = {})
+      @options = default_options.merge(options)
+    end
+
     def call(subject)
-      group.call(subject, subject)
+      group.call(subject, subject, @options)
     end
 
     private
+
+    def default_options
+      {}
+    end
 
     def group
       self.class.group

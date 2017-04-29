@@ -7,8 +7,8 @@ module SimpleValidations
         @validations = validations
       end
 
-      def call(value, subject = nil)
-        validations.flat_map { |validation| validation.call(value, subject) }
+      def call(value, subject = nil, options = {})
+        validations.flat_map { |val| val.call(value, subject, options) }
       end
     end
   end

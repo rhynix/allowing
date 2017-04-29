@@ -16,13 +16,13 @@ module SimpleValidations
         @error_name = error_name
       end
 
-      def call(_value, _subject = nil)
-        [Error.new(@error_name)]
+      def call(value, _subject = nil, _options = {})
+        [Error.new(@error_name, value: value)]
       end
     end
 
     class ValidValidation
-      def call(_value, _subject = nil)
+      def call(_value, _subject = nil, _options = {})
         []
       end
     end

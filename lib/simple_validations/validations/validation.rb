@@ -15,7 +15,7 @@ module SimpleValidations
         class_name.underscore.split('_')[0...-1].join('_').to_sym
       end
 
-      def call(value, _subject = nil)
+      def call(value, _subject = nil, _options = {})
         if valid?(value)
           []
         else
