@@ -1,6 +1,6 @@
-require 'allowing/wrappers/wrapper'
+require 'simple_validations/wrappers/wrapper'
 
-module Allowing
+module SimpleValidations
   module Wrappers
     class ConditionalWrapper < Wrapper
       def call(value, subject = nil)

@@ -1,4 +1,4 @@
-module Allowing
+module SimpleValidations
   module Wrappers
     class Wrapper
       attr_reader :rule, :validation

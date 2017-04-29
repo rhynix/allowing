@@ -1,7 +1,7 @@
 require 'test_helper'
-require 'allowing/extensions/string'
+require 'simple_validations/extensions/string'
 
-module Allowing
+module SimpleValidations
   module Extensions
     class StringTest < Minitest::Test
       using Extensions::String

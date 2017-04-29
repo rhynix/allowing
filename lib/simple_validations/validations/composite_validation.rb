@@ -1,4 +1,4 @@
-module Allowing
+module SimpleValidations
   module Validations
     class CompositeValidation
       attr_reader :validations

@@ -9,7 +9,7 @@ Person = Struct.new(
   :age
 )
 
-class PersonValidator < Allowing::Validator
+class PersonValidator < SimpleValidations::Validator
   validates :first_name, :last_name, presence: true
   validates :doctor, inclusion: [true, false]
   validates :email, format: /@/

@@ -1,7 +1,7 @@
-require 'allowing/extensions/string'
-require 'allowing/error'
+require 'simple_validations/extensions/string'
+require 'simple_validations/error'
 
-module Allowing
+module SimpleValidations
   module Validations
     class Validation
       using Extensions::String

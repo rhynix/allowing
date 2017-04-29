@@ -1,4 +1,4 @@
-module Allowing
+module SimpleValidations
   class Error
     attr_reader :validation, :name, :value, :scope
 

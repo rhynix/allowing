@@ -1,6 +1,6 @@
-require 'allowing/wrappers/conditional_wrapper'
+require 'simple_validations/wrappers/conditional_wrapper'
 
-module Allowing
+module SimpleValidations
   module Wrappers
     class AllowNilWrapper < ConditionalWrapper
       private

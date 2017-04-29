@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module Allowing
+module SimpleValidations
   module Validations
     class SizeValidationTest < Minitest::Test
       def setup

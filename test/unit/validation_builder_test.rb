@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module Allowing
+module SimpleValidations
   class WrappedValidationBuilderTest < Minitest::Test
     def test_builds_a_presence_validation
       validation = ValidationBuilder.new(:presence, true).build

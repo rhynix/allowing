@@ -1,4 +1,4 @@
-module Allowing
+module SimpleValidations
   module Doubles
     class ValidationsBuilder
       def initialize(attributes, rules, &_block)

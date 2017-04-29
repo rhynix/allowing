@@ -6,7 +6,7 @@ class ErrorValidator
   end
 end
 
-module Allowing
+module SimpleValidations
   module Validations
     class WithValidationTest < Minitest::Test
       def setup

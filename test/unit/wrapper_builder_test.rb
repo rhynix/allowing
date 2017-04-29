@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module Allowing
+module SimpleValidations
   class WrapperBuilderTest < Minitest::Test
     def test_builds_a_if_wrapper
       validation = :validation

@@ -1,6 +1,6 @@
-require 'allowing/wrapped_validation_builder'
+require 'simple_validations/wrapped_validation_builder'
 
-module Allowing
+module SimpleValidations
   module DSL
     class Capturer
       include DSL

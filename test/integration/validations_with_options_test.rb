@@ -2,14 +2,14 @@ require 'test_helper'
 
 Order = Struct.new(:trusted, :card_number)
 
-class OrderValidator < Allowing::Validator
+class OrderValidator < SimpleValidations::Validator
   validates :card_number,
             format: /^d+$/,
             unless: proc { |order| order.trusted },
             allow_nil: true
 end
 
-module Allowing
+module SimpleValidations
   module IntegrationTests
     class ValidationsWithOptionsTest < Minitest::Test
       def setup

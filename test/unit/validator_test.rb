@@ -1,10 +1,10 @@
 require 'test_helper'
 
-module Allowing
+module SimpleValidations
   class ValidatorTest < Minitest::Test
     def setup
       @subject         = OpenStruct.new(name: 'Gregory House')
-      @validator_class = Class.new(Allowing::Validator)
+      @validator_class = Class.new(SimpleValidations::Validator)
       @validator       = @validator_class.new
       @validation      = Doubles::ErrorValidation.new(:error)
     end

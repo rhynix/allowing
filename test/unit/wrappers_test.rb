@@ -1,9 +1,9 @@
 require 'test_helper'
-require 'allowing/wrappers'
+require 'simple_validations/wrappers'
 
-Allowing::Wrappers::DummyWrapper = Class.new
+SimpleValidations::Wrappers::DummyWrapper = Class.new
 
-module Allowing
+module SimpleValidations
   class WrappersTest < Minitest::Test
     def test_exists_returns_true_if_wrapper_class_exists
       assert Wrappers.exists?(:dummy)

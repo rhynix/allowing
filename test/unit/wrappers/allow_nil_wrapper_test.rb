@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module Allowing
+module SimpleValidations
   module Wrappers
     class AllowNilWrapperTest < Minitest::Test
       def setup

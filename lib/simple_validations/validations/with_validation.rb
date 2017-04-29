@@ -1,6 +1,6 @@
-require 'allowing/validations/validation'
+require 'simple_validations/validations/validation'
 
-module Allowing
+module SimpleValidations
   module Validations
     class WithValidation < Validation
       def call(value, _subject = nil)

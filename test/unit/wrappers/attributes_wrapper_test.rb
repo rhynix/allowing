@@ -1,7 +1,7 @@
 require 'test_helper'
-require 'allowing/wrappers/attributes_wrapper'
+require 'simple_validations/wrappers/attributes_wrapper'
 
-module Allowing
+module SimpleValidations
   module Wrappers
     class AttributesWrapperTest < Minitest::Test
       def setup

@@ -3,31 +3,31 @@ require 'test_helper'
 Address = Struct.new(:street, :number)
 User    = Struct.new(:name, :email, :address, :password)
 
-class EmailValidator < Allowing::Validator
+class EmailValidator < SimpleValidations::Validator
   def call(subject)
     if subject =~ /@/
       []
     else
-      [Allowing::Error.new(:incorrect_email, value: subject)]
+      [SimpleValidations::Error.new(:incorrect_email, value: subject)]
     end
   end
 end
 
-class AuthenticatableValidator < Allowing::Validator
+class AuthenticatableValidator < SimpleValidations::Validator
   validates :password, presence: true
 end
 
-class AddressValidator < Allowing::Validator
+class AddressValidator < SimpleValidations::Validator
   validates :street, presence: true
   validates :number, presence: true
 end
 
-class UserValidator < Allowing::Validator
+class UserValidator < SimpleValidations::Validator
   validates with: AuthenticatableValidator.new
 
   validates :name, with: lambda { |name|
     if name.strip.empty?
-      [Allowing::Error.new(:no_name, value: name)]
+      [SimpleValidations::Error.new(:no_name, value: name)]
     else
       []
     end

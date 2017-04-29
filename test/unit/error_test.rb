@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module Allowing
+module SimpleValidations
   class ErrorTest < Minitest::Test
     def setup
       @validation = Validations::PresenceValidation.new(true)

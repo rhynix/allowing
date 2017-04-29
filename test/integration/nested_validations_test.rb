@@ -4,7 +4,7 @@ Doctor   = Struct.new(:name, :hospital)
 Hospital = Struct.new(:name, :dean)
 Dean     = Struct.new(:name)
 
-class DoctorValidator < Allowing::Validator
+class DoctorValidator < SimpleValidations::Validator
   validates :name, presence: true
 
   validates :hospital do

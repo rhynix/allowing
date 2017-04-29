@@ -1,7 +1,7 @@
-require 'allowing/validations/composite_validation'
-require 'allowing/dsl'
+require 'simple_validations/validations/composite_validation'
+require 'simple_validations/dsl'
 
-module Allowing
+module SimpleValidations
   class Validator
     extend DSL
 

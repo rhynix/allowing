@@ -1,6 +1,6 @@
-require 'allowing/wrappers'
+require 'simple_validations/wrappers'
 
-module Allowing
+module SimpleValidations
   UnknownWrapperError = Class.new(StandardError)
 
   class WrapperBuilder

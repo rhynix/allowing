@@ -1,0 +1,6 @@
+require 'simple_validations/validations/presence_validation'
+require 'simple_validations/validations/format_validation'
+require 'simple_validations/validations/size_validation'
+require 'simple_validations/validations/inclusion_validation'
+require 'simple_validations/validations/exclusion_validation'
+require 'simple_validations/validations/with_validation'

@@ -1,7 +1,7 @@
-require 'allowing/extensions/string'
-require 'allowing/validations'
+require 'simple_validations/extensions/string'
+require 'simple_validations/validations'
 
-module Allowing
+module SimpleValidations
   UnknownValidationError = Class.new(StandardError)
 
   class ValidationBuilder

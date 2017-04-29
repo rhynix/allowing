@@ -1,11 +1,11 @@
-require 'allowing/extensions/string'
+require 'simple_validations/extensions/string'
 
-require 'allowing/wrappers/attributes_wrapper'
-require 'allowing/wrappers/if_wrapper'
-require 'allowing/wrappers/unless_wrapper'
-require 'allowing/wrappers/allow_nil_wrapper'
+require 'simple_validations/wrappers/attributes_wrapper'
+require 'simple_validations/wrappers/if_wrapper'
+require 'simple_validations/wrappers/unless_wrapper'
+require 'simple_validations/wrappers/allow_nil_wrapper'
 
-module Allowing
+module SimpleValidations
   module Wrappers
     using Extensions::String
 

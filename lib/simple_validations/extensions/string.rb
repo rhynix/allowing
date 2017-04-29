@@ -1,4 +1,4 @@
-module Allowing
+module SimpleValidations
   module Extensions
     module String
       refine ::String do

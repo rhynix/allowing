@@ -1,7 +1,7 @@
 require 'test_helper'
-require 'allowing/dsl'
+require 'simple_validations/dsl'
 
-module Allowing
+module SimpleValidations
   class DSLTest < Minitest::Test
     def test_capture_returns_the_captured_validations
       validations = DSL.capture do

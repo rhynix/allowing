@@ -1,11 +1,11 @@
-# Allowing
+# Simple validations
 
-Allowing is a simple library to do validations on ordinary Ruby objects. A validator can be defined as follows:
+Simple validations is a simple library to do validations on ordinary Ruby objects. A validator can be defined as follows:
 
 ```ruby
-require 'allowing'
+require 'simple_validations'
 
-class UserValidator < Allowing::Validator
+class UserValidator < SimpleValidations::Validator
   validates :first_name, :last_name, presence: true
   validates :email, format: /@/, length: 2..100
 end
@@ -23,7 +23,7 @@ user_validator.call(user) # => []
 
 user.name = nil
 
-user_validator.call(user) # => [#<Allowing::Error @name=:presence, @scope=[:name], @value=nil, @validation=...>]
+user_validator.call(user) # => [#<SimpleValidations::Error @name=:presence, @scope=[:name], @value=nil, @validation=...>]
 ```
 
 ## Nested validations
@@ -31,7 +31,7 @@ user_validator.call(user) # => [#<Allowing::Error @name=:presence, @scope=[:name
 Validations can also be nested to define validations on attributes of attributes:
 
 ```ruby
-class UserValidator < Allowing::Validator
+class UserValidator < SimpleValidations::Validator
   validates :name, presence: true
 
   validates :company do
@@ -47,17 +47,17 @@ user    = User.new('User', company)
 
 user_validator = UserValidator.new
 
-user_validator.call(user) # => [#<Allowing::Error @name=:presence, @scope=[:company, :vat_number], @value=nil @validation=...>]
+user_validator.call(user) # => [#<SimpleValidations::Error @name=:presence, @scope=[:company, :vat_number], @value=nil @validation=...>]
 ```
 
 This same validator could also be defined in a more reusable way:
 
 ```ruby
-class CompanyValidator < Allowing::Validator
+class CompanyValidator < SimpleValidations::Validator
   validates :vat_number, presence: true
 end
 
-class UserValidator < Allowing::Validator
+class UserValidator < SimpleValidations::Validator
   validates :name, presence: true
   validates :company, with: CompanyValidator.new
 end
@@ -70,11 +70,11 @@ class EmailValidator
   def call(email)
     return [] if @email =~ /@/
 
-    [Allowing::Error.new(:invalid_email, value: @email)]
+    [SimpleValidations::Error.new(:invalid_email, value: @email)]
   end
 end
 
-class UserValidator < Allowing::Validator
+class UserValidator < SimpleValidations::Validator
   validates :name, presence: true
   validates :email, with: EmailValidator.new
 end
@@ -85,7 +85,7 @@ end
 If no attributes are given, the validation is performed on self:
 
 ```ruby
-class EmailValidator < Allowing::Validator
+class EmailValidator < SimpleValidations::Validator
   validates format: /@/
 end
 
@@ -154,7 +154,7 @@ validates :day, exclusion: %w[Saturday Sunday]
 All these validations can also be used directly as follows:
 
 ```ruby
-email_validation = Allowing::Validations::FormatValidation.new(/@/)
+email_validation = SimpleValidations::Validations::FormatValidation.new(/@/)
 email_validation.call('user@example.com') # => []
 ```
 

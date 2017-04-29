@@ -1,9 +1,9 @@
-require 'allowing/wrappers'
-require 'allowing/wrapper_builder'
-require 'allowing/validation_builder'
-require 'allowing/validations/composite_validation'
+require 'simple_validations/wrappers'
+require 'simple_validations/wrapper_builder'
+require 'simple_validations/validation_builder'
+require 'simple_validations/validations/composite_validation'
 
-module Allowing
+module SimpleValidations
   class WrappedValidationBuilder
     using Extensions::String
 
